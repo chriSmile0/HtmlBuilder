@@ -1,7 +1,6 @@
 #ifndef HTML_H
 #define HTML_H
 
-#include "util.h"
 #include "balise.h"
 #include <vector>
 
@@ -21,12 +20,9 @@ class HTML {
 
 
 		inline void setFpHtml() {sfile << getFp("!DOCTYPE html") +"\n" + getFp("html lang=\"fr\"")+"\n";}
-		inline void setLpHtml() {sfile << getLp("html");}
+		inline void setLpHtml() {sfile << getLp("html",1);}
 		void addinfile();
 };
-
-
-
 
 #include "../src/html.hpp"
 

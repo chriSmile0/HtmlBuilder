@@ -5,10 +5,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(HtmlBuilder LANGUAGES CXX)
 
 add_executable(htmlbuilder src/projet.cpp)
-target_sources(htmlbuilder PRIVATE src/projet.cpp
-					
-			
-							)
+target_sources(htmlbuilder PRIVATE 
+	src/projet.cpp
+	inc/html.h
+	src/html.hpp
+	inc/balise.h
+	src/balise.hpp
+	inc/util_wo.h
+	src/util_wo.hpp
+	inc/util.h
+	src/util.hpp)
 
 
 IF (MSVC)

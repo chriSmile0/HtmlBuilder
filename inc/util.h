@@ -95,7 +95,7 @@ inline std::string getFp(std::string s) {return  ("<" + s + ">");}
  * @param
  * @return
 */
-inline std::string getLp(std::string s) {return  ("\n</" + s + ">\n");}
+inline std::string getLp(std::string s,int jump) {return  (jump==1) ? ("\n</" + s + ">\n") : ("</" + s + ">\n");}
 
 
 /**
@@ -106,6 +106,12 @@ inline std::string getLp(std::string s) {return  ("\n</" + s + ">\n");}
 inline void closeFile(std::fstream f) {f.close();} // -> pas juste !!
 
 
+/**
+ * @brief
+ * @param
+ * @return
+*/
+int count_jumpline(std::string str);
 
 
 #include "../src/util.hpp"

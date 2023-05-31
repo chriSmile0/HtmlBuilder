@@ -1,18 +1,22 @@
 #include "../inc/balise.h"
 
-Balise::Balise(balise bal,pairvec pv_options,std::vector<Balise> bal_vec, int with_end) {
+Balise::Balise(balise bal,pairvec pv_options,std::vector<Balise> bal_vec, int with_end, int j) {
 	b = bal;
 	bal_in_str();
 	vec_b = bal_vec;
+	jump = j;
 	bloc_balise += getFp(setOptionsBalise(pv_options,with_end));
-	bloc_balise += (!with_end) ? getLp(getBal_in_str()) : "\n";
+	bloc_balise += (!with_end) ? getLp(getBal_in_str(),j) : "\n";
+	fin_balise = count_jumpline(bloc_balise)-1;
 }
-Balise::Balise(std::string bal,pairvec pv_options,std::vector<Balise> bal_vec, int with_end) {
+Balise::Balise(std::string bal,pairvec pv_options,std::vector<Balise> bal_vec, int with_end, int j) {
 	bal_str = bal;
 	str_in_bal();
 	vec_b = bal_vec;
+	jump = j;
 	bloc_balise += getFp(setOptionsBalise(pv_options,with_end));
-	bloc_balise += (!with_end) ? getLp(getBal_in_str()) : "\n";
+	bloc_balise += (!with_end) ? getLp(getBal_in_str(),j) : "\n";
+	fin_balise = count_jumpline(bloc_balise)-1;
 }
 
 
@@ -78,7 +82,8 @@ std::string Balise::setOptionsBalise(pairvec pv, int with_end) {
 
 void Balise::add_balise(Balise new_bal) {
 	std::string blo_nbal = new_bal.getBloc_balise();
-	vec_b.push_back(new_bal); 
+	fin_balise += new_bal.getFinBalise()+1;//+1 pour le premier tag 
+	vec_b.push_back(new_bal);
 	bloc_balise.insert(lastendline(),blo_nbal);
 }
 

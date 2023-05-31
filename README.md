@@ -7,6 +7,8 @@ Faire en sorte que cela soit atteignable pour tout le monde donc après on pourr
 
 ## Construction 
 
+### V1 
+
 / `ul 3li` -> une liste de 3 items li -> :  
 
 		<ul> 
@@ -40,8 +42,31 @@ On est donc ici sur de la création soit à la volée en input :
 `"ul 3li"`  
 `"p 3 classe1"`  
 
-OU avec des objets directemens : 
+OU avec des objets directemens :
 OBjet{ul, 3li} par exemple dans le code c++
+
+
+### V2 
+`"p {1div {1span}}"` -> : 
+
+		<p>
+			<div>
+				<span>
+			</div>
+
+		</p>
+
+`"p {1div {1span}}; article {1div}}"` -> :
+
+		<p>
+			<div>
+				<span></span>
+			</div>
+		</p>
+		<article>
+			<div></div>
+		</article>
+
 
 ## Modification 
 Au final on sera sur la création de code objet qui stockera la ligne de chaque objet et sous-objets concernées.  
