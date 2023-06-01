@@ -54,64 +54,23 @@ std::vector<Balise> balise_in_line(std::string str) {
 }
 
 Balise demand_in_balise(std::string str) {
-	std::cout << "strrr : " << str << std::endl;
 
 	std::string balise_root = extract_balise(str);
-	std::cout << "extract ok: balise : " << balise_root  << std::endl;
 	std::string corresponding_tag = check_balise(balise_root);
-	std::cout << "corresponding tag ok , tag :" << corresponding_tag << std::endl;
-	//std::vector<std::string> 
 	Balise rtn{corresponding_tag,{},{},0,1};
 	std::string suite_parse = str.substr(corresponding_tag.length());
-	std::cout << "s_p" << suite_parse << std::endl;
 	if((suite_parse == "") || (suite_parse[0] == '}')) {
 		rtn.setJump(0);
 		return rtn;
 	}
 
 	suite_parse = suite_parse.substr(2);
-	std::cout << "suite parseee : " << suite_parse << std::endl;
-
 	std::string digits = extract_digit(suite_parse);
 
-	//FINIR LE BUG ICI 
-	
 	int size_digit = (digits == "0") ? 0 : stoi(digits);
 	int digit = (size_digit == 0) ? 1 : size_digit; 
 	std::string suite = suite_parse.substr(size_digit);
-	std::cout << "|" << suite << "|" << std::endl;
 	for(int i = 0 ; i < digit ; i++) 
 		rtn.add_balise(demand_in_balise(suite));
-
-
-	
-
-	//Voir pour la faire sur une str comme -> p 3li a 1b 
-	//Ce qui donne ceci en langage balise 
-	/**
-	 * <p>
-	 * 		<ul>
-	 * 			<li><a><b></b></a></li>
-	 * 			<li><a><b></b></a></li>
-	 * 			<li><a><b></b></a></li>
-	 * 		</ul>
-	 * </p>
-	*/
-
-	//On peut caller des séparateurs comme ';' pour distinguer les différents groupes
-	//Exemple : p 3li; p 
-	/**
-	 * <p>
-	 * 		<ul>
-	 * 			<li></li>
-	 * 			<li></li>
-	 * 			<li></li>
-	 * 		</ul>
-	 * </p>
-	 * <p>
-	 * </p>
-	*/
-
-
 	return rtn;
 }
