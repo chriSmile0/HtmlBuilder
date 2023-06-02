@@ -39,6 +39,12 @@ std::string check_balise(std::string);
 
 Balise demand_in_balise(std::string str);
 
+Balise demand_in_balisev2(std::string str);
+
+std::string without_accolade(std::string str);
+
+Balise demand_in_balisev3(std::string str);
+
 
 
 #include "../src/util_wo.hpp"

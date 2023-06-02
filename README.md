@@ -47,11 +47,13 @@ OBjet{ul, 3li} par exemple dans le code c++
 
 
 ### V2 
-`"p {1div {1span}}"` -> : 
+`"p {1div {1span {1li}}}"` -> : 
 
 		<p>
 			<div>
 				<span>
+					<li></li>
+				</span>
 			</div>
 
 		</p>
@@ -67,6 +69,16 @@ OBjet{ul, 3li} par exemple dans le code c++
 			<div></div>
 		</article>
 
+### V3 
+`"p {1div {{p};{p}}}"` -> : 
+
+		<p>
+			<div>
+				<p></p>
+				<p></p>
+			</div>
+
+		</p>
 
 ## Modification 
 Au final on sera sur la création de code objet qui stockera la ligne de chaque objet et sous-objets concernées.  
