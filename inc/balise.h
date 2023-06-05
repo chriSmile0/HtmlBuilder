@@ -6,6 +6,7 @@
 class Balise {
 	private:
 	    balise b;
+		bool named;
         std::string bal_str;
 		std::vector<Balise> vec_b;
 		std::string bloc_balise = "";

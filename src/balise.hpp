@@ -1,6 +1,7 @@
 #include "../inc/balise.h"
 
 Balise::Balise(balise bal,pairvec pv_options,std::vector<Balise> bal_vec, int with_end, int j) {
+	named = true;
 	b = bal;
 	bal_in_str();
 	vec_b = bal_vec;
@@ -10,6 +11,7 @@ Balise::Balise(balise bal,pairvec pv_options,std::vector<Balise> bal_vec, int wi
 	fin_balise = count_jumpline(bloc_balise)-1;
 }
 Balise::Balise(std::string bal,pairvec pv_options,std::vector<Balise> bal_vec, int with_end, int j) {
+	named = true;
 	bal_str = bal;
 	str_in_bal();
 	vec_b = bal_vec;
@@ -20,6 +22,7 @@ Balise::Balise(std::string bal,pairvec pv_options,std::vector<Balise> bal_vec, i
 }
 
 Balise::Balise(std::string bal, int jFb, int jLb, int jLa) {
+	named = true;
 	bal_str = bal;
 	str_in_bal();
 	cds_t.debut_tagF = bloc_balise.length();
@@ -31,7 +34,11 @@ Balise::Balise(std::string bal, int jFb, int jLb, int jLa) {
 }
 
 Balise::Balise() {
-
+	named = false;
+	cds_t.debut_tagF = 0;
+	cds_t.fin_tagF = 0;
+	cds_t.debut_tagL = 0;
+	cds_t.fin_tagL = 0;
 }
 
 
@@ -155,9 +162,12 @@ void Balise::printCoordonnees() {
 void Balise::add_balisev2(Balise new_bal) {
 	//debut de la nouvelle balise = fin de la première balise du parent
 	std::string blo_nbal = new_bal.getBloc_balise();
-	new_bal.AddCoordonnesWithPreciseValue(cds_t.fin_tagF);
+	int debut = cds_t.debut_tagL-1;
+	if(!named) 
+		debut = 0;
+	new_bal.AddCoordonnesWithPreciseValue(debut);
 	vec_b.push_back(new_bal);
-	bloc_balise.insert(cds_t.fin_tagF,blo_nbal);
+	bloc_balise.insert(debut,blo_nbal);
 	cds_t.debut_tagL += blo_nbal.length();
 	cds_t.fin_tagL += blo_nbal.length();
 }

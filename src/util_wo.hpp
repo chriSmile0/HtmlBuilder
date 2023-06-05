@@ -178,3 +178,11 @@ Balise demand_in_balisev3(std::string str) {
 		rtn.add_balise(demand_in_balisev3(suite));
 	return rtn;
 }
+
+///*********************************/////
+
+
+
+Balise demand_in_balisev4(std::string str) {
+	return {};
+}

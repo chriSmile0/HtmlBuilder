@@ -46,6 +46,10 @@ std::string without_accolade(std::string str);
 Balise demand_in_balisev3(std::string str);
 
 
+//V4
+Balise demand_in_balisev4(std::string str);
+
+
 
 #include "../src/util_wo.hpp"
 

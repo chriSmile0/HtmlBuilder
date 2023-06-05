@@ -63,7 +63,8 @@ int main() {
 
 	//*************************//
 	//Balise o{};
-	Balise j{"coucou",0,1,0};
+	Balise j{"article",0,1,0};
+	j.printCoordonnees();
 	/*j.printCoordonnees(); ok 
 	Balise g{"coco",0,0,0};
 	g.printCoordonnees();
@@ -72,13 +73,23 @@ int main() {
 	j.getBalWithIndex(0).printCoordonnees();*/
 	
 
-	Balise o{"keko",1,1,0};
+	Balise o{"div",1,1,0};
+	Balise s{"span",1,1,0};
+	
+	//g.add_balisev2(o);
+	//o.add_balisev2(s);
+	o.add_balisev2(s);
 	j.add_balisev2(o);
+	j.printCoordonnees();
+	//j.printCoordonnees();
+	//j.add_balisev2(s);
 
 	//Balise k{"mkl",0,0,0};
+	Balise g{};
+	g.add_balisev2(j);
 
 
-	std::vector<Balise> vec_html = {j};
+	std::vector<Balise> vec_html = {g};
     HTML one_html{"../test/test.html",vec_html};
 	one_html.addinfile();
 
