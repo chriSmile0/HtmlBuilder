@@ -19,6 +19,23 @@ Balise::Balise(std::string bal,pairvec pv_options,std::vector<Balise> bal_vec, i
 	fin_balise = count_jumpline(bloc_balise)-1;
 }
 
+Balise::Balise(std::string bal, int jFb, int jLb, int jLa) {
+	bal_str = bal;
+	str_in_bal();
+	cds_t.debut_tagF = bloc_balise.length();
+	bloc_balise += getFpv2(bal,jFb);
+	cds_t.fin_tagF = bloc_balise.length();
+	cds_t.debut_tagL = cds_t.fin_tagF + 1;
+	bloc_balise += getLpv2(bal,jLb,jLa);
+	cds_t.fin_tagL = bloc_balise.length();
+}
+
+Balise::Balise() {
+
+}
+
+
+
 
 void Balise::setBal(balise bal) {
 	b = bal;
@@ -100,6 +117,49 @@ std::string Balise::pairvec_in_str() {
     for (auto p : pv_o) 
         balise_option += " "+p.first+"="+"\""+p.second+"\"";
     return balise_option;
+}
+
+void Balise::setCoordonnees(int dF, int fF, int dL, int fL) {
+	cds_t.debut_tagF = dF;
+	cds_t.fin_tagF = fF;
+	cds_t.debut_tagL = dL;
+	cds_t.fin_tagL = fL;
+}
+//!* OU direct par ref c'est aussi possible !! à suivre *!//
+//Autre encore 
+void Balise::AddPreciseCoordonnees(int choice, int plus_value) {
+	switch(choice) {
+		case 0: cds_t.debut_tagF += plus_value;
+		case 1: cds_t.fin_tagF += plus_value;
+		case 2: cds_t.debut_tagL += plus_value;
+		case 3: cds_t.fin_tagL += plus_value;
+		default: 
+			break;
+	}
+}
+
+void Balise::AddCoordonnesWithPreciseValue(int plus_value) {
+	cds_t.debut_tagF += plus_value;
+	cds_t.fin_tagF += plus_value;
+	cds_t.debut_tagL += plus_value;
+	cds_t.fin_tagL += plus_value;
+}
+
+
+
+void Balise::printCoordonnees() {
+	std::cout << "debut tagF : " << cds_t.debut_tagF << "fin tagF :" << cds_t.fin_tagF << std::endl;
+	std::cout << "debut tagL : " << cds_t.debut_tagL << "fin tagL :" << cds_t.fin_tagL << std::endl;
+}
+
+void Balise::add_balisev2(Balise new_bal) {
+	//debut de la nouvelle balise = fin de la première balise du parent
+	std::string blo_nbal = new_bal.getBloc_balise();
+	new_bal.AddCoordonnesWithPreciseValue(cds_t.fin_tagF);
+	vec_b.push_back(new_bal);
+	bloc_balise.insert(cds_t.fin_tagF,blo_nbal);
+	cds_t.debut_tagL += blo_nbal.length();
+	cds_t.fin_tagL += blo_nbal.length();
 }
 
 Balise::~Balise(){	

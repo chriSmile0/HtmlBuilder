@@ -51,6 +51,13 @@ typedef struct {
 	std::string value;
 } option_and_value;
 
+typedef struct {
+	int debut_tagF;
+	int fin_tagF;
+	int debut_tagL;
+	int fin_tagL;
+} coordonnees_tag;
+
 enum balise {Head,Body,Section,Article,Div,Span,Footer,Img,
 
 				h1,h2,h3,h4,h5,h6,a,br,pre,hr,p,button,form,textarea,
@@ -112,6 +119,22 @@ inline void closeFile(std::fstream f) {f.close();} // -> pas juste !!
  * @return
 */
 int count_jumpline(std::string str);
+
+
+std::string getFpv2(std::string s, int jump) {
+	//De base on est sur le départ d'une nouvelle ligne 
+	//Mais attention !!
+	if(jump)
+		return ("\n<"+s+">");
+	return  ("<" + s + ">");
+}
+std::string getLpv2(std::string s, int jb, int ja) {
+	if((jb) && (!ja))
+		return ("\n</" + s + ">");
+	if((jb) && (ja))
+		return (("\n</" + s + ">\n"));
+	return ("</" + s + ">");//sinon neutral même ligne 
+}
 
 
 #include "../src/util.hpp"

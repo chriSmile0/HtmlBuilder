@@ -44,7 +44,7 @@ int main() {
 	//on pioche article , on balance {p} dans la moulinette 
 
 
-	std::string test2 = "{article {div {2p}}}";
+	/*std::string test2 = "{article {div {2p}}}";
 	Balise o = demand_in_balisev3(test2);
 	//on enleve les accolades 
 	//puis moulinette de divisions des blocs avec balise_in_line -> split(str,';')
@@ -53,8 +53,34 @@ int main() {
 	//... -> same
 	//... -> same 
 	Balise null{};
+
+
 	std::vector<Balise> vec_html = {o,null};
     HTML one_html{"../test/test.html",vec_html};
+	one_html.addinfile();*/
+
+
+
+	//*************************//
+	//Balise o{};
+	Balise j{"coucou",0,1,0};
+	/*j.printCoordonnees(); ok 
+	Balise g{"coco",0,0,0};
+	g.printCoordonnees();
+	j.add_balisev2(g);
+	j.printCoordonnees();
+	j.getBalWithIndex(0).printCoordonnees();*/
+	
+
+	Balise o{"keko",1,1,0};
+	j.add_balisev2(o);
+
+	//Balise k{"mkl",0,0,0};
+
+
+	std::vector<Balise> vec_html = {j};
+    HTML one_html{"../test/test.html",vec_html};
 	one_html.addinfile();
+
     return 0;
 }
