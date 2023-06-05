@@ -6,8 +6,8 @@ Balise::Balise(balise bal,pairvec pv_options,std::vector<Balise> bal_vec, int wi
 	bal_in_str();
 	vec_b = bal_vec;
 	jump = j;
-	bloc_balise += getFp(setOptionsBalise(pv_options,with_end));
-	bloc_balise += (!with_end) ? getLp(getBal_in_str(),j) : "\n";
+	bloc_balise += getFpv2(setOptionsBalise(pv_options,with_end),1);
+	bloc_balise += (!with_end) ? getLpv2(getBal_in_str(),j,0) : "\n";
 	fin_balise = count_jumpline(bloc_balise)-1;
 }
 Balise::Balise(std::string bal,pairvec pv_options,std::vector<Balise> bal_vec, int with_end, int j) {
@@ -16,8 +16,8 @@ Balise::Balise(std::string bal,pairvec pv_options,std::vector<Balise> bal_vec, i
 	str_in_bal();
 	vec_b = bal_vec;
 	jump = j;
-	bloc_balise += getFp(setOptionsBalise(pv_options,with_end));
-	bloc_balise += (!with_end) ? getLp(getBal_in_str(),j) : "\n";
+	bloc_balise += getFpv2(setOptionsBalise(pv_options,with_end),1);
+	bloc_balise += (!with_end) ? getLpv2(getBal_in_str(),j,0) : "\n";
 	fin_balise = count_jumpline(bloc_balise)-1;
 }
 
@@ -163,8 +163,12 @@ void Balise::add_balisev2(Balise new_bal) {
 	//debut de la nouvelle balise = fin de la première balise du parent
 	std::string blo_nbal = new_bal.getBloc_balise();
 	int debut = cds_t.debut_tagL-1;
-	if(!named) 
-		debut = 0;
+	if(!named) {
+		if(debut < 0)
+			debut = 0;
+		else 
+			debut = cds_t.debut_tagL;
+	}
 	new_bal.AddCoordonnesWithPreciseValue(debut);
 	vec_b.push_back(new_bal);
 	bloc_balise.insert(debut,blo_nbal);

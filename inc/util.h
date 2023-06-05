@@ -95,23 +95,7 @@ std::vector<std::string> readLines(std::fstream f);
  * @param
  * @return
 */
-inline std::string getFp(std::string s) {return  ("<" + s + ">");}
-
-/**
- * @brief
- * @param
- * @return
-*/
-inline std::string getLp(std::string s,int jump) {return  (jump==1) ? ("\n</" + s + ">\n") : ("</" + s + ">\n");}
-
-
-/**
- * @brief
- * @param
- * @return
-*/
 inline void closeFile(std::fstream f) {f.close();} // -> pas juste !!
-
 
 /**
  * @brief
@@ -120,21 +104,19 @@ inline void closeFile(std::fstream f) {f.close();} // -> pas juste !!
 */
 int count_jumpline(std::string str);
 
+/**
+ * @brief
+ * @param
+ * @return
+*/
+std::string getFpv2(std::string s, int jump);
 
-std::string getFpv2(std::string s, int jump) {
-	//De base on est sur le départ d'une nouvelle ligne 
-	//Mais attention !!
-	if(jump)
-		return ("\n<"+s+">");
-	return  ("<" + s + ">");
-}
-std::string getLpv2(std::string s, int jb, int ja) {
-	if((jb) && (!ja))
-		return ("\n</" + s + ">");
-	if((jb) && (ja))
-		return (("\n</" + s + ">\n"));
-	return ("</" + s + ">");//sinon neutral même ligne 
-}
+/**
+ * @brief
+ * @param
+ * @return
+*/
+std::string getLpv2(std::string s, int jb, int ja);
 
 
 #include "../src/util.hpp"

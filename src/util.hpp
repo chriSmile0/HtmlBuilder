@@ -16,3 +16,16 @@ int count_jumpline(std::string str) {
 			j++;
 	return j;
 }
+
+std::string getFpv2(std::string s, int jump) {
+	if(jump)
+		return ("\n<"+s+">");
+	return  ("<" + s + ">");
+}
+std::string getLpv2(std::string s, int jb, int ja) {
+	if((jb) && (!ja))
+		return ("\n</" + s + ">");
+	if((jb) && (ja))
+		return (("\n</" + s + ">\n"));
+	return ("</" + s + ">");
+}
