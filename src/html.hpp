@@ -5,7 +5,7 @@ HTML::HTML(std::string name,std::vector<Balise> vec) {
     b_vec = vec;
 }
 
-HTML & HTML::operator=(HTML const& copy) {
+HTML& HTML::operator=(HTML const& copy) {
 	Filename = copy.Filename;
 	b_vec = copy.b_vec;
 	return *this;

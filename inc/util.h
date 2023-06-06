@@ -51,6 +51,13 @@ typedef struct {
 	std::string value;
 } option_and_value;
 
+typedef struct {
+	int debut_tagF;
+	int fin_tagF;
+	int debut_tagL;
+	int fin_tagL;
+} coordonnees_tag;
+
 enum balise {Head,Body,Section,Article,Div,Span,Footer,Img,
 
 				h1,h2,h3,h4,h5,h6,a,br,pre,hr,p,button,form,textarea,
@@ -88,30 +95,21 @@ std::vector<std::string> readLines(std::fstream f);
  * @param
  * @return
 */
-inline std::string getFp(std::string s) {return  ("<" + s + ">");}
-
-/**
- * @brief
- * @param
- * @return
-*/
-inline std::string getLp(std::string s,int jump) {return  (jump==1) ? ("\n</" + s + ">\n") : ("</" + s + ">\n");}
-
-
-/**
- * @brief
- * @param
- * @return
-*/
 inline void closeFile(std::fstream f) {f.close();} // -> pas juste !!
 
+/**
+ * @brief
+ * @param
+ * @return
+*/
+std::string getFpv2(std::string s, int jump);
 
 /**
  * @brief
  * @param
  * @return
 */
-int count_jumpline(std::string str);
+std::string getLpv2(std::string s, int jb, int ja);
 
 
 #include "../src/util.hpp"
