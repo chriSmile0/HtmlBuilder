@@ -18,7 +18,6 @@ class HTML {
 		HTML& operator=(HTML const& copy);
 		~HTML();
 
-
 		inline void setFpHtml() {sfile << getFpv2("!DOCTYPE html",0) +"\n" + getFpv2("html lang=\"fr\"",0);}
 		inline void setLpHtml() {sfile << getLpv2("html",1,0);}
 		void addinfile();

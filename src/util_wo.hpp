@@ -4,23 +4,6 @@
 
 #include "../inc/util_wo.h"
 
-std::vector<std::string> split_str(std::string str, char split) {
-	std::vector<std::string> vec_str;
-	int size = str.length();
-	int j = 0; //depart de la str
-	std::string tmp = "";
-	for(int i = 0 ; i < size ; i++) {
-		if(str[i] == split) {
-			i++;
-			vec_str.push_back(tmp);
-			tmp = "";
-		}
-		tmp += str[i];
-	}
-	vec_str.push_back(tmp);
-	return vec_str;
-}
-
 std::string check_balise(std::string str) {
 	if((str == "div") || (str == "p") || (str == "head") || (str == "li")
 		|| (str == "article") || (str == "section") || (str == "span"))
@@ -61,10 +44,8 @@ std::string extract_digit(std::string str) {
  * Step 4 : <article><p><span></span><span></span></p></article>
 */
 
-/////**************CHANGEMENT DE STRAT*********************/////
-
 std::string without_accolade(std::string str) {
-	int i = 0; //parcours
+	int i = 0;
 	int depart = 0;
 	int fin = str.length();
 	while(str[i] != '\0') {
@@ -89,9 +70,7 @@ std::string without_accolade(std::string str) {
 }
 
 
-///*********************************/////
-std::vector<int> split_or_not(std::string str,char splitter) {//Splitter = ';' ou ',' à voir 
-	//on check si il y'a des accolades entre le splitter et le debut de la str
+std::vector<int> split_or_not(std::string str, char splitter) {
 	std::vector<int> vec_index_split;
 	char split = splitter;
 	int i = 0;
@@ -106,14 +85,11 @@ std::vector<int> split_or_not(std::string str,char splitter) {//Splitter = ';' o
 		if(str[i] == split)
 			if(found_accc == found_acco) {
 				break_index = i;
-				std::cout << "break : " << break_index << std::endl;
 				vec_index_split.push_back(break_index);
 				break_index = 0;
 			}
 		i++;
 	}
-	std::cout << "facco : " << found_accc << " found accc : " << found_accc << std::endl;
-	std::cout << "break index : " << break_index << std::endl;
 	return vec_index_split;
 	
 }
@@ -126,18 +102,12 @@ std::vector<std::string> split_str_homemade(std::string str, char splitter) {
 	int fin = 0;
 	for(auto i : split_index) {
 		fin = i; 
-		std::cout << "depart : " << depart << ", fin : " << fin << std::endl;
 		tmp = str.substr(depart,fin-depart);//fin-depart = size;
-		std::cout << "str : " << str << std::endl;
-		std::cout << "tmp cut : " << tmp << std::endl;
 		vec_str.push_back(tmp);
-
-		//suite
 		tmp = "";
 		depart = fin+1;
 	}
 	tmp = str.substr(depart,str.length());
-	std::cout << "tmp final " << tmp << std::endl;
 	vec_str.push_back(tmp);
 	return vec_str;
 }	
@@ -152,9 +122,6 @@ Balise demand_in_balisev4(std::string str) {
 	std::vector<std::string> split_first_level = split_str_homemade(without_acc,';');
 	std::vector<Balise> vec_rtn;
 	for(auto str_level1 : split_first_level) {
-		std::cout << " > " << str_level1 << std::endl;
-
-
 		std::string balise_root = extract_balise(str_level1);
 		std::string corresponding_tag = check_balise(balise_root);
 		std::string suite_parse = str_level1.substr(corresponding_tag.length());
@@ -170,10 +137,8 @@ Balise demand_in_balisev4(std::string str) {
 			jLb = 1;
 		}
 		
-		Balise rtn{corresponding_tag,jFb,jLb,jLa};
-
+		Balise rtn{corresponding_tag,{},{},jFb,jLb,jLa};
 		if((suite_parse == "") || (suite_parse[0] == '}')) {
-			rtn.setJump(0);
 			vec_rtn.push_back(rtn);
 			continue;
 		}
@@ -185,14 +150,10 @@ Balise demand_in_balisev4(std::string str) {
 		std::string suite = suite_parse.substr(size_digit);
 		for(int i = 0 ; i < digit; i++) 
 			rtn.add_balisev2(demand_in_balisev4(suite));
-		rtn.setJump(0);
 		vec_rtn.push_back(rtn);
 	}
 	Balise global{};
-	for(auto b : vec_rtn) {
-		std::cout << b.getBloc_balise() << std::endl;
+	for(auto b : vec_rtn) 
 		global.add_balisev2(b);
-		std::cout << global.getBloc_balise() << std::endl;
-	}
 	return global;
 }

@@ -8,13 +8,6 @@
  * @param
  * @return
 */
-std::vector<std::string> split_str(std::string str, char split);
-
-/**
- * @brief
- * @param
- * @return
-*/
 std::string extract_balise(std::string str);
 
 /**
@@ -29,7 +22,7 @@ std::string extract_digit(std::string str);
  * @param
  * @return
 */
-std::string check_balise(std::string);
+std::string check_balise(std::string str);
 
 /**
  * @brief
@@ -44,9 +37,20 @@ std::string without_accolade(std::string str);
  * @param
  * @return
 */
+std::vector<std::string> split_str_homemade(std::string str, char splitter);
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
+std::vector<int> split_or_not(std::string str, char splitter);
+/**
+ * @brief
+ * @param
+ * @return
+*/
 Balise demand_in_balisev4(std::string str);
-
-
 
 #include "../src/util_wo.hpp"
 

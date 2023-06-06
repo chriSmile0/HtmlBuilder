@@ -102,13 +102,6 @@ inline void closeFile(std::fstream f) {f.close();} // -> pas juste !!
  * @param
  * @return
 */
-int count_jumpline(std::string str);
-
-/**
- * @brief
- * @param
- * @return
-*/
 std::string getFpv2(std::string s, int jump);
 
 /**
