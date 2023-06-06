@@ -15,9 +15,10 @@ int main() {
 	g.add_balisev2(l);
 	g.printCoordonnees();
 
-	std::string test1 = "{article div}";					// ok 
-	std::string test2 = "{article {div p}}";				// ok 
-	std::string test3 = "{article;section}";				// ok
+	std::string test0 = "{article div}";					// ok 
+	std::string test1 = "{article {div p}}";				// ok 
+	std::string test2 = "{article;section}";				// ok
+	std::string test3 = "{2article;2section}";				// ok
 	std::string test4 = "{article;section;p}";				// ok
 	std::string test5 = "{article {div p};article {div p}}";// ok
 	std::string test6 = "{article {div;p {span li}}}";		// ok
@@ -25,7 +26,7 @@ int main() {
 	std::string testAltREADME = "{p {1div {p;p}}}";			// ok
 	std::string testAltREADME2 = "{p {2div {p;p}}}";		// ok 
 	std::string testAltREADMEn = "{2section;2article}";		// n_ok
-	Balise in = demand_in_balisev4(testAltREADMEn);
+	Balise in = demand_in_balisev4(test3);
 
 	std::vector<Balise> vec_html = {in};
     HTML one_html{"../test/test.html",vec_html};

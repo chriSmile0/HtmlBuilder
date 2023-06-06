@@ -122,9 +122,14 @@ Balise demand_in_balisev4(std::string str) {
 	std::vector<std::string> split_first_level = split_str_homemade(without_acc,';');
 	std::vector<Balise> vec_rtn;
 	for(auto str_level1 : split_first_level) {
-		std::string balise_root = extract_balise(str_level1);
+		std::string digts = extract_digit(str_level1);
+		int sz_digit = (digts == "0") ? 0 : digts.length();
+		int dt = (sz_digit == 0) ? 1 : stoi(digts);
+		std::string suite_top = str_level1.substr(sz_digit);
+
+		std::string balise_root = extract_balise(suite_top);
 		std::string corresponding_tag = check_balise(balise_root);
-		std::string suite_parse = str_level1.substr(corresponding_tag.length());
+		std::string suite_parse = suite_top.substr(corresponding_tag.length());
 		int jFb = 0; // Option de mise en forme
 		int jLb = 0; // ""
 		int jLa = 0; // ""
@@ -133,24 +138,26 @@ Balise demand_in_balisev4(std::string str) {
 			jLb = 1;
 		}
 		else {
-			jFb = 1; //À voir 
+			jFb = 1;
 			jLb = 1;
 		}
 		
-		Balise rtn{corresponding_tag,{},{},jFb,jLb,jLa};
-		if((suite_parse == "") || (suite_parse[0] == '}')) {
+		for(int i = 0 ; i < dt; i++) {
+			Balise rtn{corresponding_tag,{},{},jFb,jLb,jLa};
+			if((suite_parse == "") || (suite_parse[0] == '}')) {
+				vec_rtn.push_back(rtn);
+				continue;
+			}
+			int jump = jump_to_next_balise(suite_parse);
+			suite_parse = suite_parse.substr(jump);
+			std::string digits = extract_digit(suite_parse);
+			int size_digit = (digits == "0") ? 0 : digits.length();
+			int digit = (size_digit == 0) ? 1 : stoi(digits);
+			std::string suite = suite_parse.substr(size_digit);
+			for(int i = 0 ; i < digit; i++) 
+				rtn.add_balisev2(demand_in_balisev4(suite));
 			vec_rtn.push_back(rtn);
-			continue;
 		}
-		int jump = jump_to_next_balise(suite_parse);
-		suite_parse = suite_parse.substr(jump);
-		std::string digits = extract_digit(suite_parse);
-		int size_digit = (digits == "0") ? 0 : digits.length();
-		int digit = (size_digit == 0) ? 1 : stoi(digits);
-		std::string suite = suite_parse.substr(size_digit);
-		for(int i = 0 ; i < digit; i++) 
-			rtn.add_balisev2(demand_in_balisev4(suite));
-		vec_rtn.push_back(rtn);
 	}
 	Balise global{};
 	for(auto b : vec_rtn) 
