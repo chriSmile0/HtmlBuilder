@@ -18,8 +18,16 @@ class HTML {
 		HTML& operator=(HTML const& copy);
 		~HTML();
 
+		//Setters
 		inline void setFpHtml() {sfile << getFpv2("!DOCTYPE html",0) +"\n" + getFpv2("html lang=\"fr\"",0);}
 		inline void setLpHtml() {sfile << getLpv2("html",1,0);}
+		
+		//AddInFile
+		/**
+		 * @brief	Ajout des blocs de chaque balise dans le fichier html
+		 * @param{none}
+		 * @return
+		*/
 		void addinfile();
 };
 

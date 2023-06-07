@@ -69,45 +69,42 @@ enum inlin {a,abbr,acronym,b,bdo,big,br,button,cite,code,dfn,em,i,img,input,kbd,
 */
 
 /**
- * @brief
- * @param
- * @return
-*/
-//inline void openFile(std::string name, std::fstream f) {std::fstream f{name,std::ios::in | std::ios::out | std::ios::out};}
-
-
-/**
- * @brief
- * @param
+ * @brief	Ecriture d'une ligne ligne dans le fichier en entrée
+ * @param{line} la ligne à écrire dans le fichier
+ * @param{f}	le fichier en entrée
  * @return
 */
 inline void writeLine(std::string line, std::fstream f) {f << line;}
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Écrit toutes les lignes d'un fichier dans un vecteur
+ * 			de chaine
+ * @param{f}	le fichier à lire
+ * @return	L'ensemble des lignes du fichier
 */
 std::vector<std::string> readLines(std::fstream f);
 
 /**
- * @brief
- * @param
+ * @brief	Réecriture de la fermeture de la fonction close d'un fichier
+ * @param{f}	le fichier à cloturer
  * @return
 */
-inline void closeFile(std::fstream f) {f.close();} // -> pas juste !!
+inline void closeFile(std::fstream f) {f.close();}
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Fonction qui permet d'écrire le premier bloc balise d'une balise
+ * @param{s}	la balise à créer
+ * @param{jump}	Jump avant la balise ?
+ * @return	la chaine qui contient la balise ouvrante
 */
 std::string getFpv2(std::string s, int jump);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Fonction qui permet d'écrire le second bloc balise d'une balise
+ * @param{s}	la balise à créer
+ * @param{jb}	Jump avant la balise ?
+ * @param{ja}	Jump après la balise ?
+ * @return	la chaine qui contient la balise fermante
 */
 std::string getLpv2(std::string s, int jb, int ja);
 
