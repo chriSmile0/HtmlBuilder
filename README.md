@@ -8,37 +8,67 @@ Construire de manière très rapide une page html avec seulement des balises en 
 ### V3 
 `"{p {1div {p;p}}}"` -> : 
 
-		<p>
-			<div>
-				<p></p>
-				<p></p>
-			</div>
-		</p>
+	<p>
+		<div>
+			<p></p>
+			<p></p>
+		</div>
+	</p>
 **_OU_**  
 `"{p {2div {p;p}}}"` -> : 
 
-		<p>
-			<div>
-				<p></p>
-				<p></p>
-			</div>
-			<div>
-				<p></p>
-				<p></p>
-			</div>
-		</p>
+	<p>
+		<div>
+			<p></p>
+			<p></p>
+		</div>
+		<div>
+			<p></p>
+			<p></p>
+		</div>
+	</p>
 **_OU_**   
 `"{2section;2article}"` -> : Prochain commit 
 	
-		<section>
-		</section>
-		<section>
-		</section>
+	<section>
+	</section>
+	<section>
+	</section>
 
-		<article>
-		</article>
-		<article>
-		</article>
+	<article>
+	</article>
+	<article>
+	</article>
+
+### V3.5 -> OK 
+Utilisation d'un fichier ou de la console ou directement en paramètre 
+de l'éxécutable afin de créer le fichier html.
+
+	./htmlbuilder -f file 
+	./htmlbuilder -l {article\;p} 
+	./htmlbuilder -c 
+**_Via Makefile_** -> 
+
+	make test ARG1=-f ARG2=file
+	make test ARG1=-l ARG2={article\;p}
+	make test ARG1=-c 
+
+### V4 -> Spec
+On cherche maintenant à créer de l'indentation car pour le moment 
+`./htmlbuilder -l {article\ p}` a pour résultat : 
+
+	<article>
+	<p>
+	</p>
+	</article>
+Et ce que l'on aimerait devrais plutôt ressembler à cela : 
+
+	<article>
+		<p>
+		</p>
+	</article>
+
+### V5 -> À spécifier
 
 ## Modification 
 - [x] Au final on sera sur la création de code objet qui stockera la ligne de 	chaque objet et sous-objets concernées.  
