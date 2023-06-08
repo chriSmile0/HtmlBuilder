@@ -6,6 +6,7 @@ int main(int argc, char *argv[]) {
 		{"f", required_argument,NULL,'f'},
 		{"l", required_argument,NULL,'l'},
 		{"c", no_argument,NULL,'c'},
+		{"d", no_argument,NULL,'d'},
 		{NULL, 0, NULL,0}
 	};
 
@@ -24,6 +25,8 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'c': flag = 'c';
 				break;
+			case 'd': flag = 'd';
+				break;
 			default: 
 				return EXIT_FAILURE;
 				break;
@@ -34,7 +37,6 @@ int main(int argc, char *argv[]) {
 	std::string recup_line = "";
 	Balise out;
 	if(flag == 'c') {
-		//FULL LIGNE DE COMMANDE
 		std::cout << "***Command Line Process***" << std::endl;
 		int goon = 1;
 		while(goon) {
@@ -48,12 +50,7 @@ int main(int argc, char *argv[]) {
 		construction = construction.substr(0,construction.length()-5);
 	}
 	else if(flag == 'f') {
-		//FULL FICHIER
-		//Voir pour utiliser le fichier comme un registre de build
-		//et donc de construire avec qu'une ligne et non pas un 
-		//ensenble, avec donc un choix de ligne en paramètre 
 		std::cout << "***Read File Process***" << std::endl;
-		//Try open File 
 		std::ifstream readfile(save_option);
 		while(getline(readfile,recup_line))
 			construction += recup_line+";";
@@ -61,25 +58,11 @@ int main(int argc, char *argv[]) {
 		construction = construction.substr(0,construction.length()-1);
 	}
 	else if(flag == 'l') {
-		//FULL LIGNE ...
-		//NE PAS OUBLIER D'Échapper les caractères comme : ';' ou ' '
 		std::cout << "***Input One Line Process***" << std::endl;
 		construction = save_option;
 	}
-
-	if((construction == "stop") || (construction == "")) 
-		std::cout << "***Nothing to Build***" << std::endl;
-	else {
-		std::cout << "***Possibility to Build HTML***" << std::endl;
-		std::cout << "***BUILD IN PROGRESS***" << std::endl;
-		out = demand_in_balisev4(construction);
-	}
 	
-
-	//std::cout << "save_option : |" << save_option << "|" << std::endl;
-
-
-	/*std::string test0 = "{article div}";					// ok 
+	std::string test0 = "{article div}";					// ok 
 	std::string test1 = "{article {div p}}";				// ok 
 	std::string test2 = "{article;section}";				// ok
 	std::string test3 = "{2article;2section}";				// ok
@@ -90,7 +73,17 @@ int main(int argc, char *argv[]) {
 	std::string testAltREADME = "{p {1div {p;p}}}";			// ok
 	std::string testAltREADME2 = "{p {2div {p;p}}}";		// ok 
 	std::string testAltREADMEn = "{2section;2article}";		// ok
-	Balise in = demand_in_balisev4(save_option);*/
+	
+	if((flag != 'd')&&((construction == "stop") || (construction == ""))) 
+		std::cout << "***Nothing to Build***" << std::endl;
+	else {
+		std::cout << "***Possibility to Build HTML***" << std::endl;
+		std::cout << "***BUILD IN PROGRESS***" << std::endl;
+		if(flag != 'd') 
+			out = demand_in_balisev4(construction,0);
+		else 
+			out = demand_in_balisev4(test0,0);
+	}
 
 	std::vector<Balise> vec_html = {out};
     HTML one_html{"../test/test.html",vec_html};

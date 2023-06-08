@@ -42,16 +42,19 @@ Construire de manière très rapide une page html avec seulement des balises en 
 
 ### V3.5 -> OK 
 Utilisation d'un fichier ou de la console ou directement en paramètre 
-de l'éxécutable afin de créer le fichier html.
+de l'éxécutable ou une construction dans le main afin de créer le fichier html.
 
 	./htmlbuilder -f file 
 	./htmlbuilder -l {article\;p} 
 	./htmlbuilder -c 
+	./htmlbuilder --d
+
 **_Via Makefile_** -> 
 
 	make test ARG1=-f ARG2=file
 	make test ARG1=-l ARG2={article\;p}
 	make test ARG1=-c 
+	make test ARG1=--d 
 
 ### V4 -> Spec
 On cherche maintenant à créer de l'indentation car pour le moment 

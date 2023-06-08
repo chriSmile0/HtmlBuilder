@@ -9,7 +9,7 @@ main : clean
 exec : clean main 
 	mkdir test 2> /dev/null ; \
 	cd build ; \
-	./htmlbuilder \
+	./htmlbuilder --d ;\
 
 test : clean main
 	mkdir test 2> /dev/null ; \

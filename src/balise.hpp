@@ -1,14 +1,15 @@
 #include "../inc/balise.h"
 
-Balise::Balise(std::string bal, pairvec pv_options, std::vector<Balise> bal_vec, int jFb, int jLb, int jLa) {
+Balise::Balise(std::string bal, pairvec pv_options, std::vector<Balise> bal_vec,int nb_tab ,int jFb, int jLb, int jLa) {
 	named = true;
 	bal_str = bal;
 	str_in_bal();
+	nbtab = nb_tab;
 	cds_t.debut_tagF = bloc_balise.length();
-	bloc_balise += getFpv2(setOptionsBalise(pv_options,0),jFb);
+	bloc_balise += getFpv2(setOptionsBalise(pv_options,0),jFb,nb_tab);
 	cds_t.fin_tagF = bloc_balise.length();
 	cds_t.debut_tagL = cds_t.fin_tagF + 1;
-	bloc_balise += getLpv2(bal,jLb,jLa);
+	bloc_balise += getLpv2(bal,jLb,jLa,nb_tab);
 	cds_t.fin_tagL = bloc_balise.length();
 }
 

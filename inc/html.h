@@ -19,8 +19,8 @@ class HTML {
 		~HTML();
 
 		//Setters
-		inline void setFpHtml() {sfile << getFpv2("!DOCTYPE html",0) +"\n" + getFpv2("html lang=\"fr\"",0);}
-		inline void setLpHtml() {sfile << getLpv2("html",1,0);}
+		inline void setFpHtml() {sfile << getFpv2("!DOCTYPE html",0,0) +"\n" + getFpv2("html lang=\"fr\"",0,0);}
+		inline void setLpHtml() {sfile << getLpv2("html",1,0,0);}
 		
 		//AddInFile
 		/**

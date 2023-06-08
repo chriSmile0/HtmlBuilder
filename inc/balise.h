@@ -12,9 +12,10 @@ class Balise {
 		std::string bloc_balise = "";
 		coordonnees_tag cds_t;
 		pairvec pv_o;
+		int nbtab;
 	public:
 		Balise();
-		Balise(std::string bal, pairvec pv_options,std::vector<Balise> bal_vec, int jFb, int jLb, int jLa);
+		Balise(std::string bal, pairvec pv_options,std::vector<Balise> bal_vec,int nb_tab, int jFb, int jLb, int jLa);
 		~Balise();
 
 		//Getters inline
