@@ -88,5 +88,16 @@ int main(int argc, char *argv[]) {
 	std::vector<Balise> vec_html = {out};
     HTML one_html{"../test/test.html",vec_html};
 	one_html.addinfile();
+
+	enum tags tag = Address;
+	std::cout << toString(tag) << std::endl;
+	std::cout << toIsBloc(tag) << std::endl;
+
+	std::cout << sizeof(name_tags) << std::endl;
+	std::cout << sizeof(name_tags[tag]) << std::endl;
+
+	std::cout << toIsValue("var") << std::endl;//good
+	std::cout << inline_Bloc[68] << std::endl;//good
+
     return 0;
 }

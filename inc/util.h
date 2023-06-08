@@ -1,8 +1,9 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include "unistd.h"
-#include "iostream"
+#include <unistd.h>
+#include <iostream>
+#include "util2.h"
 #include <fstream>
 #include <vector>
 
@@ -58,15 +59,15 @@ typedef struct {
 	int fin_tagL;
 } coordonnees_tag;
 
-enum balise {Head,Body,Section,Article,Div,Span,Footer,Img,
+
+/*enum balise {Head,Body,Section,Article,Div,Span,Footer,Img,
 
 				h1,h2,h3,h4,h5,h6,a,br,pre,hr,p,button,form,textarea,
 				table,th,tr,td,caption,colgroup,col,thead,tbody,tfoot,
-				ul,li,ol,dt,dd,dl,iframe,Link,meta};
-/*
-enum bloc {address,article,aside,blockquote,canvas,dd,div,dl,dt,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hr,li,main,nav,noscript,ol,p,pre,section,table,tfoot,ul,video};
-enum inlin {a,abbr,acronym,b,bdo,big,br,button,cite,code,dfn,em,i,img,input,kbd,label,map,object,output,q,samp,script,select,small,span,strong,sub,sup,textarea,time,tt,var};
-*/
+				ul,li,ol,dt,dd,dl,iframe,Link,meta};*/
+//enum bloc {address,article,aside,blockquote,canvas,dd,div,dl,dt,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hr,li,main,nav,noscript,ol,p,pre,section,table,tfoot,ul,video};
+//enum inlin {a,abbr,acronym,b,bdo,big,br,button,cite,code,dfn,em,i,img,input,kbd,label,map,object,output,q,samp,script,select,small,span,strong,sub,sup,textarea,time,tt,var};
+
 
 /**
  * @brief	Ecriture d'une ligne ligne dans le fichier en entrée
@@ -108,6 +109,11 @@ std::string getFpv2(std::string s, int jump, int nb_tab);
 */
 std::string getLpv2(std::string s, int jb, int ja, int nb_tab);
 
+/**
+ * @brief
+ * @param
+ * @return
+*/
 
 #include "../src/util.hpp"
 

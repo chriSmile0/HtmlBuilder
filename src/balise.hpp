@@ -21,8 +21,8 @@ Balise::Balise() {
 	cds_t.fin_tagL = 0;
 }
 
-void Balise::setBal(balise bal) {
-	b = bal;
+void Balise::setBal(enum tags t) {
+	tag = t;
 	bal_in_str();
 }
 void Balise::setBal_with_str(std::string str) {
@@ -31,7 +31,7 @@ void Balise::setBal_with_str(std::string str) {
 }
 
 void Balise::bal_in_str() {
-	switch(b) {
+	switch(tag) {
 		case Head: bal_str = "head";
 			break;
 		case Body: bal_str = "body";
@@ -51,17 +51,17 @@ void Balise::bal_in_str() {
 
 void Balise::str_in_bal() {
 	if(bal_str == "div") 
-		b = Div;
+		tag = Div;
 	else if(bal_str == "head") 
-		b = Head;
+		tag = Head;
 	else if(bal_str == "body") 
-		b = Body;
+		tag = Body;
 	else if(bal_str == "article") 
-		b = Article;
+		tag = Article;
 	else if(bal_str == "section") 
-		b = Section;
+		tag = Section;
 	else if(bal_str == "span") 
-		b = Span;
+		tag = Span;
 }
 
 std::string Balise::setOptionsBalise(pairvec pv, int with_end) {

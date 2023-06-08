@@ -5,7 +5,7 @@
 
 class Balise {
 	private:
-	    balise b;
+	    enum tags tag;
 		bool named;
         std::string bal_str;
 		std::vector<Balise> vec_b;
@@ -20,7 +20,7 @@ class Balise {
 
 		//Getters inline
         inline std::string getBal_in_str() const {return bal_str;}
-        inline balise getBal() const {return b;}
+        inline enum tags getBal() const {return tag;}
 		inline std::string getBloc_balise() {return bloc_balise;}
 		inline int getVecBalSize() const {return vec_b.size();};
 		inline Balise getBalWithIndex(int index) const {return vec_b.at(index);}
@@ -29,7 +29,7 @@ class Balise {
 		inline coordonnees_tag& getRefCoordonnees() {return cds_t;}
 
         //Setters
-		void setBal(balise bal);
+		void setBal(enum tags t);
         void setBal_with_str(std::string str);
 
 		/**
