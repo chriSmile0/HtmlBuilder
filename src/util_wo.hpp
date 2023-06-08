@@ -121,6 +121,8 @@ Balise demand_in_balisev4(std::string str, int tabulation) {
 	
 	std::vector<std::string> split_first_level = split_str_homemade(without_acc,';');
 	std::vector<Balise> vec_rtn;
+	int old_tab = tabulation;
+	tabulation++;
 	for(auto str_level1 : split_first_level) {
 		std::string digts = extract_digit(str_level1);
 		int sz_digit = (digts == "0") ? 0 : digts.length();
@@ -130,19 +132,16 @@ Balise demand_in_balisev4(std::string str, int tabulation) {
 		std::string balise_root = extract_balise(suite_top);
 		std::string corresponding_tag = check_balise(balise_root);
 		std::string suite_parse = suite_top.substr(corresponding_tag.length());
+		//ON CHECK ICI LE INLINE OU PAS DE BALISE CORRESPONDANTE
+		//AFIN D'AJUSTER LES JUMPS OU NON 
 		int jFb = 0; // Option de mise en forme
 		int jLb = 0; // ""
 		int jLa = 0; // ""
-		if(suite_parse == "") {
+		bool is_bloc = toIsBloc(toAsValue(corresponding_tag));
+		if(is_bloc == true) {
 			jFb = 1;
 			jLb = 1;
 		}
-		else {
-			jFb = 1;
-			jLb = 1;
-		}
-		int old_tab = tabulation;
-		tabulation++;
 		for(int i = 0 ; i < dt; i++) {
 			Balise rtn{corresponding_tag,{},{},old_tab,jFb,jLb,jLa};
 			if((suite_parse == "") || (suite_parse[0] == '}')) {

@@ -99,14 +99,14 @@ inline std::string toString(enum tags value) {return name_tags[value];}
 
 inline bool toIsBloc(enum tags value) {return inline_Bloc[value];}
 
-int toIsValue(std::string str) {
+enum tags toAsValue(std::string str) {
     int i = 0;
     int size = sizeof(name_tags)/sizeof(name_tags[0]);
     while((i < size) && (name_tags[i] != str))
        i++;
     if(i == size)
         i = -1;//erreur pas présent
-    return i;
+    return (enum tags)i;
 }
 
 #endif // UTIL2_H // 

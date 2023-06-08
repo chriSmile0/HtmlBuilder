@@ -30,40 +30,6 @@ void Balise::setBal_with_str(std::string str) {
 	str_in_bal();
 }
 
-void Balise::bal_in_str() {
-	switch(tag) {
-		case Head: bal_str = "head";
-			break;
-		case Body: bal_str = "body";
-			break;
-		case Div: bal_str = "div";
-			break;
-		case Article: bal_str = "article";
-			break;
-		case Section: bal_str = "section";
-			break;
-		case Span: bal_str = "span";
-			break;
-		default:
-			break;
-	}
-}
-
-void Balise::str_in_bal() {
-	if(bal_str == "div") 
-		tag = Div;
-	else if(bal_str == "head") 
-		tag = Head;
-	else if(bal_str == "body") 
-		tag = Body;
-	else if(bal_str == "article") 
-		tag = Article;
-	else if(bal_str == "section") 
-		tag = Section;
-	else if(bal_str == "span") 
-		tag = Span;
-}
-
 std::string Balise::setOptionsBalise(pairvec pv, int with_end) {
 	std::string head_balise = getBal_in_str();
     for(auto p : pv) {

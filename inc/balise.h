@@ -57,8 +57,8 @@ class Balise {
 		void AddCoordonnesWithPreciseValue(int plus_value);
 
 		//Converter
-		void bal_in_str();
-		void str_in_bal();
+		inline void bal_in_str() {bal_str = toString(tag);}
+		inline void str_in_bal() {tag = toAsValue(bal_str);}
 		/**
 		 * @brief	Retranscrire les options de l'objet dans la balise
 		 * @param{none}

@@ -62,19 +62,22 @@ int main(int argc, char *argv[]) {
 		construction = save_option;
 	}
 	
-	std::string test0 = "{article div}";					// ok 
-	std::string test1 = "{article {div p}}";				// ok 
-	std::string test2 = "{article;section}";				// ok
-	std::string test3 = "{2article;2section}";				// ok
-	std::string test4 = "{article;section;p}";				// ok
-	std::string test5 = "{article {div p};article {div p}}";// ok
-	std::string test6 = "{article {div;p {span li}}}";		// ok
-	std::string testREADME = "{p {1div {{p};{p}}}}";		// n_ok
-	std::string testAltREADME = "{p {1div {p;p}}}";			// ok
-	std::string testAltREADME2 = "{p {2div {p;p}}}";		// ok 
-	std::string testAltREADMEn = "{2section;2article}";		// ok
+	std::string test0 = "{article div}";					// ok V5
+	std::string test1 = "{article {div p}}";				// ok V5
+	std::string test2 = "{article;section}";				// ok V5
+	std::string test3 = "{2article;2section}";				// ok V5
+	std::string test4 = "{article;section;p}";				// ok V5
+	std::string test5 = "{article {div p};article {div p}}";// ok V5
+	std::string test6 = "{article {div;p {span li}}}";		// n_ok/ok V5
+	//On pourrais forcer le fait de forcer le li comme un inline pour ne pas
+	//casser le inline du span
+	std::string test7 = "{article {div;p span}}";			// ok V5
+	std::string testREADME = "{p {1div {{p};{p}}}}";		// ok V5
+	std::string testAltREADME = "{p {1div {p;p}}}";			// ok V5
+	std::string testAltREADME2 = "{p {2div {p;p}}}";		// ok V5
+	std::string testAltREADMEn = "{2section;2article}";		// ok V5
 	
-	if((flag != 'd')&&((construction == "stop") || (construction == ""))) 
+	if((flag != 'd') && ((construction == "stop") || (construction == ""))) 
 		std::cout << "***Nothing to Build***" << std::endl;
 	else {
 		std::cout << "***Possibility to Build HTML***" << std::endl;
@@ -82,22 +85,11 @@ int main(int argc, char *argv[]) {
 		if(flag != 'd') 
 			out = demand_in_balisev4(construction,0);
 		else 
-			out = demand_in_balisev4(test0,0);
+			out = demand_in_balisev4(test5,0);
 	}
 
 	std::vector<Balise> vec_html = {out};
     HTML one_html{"../test/test.html",vec_html};
 	one_html.addinfile();
-
-	enum tags tag = Address;
-	std::cout << toString(tag) << std::endl;
-	std::cout << toIsBloc(tag) << std::endl;
-
-	std::cout << sizeof(name_tags) << std::endl;
-	std::cout << sizeof(name_tags[tag]) << std::endl;
-
-	std::cout << toIsValue("var") << std::endl;//good
-	std::cout << inline_Bloc[68] << std::endl;//good
-
     return 0;
 }
