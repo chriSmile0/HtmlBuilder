@@ -8,15 +8,21 @@ std::vector<std::string> readLines(std::fstream f) {
 	return vec;
 }
 
-std::string getFpv2(std::string s, int jump) {
+std::string getFpv2(std::string s, int jump, int nb_tab) {
+	std::string tabulations = "";
+	for(int i = 0 ; i < nb_tab;i++)
+		tabulations += "\t";
 	if(jump)
-		return ("\n<"+s+">");
+		return ("\n"+tabulations+"<"+s+">");
 	return  ("<" + s + ">");
 }
-std::string getLpv2(std::string s, int jb, int ja) {
+std::string getLpv2(std::string s, int jb, int ja, int nb_tab) {
+	std::string tabulations = "";
+	for(int i = 0 ; i < nb_tab;i++)
+		tabulations += "\t";
 	if((jb) && (!ja))
-		return ("\n</" + s + ">");
+		return ("\n"+tabulations+"</" + s + ">");
 	if((jb) && (ja))
-		return (("\n</" + s + ">\n"));
+		return (("\n"+tabulations+"</" + s + ">\n"));
 	return ("</" + s + ">");
 }

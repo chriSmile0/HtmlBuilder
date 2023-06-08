@@ -97,7 +97,7 @@ inline void closeFile(std::fstream f) {f.close();}
  * @param{jump}	Jump avant la balise ?
  * @return	la chaine qui contient la balise ouvrante
 */
-std::string getFpv2(std::string s, int jump);
+std::string getFpv2(std::string s, int jump, int nb_tab);
 
 /**
  * @brief	Fonction qui permet d'écrire le second bloc balise d'une balise
@@ -106,7 +106,7 @@ std::string getFpv2(std::string s, int jump);
  * @param{ja}	Jump après la balise ?
  * @return	la chaine qui contient la balise fermante
 */
-std::string getLpv2(std::string s, int jb, int ja);
+std::string getLpv2(std::string s, int jb, int ja, int nb_tab);
 
 
 #include "../src/util.hpp"

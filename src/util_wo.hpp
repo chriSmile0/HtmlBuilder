@@ -114,7 +114,7 @@ std::vector<std::string> split_str_homemade(std::string str, char splitter) {
 
 
 
-Balise demand_in_balisev4(std::string str) {
+Balise demand_in_balisev4(std::string str, int tabulation) {
 	std::string without_acc = str;
 	while((without_acc[0] == '{') && (without_acc[without_acc.length()-1] == '}')) 
 		without_acc = without_accolade(without_acc);
@@ -141,9 +141,10 @@ Balise demand_in_balisev4(std::string str) {
 			jFb = 1;
 			jLb = 1;
 		}
-		
+		int old_tab = tabulation;
+		tabulation++;
 		for(int i = 0 ; i < dt; i++) {
-			Balise rtn{corresponding_tag,{},{},jFb,jLb,jLa};
+			Balise rtn{corresponding_tag,{},{},old_tab,jFb,jLb,jLa};
 			if((suite_parse == "") || (suite_parse[0] == '}')) {
 				vec_rtn.push_back(rtn);
 				continue;
@@ -155,7 +156,7 @@ Balise demand_in_balisev4(std::string str) {
 			int digit = (size_digit == 0) ? 1 : stoi(digits);
 			std::string suite = suite_parse.substr(size_digit);
 			for(int i = 0 ; i < digit; i++) 
-				rtn.add_balisev2(demand_in_balisev4(suite));
+				rtn.add_balisev2(demand_in_balisev4(suite,tabulation));
 			vec_rtn.push_back(rtn);
 		}
 	}
