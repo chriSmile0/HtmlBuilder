@@ -5,30 +5,10 @@ Construire de manière très rapide une page html avec seulement des balises en 
 
 ## Construction 
 
-### V5 -> Spec
-Pour le moment on ne prends en compte que certaines balises 
-On peut maintenant toutes les ajoutées 
-Cependant elles se trouvent en 2 catégories, ce sont les inlines et les non 
-inline.   
-**_Exemple :_**
+### V6 -> Spec
 
-**_Inline_** -> 
-`div span` : 
 
-	<div><span></span>
-	</div>
-
-**_No_Inline_** -> 
-`div p` : 
-
-	<div>
-		<p>
-		</p>
-	</div>
-
-Le <b>span</b> doit donc se tenir sur une ligne et ne pas provoquer de saut de ligne après sa fin de balise 
-
-### V6 -> À spécifier 
+### V7 -> À spécifier
 
 
 ## Modification 
