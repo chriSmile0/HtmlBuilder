@@ -5,73 +5,31 @@ Construire de manière très rapide une page html avec seulement des balises en 
 
 ## Construction 
 
-### V3 
-`"{p {1div {p;p}}}"` -> : 
+### V5 -> Spec
+Pour le moment on ne prends en compte que certaines balises 
+On peut maintenant toutes les ajoutées 
+Cependant elles se trouvent en 2 catégories, ce sont les inlines et les non 
+inline.   
+**_Exemple :_**
 
-	<p>
-		<div>
-			<p></p>
-			<p></p>
-		</div>
-	</p>
-**_OU_**  
-`"{p {2div {p;p}}}"` -> : 
+**_Inline_** -> 
+`div span` : 
 
-	<p>
-		<div>
-			<p></p>
-			<p></p>
-		</div>
-		<div>
-			<p></p>
-			<p></p>
-		</div>
-	</p>
-**_OU_**   
-`"{2section;2article}"` -> : Prochain commit 
-	
-	<section>
-	</section>
-	<section>
-	</section>
+	<div><span></span>
+	</div>
 
-	<article>
-	</article>
-	<article>
-	</article>
+**_No_Inline_** -> 
+`div p` : 
 
-### V3.5 -> OK 
-Utilisation d'un fichier ou de la console ou directement en paramètre 
-de l'éxécutable ou une construction dans le main afin de créer le fichier html.
-
-	./htmlbuilder -f file 
-	./htmlbuilder -l {article\;p} 
-	./htmlbuilder -c 
-	./htmlbuilder --d
-
-**_Via Makefile_** -> 
-
-	make test ARG1=-f ARG2=file
-	make test ARG1=-l ARG2={article\;p}
-	make test ARG1=-c 
-	make test ARG1=--d 
-
-### V4 -> Spec
-On cherche maintenant à créer de l'indentation car pour le moment 
-`./htmlbuilder -l {article\ p}` a pour résultat : 
-
-	<article>
-	<p>
-	</p>
-	</article>
-Et ce que l'on aimerait devrais plutôt ressembler à cela : 
-
-	<article>
+	<div>
 		<p>
 		</p>
-	</article>
+	</div>
 
-### V5 -> À spécifier
+Le <b>span</b> doit donc se tenir sur une ligne et ne pas provoquer de saut de ligne après sa fin de balise 
+
+### V6 -> À spécifier 
+
 
 ## Modification 
 - [x] Au final on sera sur la création de code objet qui stockera la ligne de 	chaque objet et sous-objets concernées.  
