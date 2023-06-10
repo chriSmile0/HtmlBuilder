@@ -9,6 +9,8 @@ target_sources(htmlbuilder PRIVATE
 	src/projet.cpp
 	inc/html.h
 	src/html.hpp
+	inc/css.h
+	src/css.hpp
 	inc/balise.h
 	src/balise.hpp
 	inc/util_wo.h

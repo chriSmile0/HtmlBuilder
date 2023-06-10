@@ -90,6 +90,8 @@ int main(int argc, char *argv[]) {
 
 	std::vector<Balise> vec_html = {out};
     HTML one_html{"../test/test.html",vec_html};
+	CSS on_css{"../test/test.css",vec_html};
 	one_html.addinfile();
+	on_css.addinfile();
     return 0;
 }

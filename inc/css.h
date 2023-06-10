@@ -1,7 +1,6 @@
 #ifndef CSS_H
 #define CSS_H
 
-#include "util.h"
 #include "balise.h"
 #include <vector>
 

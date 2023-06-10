@@ -46,14 +46,24 @@ void CSS::addinfile() {
 	}
 	std::cout << tag << std::endl;
 	std::cout << opt << std::endl;
+
 	std::vector<std::string> all_tags = all_tags_invec(tag);
-    all_tags.erase(std::unique(all_tags.begin(), all_tags.end()), all_tags.end());
+	std::sort(all_tags.begin(),all_tags.end());
+	for(auto tag : all_tags)
+		std::cout << tag << std::endl;
+    all_tags.erase(std::unique(all_tags.begin(), all_tags.end()),all_tags.end());
+	for(auto tag : all_tags)
+		std::cout << tag << std::endl;
 	std::vector<option_and_value> all_opts = all_opts_invec(opt);
     all_opts.erase(std::unique(all_opts.begin(), all_opts.end(),m_class_u_id)
 		,all_opts.end());
 	
-	for(auto b : all_tags) 
+
+
+
+	for(auto b : all_tags) {
 		sfile << b + " {\n}\n";
+	}
 	for(auto ov : all_opts) {
 		if(ov.option == "class")
 			sfile << "."+truncate_option(ov.value)+" {\n}\n";
@@ -67,9 +77,11 @@ void CSS::addinfile() {
 options_and_tags CSS::add_in_rec(Balise b) {
 	if(vec_b.size()==0)
 		return {"",""};
-	std::string tags = b.getBal_in_str()+",";
+	std::string tags = (b.getBal_in_str() != "") ? (b.getBal_in_str()+",") : "";
 	std::string options = b.pairvec_in_str()+";";
 	int sizeBvec = b.getVecBalSize();
+	//Voir ici pour récuperer le niveau de tab pour pouvoir
+	//faire l'héritage directement pour le css 
 	for(int i = 0 ; i < sizeBvec;i++) {
 		tags += add_in_rec(b.getBalWithIndex(i)).tags;
 		options += add_in_rec(b.getBalWithIndex(i)).options;
