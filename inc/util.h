@@ -110,6 +110,29 @@ std::string getFpv2(std::string s, int jump, int nb_tab);
 std::string getLpv2(std::string s, int jb, int ja, int nb_tab);
 
 /**
+ * @brief	Agrandir le fichier cible 
+ * @param{f}	le fichier cible
+ * @return
+*/
+void growUpFile(std::fstream& f, int extend_size);
+
+/**
+ * @brief	Insérer une ligne dans un fichier
+ * @param{f}	Le fichier cible
+ * @param{str}	La chaine à insérer
+ * @param{index}	L'index de d"part de la chaine
+ * @return
+*/
+void insertLineInFile(std::fstream& f, std::string str, int index);
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
+
+
+/**
  * @brief
  * @param
  * @return
