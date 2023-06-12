@@ -59,6 +59,12 @@ typedef struct {
 	int fin_tagL;
 } coordonnees_tag;
 
+typedef struct {
+	int index;
+	std::string balise;
+	std::string contenu;
+} modif_struct;
+
 
 /*enum balise {Head,Body,Section,Article,Div,Span,Footer,Img,
 
@@ -109,6 +115,39 @@ std::string getFpv2(std::string s, int jump, int nb_tab);
 */
 std::string getLpv2(std::string s, int jb, int ja, int nb_tab);
 
+
+/**
+ * @brief	Extraire la balise d'une chaine comme {  p }
+ * 			ce qui donne 'p'
+ * @param{str}	la chaine à parser
+ * @return	la chaine en entrée ou la balise si il y'a des choses à parser
+*/
+std::string extract_balise(std::string str);
+
+/**
+ * @brief	Extraire un entier d'une chaine comme 2p 
+ * 			ce qui donne '2'
+ * @param{str} la chaine à parser
+ * @return	le digit correspondant ou "0" si pas de digit dans la chaine
+ */
+std::string extract_digit(std::string str);
+
+/**
+ * @brief	Renvoyer la balise d'entrée si elle correspond à une balise reconnue
+ * 			Sinon renvoyer chaine vide 
+ * @param{str}	la chaine en entrée	
+ * @return	la chaine en entrée ou une chaine vide
+*/
+std::string check_balise(std::string str);
+
+/**
+ * @brief	Sauter les accolades et les espaces blancs si nécessaire 
+ * 			pour connaître la suite de la chaine
+ * @param{str}	la chaine à parser
+ * @return	l'entier qui représente le nombre de sauts jusqu'au début de la suite
+*/
+int jump_to_next_balise(std::string str);
+
 /**
  * @brief	Agrandir le fichier cible 
  * @param{f}	le fichier cible
@@ -130,7 +169,36 @@ void insertLineInFile(std::fstream& f, std::string str, int index);
  * @param
  * @return
 */
+std::vector<std::string> parseLine(std::string str);
 
+/**
+ * @brief
+ * @param
+ * @return
+*/
+std::vector<modif_struct> extractLineContent(std::string str);
+
+/**
+ * @brief
+ * @param
+ * @return L'index précis pour l'insertion du contenu 
+*/
+int searchBaliseInFile(std::fstream& f, int num, std::string balise);
+
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
+int inLine(std::string str, std::string token);
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
+void fileModification(std::fstream& f, std::string str);
 
 /**
  * @brief
