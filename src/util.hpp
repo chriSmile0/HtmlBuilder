@@ -84,9 +84,10 @@ std::vector<std::string> parseLine(std::string str, char splitter) {
 	int depart = 0;
 	for(i = 0 ; i < size; i++)
 		if(str[i] == splitter) {
-			lines.push_back(str.substr(depart,i));
+			lines.push_back(str.substr(depart,i-depart));
 			depart = i+1;
 		}
+	
 	lines.push_back(str.substr(depart,i));
 	return lines;
 }
@@ -169,6 +170,58 @@ void fileModification(std::fstream& f, std::string str) {
 				m_f.contenu += "\t";
 		}
 		insertLineInFile(f,m_f.contenu,i_t.idx);
+
+	}
+}
+
+
+
+int searchBaliseInFileForStyle(std::fstream& f, int num, std::string balise) {
+	f.seekp(0,std::ios::beg);
+	std::string true_balise = "<"+balise+">"; // OU <balise> true_index += balise.length()
+	std::string true_baliseNEmpty = "<"+balise+" ";
+	std::string recup_line;
+	std::string total_bloc;
+	int goon = 1;
+	int index = 0;
+	int past = 0;
+	bool isempty = true;
+	while(((goon) && (past < num)) && (getline(f,recup_line))) {
+		goon = ((index = inLine(recup_line,true_balise)) == -1) ? 1 : 0; 
+		if(goon == 1) {
+			goon = ((index = inLine(recup_line,true_baliseNEmpty)) == -1) ? 1 : 0;
+			isempty = (!goon) ? false : true;
+		}
+		past = (index != -1) ? past+1 : past;
+		if(past < num) 
+			total_bloc += recup_line + "\n";
+	}
+	std::cout << "is empty : " << isempty << std::endl;
+	//ici on peut compter les tabs en fonction du type de balise !!!
+	int true_index = total_bloc.length() + index; //+ (nb_tab-1);
+	return true_index;
+}
+
+
+std::string lineInAttributLine(std::string str) {
+	std::vector<std::string> vec_str = parseLine(str,'|');
+	//On défini le fait que l'on peut avoir une ligne comme celle ci : 
+		// 1p id=ID|classe=CLASSE|style=styler
+	std::string out_str = "";
+	for(auto v : vec_str) {
+		std::cout << v << std::endl;
+		/*std::vector<std::string> sv_str = parseLine(v,'=');
+		out_str += sv_str.at(0)+"=";
+		out_str += "\""+sv_str.at(1)+"\" ";*/
+	}
+	return out_str;
+}
+
+void fileModificationAttributeTags(std::fstream& f, std::string str) {
+	for(auto m_f : extractLineContent(str)) {
+		int index  = searchBaliseInFileForStyle(f,m_f.index,m_f.balise);
+		//il faut ici parser le contenu potentiellement 
+		insertLineInFile(f,m_f.contenu,index);
 
 	}
 }

@@ -144,5 +144,7 @@ int main(int argc, char *argv[]) {
 			
 		}
 	}
+	std::string stylebalise_test = "id=ID|classe=CLASSE|style=style";
+	std::cout << lineInAttributLine(stylebalise_test);
     return 0;
 }

@@ -205,13 +205,27 @@ int inLine(std::string str, std::string token);
 */
 void fileModification(std::fstream& f, std::string str);
 
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
+std::string lineInAttributLine(std::string str);
+
+
 /**
  * @brief
  * @param
  * @return
 */
 
-//int eolInStr(std::string str);
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
 
 #include "../src/util.hpp"
 
