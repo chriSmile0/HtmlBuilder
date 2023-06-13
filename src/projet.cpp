@@ -7,6 +7,7 @@ int main(int argc, char *argv[]) {
 		{"l",required_argument,NULL,'l'},
 		{"c",optional_argument,NULL,'c'},
 		{"d",optional_argument,NULL,'d'},
+		{"s",optional_argument,NULL,'s'},
 		{NULL, 0, NULL,0}
 	};
 
@@ -15,9 +16,10 @@ int main(int argc, char *argv[]) {
 	int opt, index = 0;
 	char flag = '-'; 
 	char flag_cs_mf = 'c';
+	char flag_mf_s = '-';
 	int cpt = 0;
 	std::cout << "argc : " << argc << std::endl;
-	while((opt = getopt_long(argc, argv, "flc", options, &index)) != -1) {
+	while((opt = getopt_long(argc, argv, "flcsd", options, &index)) != -1) {
 		cpt++;
 		switch(opt) {
 			case 'f': save_option = argv[2];
@@ -46,6 +48,16 @@ int main(int argc, char *argv[]) {
 				if(argc == 3) {
 					flag_cs_mf = 'm';
 					save_option = "../test2.html";
+				}
+				break;
+			case 's': flag = 's';
+				if(argc >= 3) {
+					flag_cs_mf = 'm';
+					save_option = "../test2.html";
+					if(argc == 4) {
+						out_opt = "../test2style.css"; //-> V2-3
+						flag_mf_s = 's';
+					}
 				}
 				break;
 			default: 
@@ -121,7 +133,7 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		modification = construction;
-		if((flag != 'd') && ((modification == "stop") || (modification == ""))) 
+		if(((flag != 'd') && (flag != 's')) && ((modification == "stop") || (modification == ""))) 
 			std::cout << "***Nothing to Modify***" << std::endl;
 		else {
 			std::cout << "***Possibility to Modify HTML***" << std::endl;
@@ -130,21 +142,23 @@ int main(int argc, char *argv[]) {
 				save_option = out_opt;
 			std::fstream file(save_option,std::ios::in | std::ios::out);
 			std::string test_modif = "1span sp;1p paragpraphe";	// ok
-			std::string test_modifn = "";								// ?
+			std::string test_modifn = "";
+			std::string stylebalise_test = "1p id=ID|classe=CLASSE";// ?
 			//
 			//
 			//
 			//ileModification(file,test_modif);	//GOOD
 			//file,..file 					 	//GOOD
 			//Manque la gestion des erreurs		
-			if(flag != 'd') 
+			if((flag != 'd') && (flag != 's')) 
 				fileModification(file,modification);
-			else 
-				fileModification(file,test_modif);
-			
+			else {
+				if(flag == 's') 
+					fileModificationAttributeTags(file,stylebalise_test);
+				else 
+					fileModification(file,test_modif);
+			}
 		}
 	}
-	std::string stylebalise_test = "id=ID|classe=CLASSE|style=style";
-	std::cout << lineInAttributLine(stylebalise_test);
     return 0;
 }

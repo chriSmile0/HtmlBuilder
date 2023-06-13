@@ -196,9 +196,11 @@ int searchBaliseInFileForStyle(std::fstream& f, int num, std::string balise) {
 		if(past < num) 
 			total_bloc += recup_line + "\n";
 	}
+	std::string *balise_ptr = (isempty) ? &true_balise : &true_baliseNEmpty ;
 	std::cout << "is empty : " << isempty << std::endl;
+	std::cout << "balise_ptr " << *balise_ptr << std::endl;
 	//ici on peut compter les tabs en fonction du type de balise !!!
-	int true_index = total_bloc.length() + index; //+ (nb_tab-1);
+	int true_index = total_bloc.length() + index + balise_ptr->length()-1; //+ (nb_tab-1);
 	return true_index;
 }
 
@@ -209,10 +211,9 @@ std::string lineInAttributLine(std::string str) {
 		// 1p id=ID|classe=CLASSE|style=styler
 	std::string out_str = "";
 	for(auto v : vec_str) {
-		std::cout << v << std::endl;
-		/*std::vector<std::string> sv_str = parseLine(v,'=');
+		std::vector<std::string> sv_str = parseLine(v,'=');
 		out_str += sv_str.at(0)+"=";
-		out_str += "\""+sv_str.at(1)+"\" ";*/
+		out_str += "\""+sv_str.at(1)+"\" ";
 	}
 	return out_str;
 }
@@ -221,7 +222,7 @@ void fileModificationAttributeTags(std::fstream& f, std::string str) {
 	for(auto m_f : extractLineContent(str)) {
 		int index  = searchBaliseInFileForStyle(f,m_f.index,m_f.balise);
 		//il faut ici parser le contenu potentiellement 
-		insertLineInFile(f,m_f.contenu,index);
+		insertLineInFile(f," "+lineInAttributLine(m_f.contenu),index);
 
 	}
 }

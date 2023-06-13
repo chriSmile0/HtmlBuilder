@@ -9,9 +9,12 @@ Rendre ce contenu modifiable afin d'insérer le contenu "affichables"
 ## Modification 
 On cherche maintenant à affecter un style à nos balises
 On doit pour cela pouvoir : 
-- [ ] Associer une classe, un id à une balise : `1p id=ID;1p classe=CLASSE`
+- [x] Associer une classe, un id à une balise : `1p id=ID;1p classe=CLASSE`
 - [ ] Créer l'entête qui permet d'ajouter le fichier style correspondant : 
 	`./htmlbuilder -s page.html style.css`
+- [ ] Ajouter le fichier css correspondant aux balises 
+		Pour le moment pas d'héritage juste les balises et les classes et id 
+		associés.
 
 ### V1 -> Spec 
 Ajouter un fichier css au fichier html 

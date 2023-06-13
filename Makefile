@@ -11,6 +11,10 @@ exec : clean main
 	cd build ; \
 	./htmlbuilder --d ../test2.html ;\
 
+execstyle : clean main 
+	cd build ; \
+	./htmlbuilder -s ../test2.html _ ;\
+
 test : clean main
 	mkdir test 2> /dev/null ; \
 	cd build ; \
