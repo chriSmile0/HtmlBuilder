@@ -4,36 +4,6 @@
 
 #include "../inc/util_wo.h"
 
-std::string check_balise(std::string str) {
-	if((str == "div") || (str == "p") || (str == "head") || (str == "li")
-		|| (str == "article") || (str == "section") || (str == "span"))
-		return str;//TO BE CONTINUED 
-	return "";
-}
-
-std::string extract_balise(std::string str) {
-	int i = 0;
-	while((str[i] != ' ') && (str[i] != '}') && (str[i] != '\0'))
-		i++;
-	return (i==0) ? str : str.substr(0,i);
-}
-
-int jump_to_next_balise(std::string str) {
-	int i = 0;
-	while(((str[i] == ' ') || (str[i] == '{')) && (str[i] != '\0'))  
-		i++;
-	return i;
-}
-
-std::string extract_digit(std::string str) {
-	int i = 0;
-	while(((str[i] >= '0') && (str[i] <= '9')) && (str[i] != '\0'))
-		i++;
-	if(i == 0)
-		return "0";//tag = 1tag
-	return str.substr(0,i);
-}
-
 
 /***
  * @brief : Recursion  

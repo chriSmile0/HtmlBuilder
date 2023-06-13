@@ -5,38 +5,6 @@
 #include "css.h"
 
 /**
- * @brief	Extraire la balise d'une chaine comme {  p }
- * 			ce qui donne 'p'
- * @param{str}	la chaine à parser
- * @return	la chaine en entrée ou la balise si il y'a des choses à parser
-*/
-std::string extract_balise(std::string str);
-
-/**
- * @brief	Extraire un entier d'une chaine comme 2p 
- * 			ce qui donne '2'
- * @param{str} la chaine à parser
- * @return	le digit correspondant ou "0" si pas de digit dans la chaine
- */
-std::string extract_digit(std::string str);
-
-/**
- * @brief	Renvoyer la balise d'entrée si elle correspond à une balise reconnue
- * 			Sinon renvoyer chaine vide 
- * @param{str}	la chaine en entrée	
- * @return	la chaine en entrée ou une chaine vide
-*/
-std::string check_balise(std::string str);
-
-/**
- * @brief	Sauter les accolades et les espaces blancs si nécessaire 
- * 			pour connaître la suite de la chaine
- * @param{str}	la chaine à parser
- * @return	l'entier qui représente le nombre de sauts jusqu'au début de la suite
-*/
-int jump_to_next_balise(std::string str);
-
-/**
  * @brief	Il s'agit là d'effacer de la chaine les '{'/'}' de la chaine en 
  * 			entrée
  * @param{str}	la chaine à parser

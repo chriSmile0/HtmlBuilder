@@ -3,29 +3,50 @@
 
 int main(int argc, char *argv[]) {
 	static struct option options[] = {
-		{"f", required_argument,NULL,'f'},
-		{"l", required_argument,NULL,'l'},
-		{"c", no_argument,NULL,'c'},
-		{"d", no_argument,NULL,'d'},
+		{"f",required_argument,NULL,'f'},
+		{"l",required_argument,NULL,'l'},
+		{"c",optional_argument,NULL,'c'},
+		{"d",optional_argument,NULL,'d'},
 		{NULL, 0, NULL,0}
 	};
 
 	std::string save_option = "";
+	std::string out_opt = "";
 	int opt, index = 0;
-	char flag = '-';
+	char flag = '-'; 
+	char flag_cs_mf = 'c';
 	int cpt = 0;
-	while ((opt = getopt_long(argc, argv, "flc", options, &index)) != -1) {
+	std::cout << "argc : " << argc << std::endl;
+	while((opt = getopt_long(argc, argv, "flc", options, &index)) != -1) {
 		cpt++;
 		switch(opt) {
 			case 'f': save_option = argv[2];
 				flag = 'f';
+				if(argc == 4) {
+					out_opt = argv[3];
+					if(out_opt.substr(out_opt.find_last_of(".") + 1) == "html")
+						flag_cs_mf = 'm';
+				}
 				break;
 			case 'l': save_option = argv[2];
 				flag = 'l';
+				if(argc == 4) {
+					out_opt = argv[3];
+					if(out_opt.substr(out_opt.find_last_of(".") + 1) == "html")
+						flag_cs_mf = 'm';
+				}
 				break;
 			case 'c': flag = 'c';
+				if(argc == 3) {
+					flag_cs_mf = 'm';
+					save_option = argv[2];
+				}
 				break;
 			case 'd': flag = 'd';
+				if(argc == 3) {
+					flag_cs_mf = 'm';
+					save_option = "../test2.html";
+				}
 				break;
 			default: 
 				return EXIT_FAILURE;
@@ -34,8 +55,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	std::string construction = "";
+	std::string modification = "";
 	std::string recup_line = "";
-	Balise out;
 	if(flag == 'c') {
 		std::cout << "***Command Line Process***" << std::endl;
 		int goon = 1;
@@ -52,9 +73,10 @@ int main(int argc, char *argv[]) {
 	else if(flag == 'f') {
 		std::cout << "***Read File Process***" << std::endl;
 		std::ifstream readfile(save_option);
-		while(getline(readfile,recup_line))
+		while(getline(readfile,recup_line)) 
 			construction += recup_line+";";
 		readfile.close();
+		std::cout << construction << std::endl;
 		construction = construction.substr(0,construction.length()-1);
 	}
 	else if(flag == 'l') {
@@ -76,22 +98,51 @@ int main(int argc, char *argv[]) {
 	std::string testAltREADME = "{p {1div {p;p}}}";			// ok V5
 	std::string testAltREADME2 = "{p {2div {p;p}}}";		// ok V5
 	std::string testAltREADMEn = "{2section;2article}";		// ok V5
-	
-	if((flag != 'd') && ((construction == "stop") || (construction == ""))) 
-		std::cout << "***Nothing to Build***" << std::endl;
-	else {
-		std::cout << "***Possibility to Build HTML***" << std::endl;
-		std::cout << "***BUILD IN PROGRESS***" << std::endl;
-		if(flag != 'd') 
-			out = demand_in_balisev4(construction,0);
-		else 
-			out = demand_in_balisev4(test5,0);
-	}
 
-	std::vector<Balise> vec_html = {out};
-    HTML one_html{"../test/test.html",vec_html};
-	CSS on_css{"../test/test.css",vec_html};
-	one_html.addinfile();
-	on_css.addinfile();
+	std::cout << flag_cs_mf << std::endl;
+	if(flag_cs_mf == 'c') { 
+		if((flag != 'd') && ((construction == "stop") || (construction == ""))) 
+			std::cout << "***Nothing to Build***" << std::endl;
+		else {
+			std::cout << "***Possibility to Build HTML***" << std::endl;
+			std::cout << "***BUILD IN PROGRESS***" << std::endl;
+			Balise out;
+			if(flag != 'd') 
+				out = demand_in_balisev4(construction,0);
+			else 
+				out = demand_in_balisev4(test5,0);
+			
+			std::vector<Balise> vec_html = {out};
+			HTML one_html{"../test/test.html",vec_html};
+			//CSS on_css{"../test/test.css",vec_html};
+			one_html.addinfile();
+			//on_css.addinfile();
+		}
+	}
+	else {
+		modification = construction;
+		if((flag != 'd') && ((modification == "stop") || (modification == ""))) 
+			std::cout << "***Nothing to Modify***" << std::endl;
+		else {
+			std::cout << "***Possibility to Modify HTML***" << std::endl;
+			std::cout << "***Modify IN PROGRESS***" << std::endl;
+			if((flag == 'f') || (flag == 'l'))
+				save_option = out_opt;
+			std::fstream file(save_option,std::ios::in | std::ios::out);
+			std::string test_modif = "1span sp;1p paragpraphe";	// ok
+			std::string test_modifn = "";								// ?
+			//
+			//
+			//
+			//ileModification(file,test_modif);	//GOOD
+			//file,..file 					 	//GOOD
+			//Manque la gestion des erreurs		
+			if(flag != 'd') 
+				fileModification(file,modification);
+			else 
+				fileModification(file,test_modif);
+			
+		}
+	}
     return 0;
 }

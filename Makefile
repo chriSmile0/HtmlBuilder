@@ -9,12 +9,12 @@ main : clean
 exec : clean main 
 	mkdir test 2> /dev/null ; \
 	cd build ; \
-	./htmlbuilder --d ;\
+	./htmlbuilder --d ../test2.html ;\
 
 test : clean main
 	mkdir test 2> /dev/null ; \
 	cd build ; \
-	./htmlbuilder ${ARG1} ${ARG2} 
+	./htmlbuilder ${ARG1} ${ARG2} ${ARG3}
 
 clean : 
 	-$(RM) -r build test
