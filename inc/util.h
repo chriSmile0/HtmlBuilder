@@ -65,6 +65,11 @@ typedef struct {
 	std::string contenu;
 } modif_struct;
 
+typedef struct {
+	int idx;
+	int nb_tabs;
+} idx_tabs;
+
 
 /*enum balise {Head,Body,Section,Article,Div,Span,Footer,Img,
 
@@ -183,7 +188,7 @@ std::vector<modif_struct> extractLineContent(std::string str);
  * @param
  * @return L'index précis pour l'insertion du contenu 
 */
-int searchBaliseInFile(std::fstream& f, int num, std::string balise);
+idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise);
 
 
 /**
@@ -205,6 +210,8 @@ void fileModification(std::fstream& f, std::string str);
  * @param
  * @return
 */
+
+//int eolInStr(std::string str);
 
 #include "../src/util.hpp"
 

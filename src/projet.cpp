@@ -29,12 +29,16 @@ int main(int argc, char *argv[]) {
 					flag_cs_mf = 'm';
 				break;
 			case 'c': flag = 'c';
-				if(argc == 3)
+				if(argc == 3) {
 					flag_cs_mf = 'm';
+					save_option = argv[2];
+				}
 				break;
 			case 'd': flag = 'd';
-				if(argc == 3)
+				if(argc == 3) {
 					flag_cs_mf = 'm';
+					save_option = "../test2.html";
+				}
 				break;
 			default: 
 				return EXIT_FAILURE;
@@ -45,7 +49,6 @@ int main(int argc, char *argv[]) {
 	std::string construction = "";
 	std::string modification = "";
 	std::string recup_line = "";
-	Balise out;
 	if(flag == 'c') {
 		std::cout << "***Command Line Process***" << std::endl;
 		int goon = 1;
@@ -94,10 +97,17 @@ int main(int argc, char *argv[]) {
 		else {
 			std::cout << "***Possibility to Build HTML***" << std::endl;
 			std::cout << "***BUILD IN PROGRESS***" << std::endl;
+			Balise out;
 			if(flag != 'd') 
 				out = demand_in_balisev4(construction,0);
 			else 
 				out = demand_in_balisev4(test5,0);
+			
+			std::vector<Balise> vec_html = {out};
+			HTML one_html{"../test/test.html",vec_html};
+			//CSS on_css{"../test/test.css",vec_html};
+			one_html.addinfile();
+			//on_css.addinfile();
 		}
 	}
 	else {
@@ -107,28 +117,21 @@ int main(int argc, char *argv[]) {
 		else {
 			std::cout << "***Possibility to Modify HTML***" << std::endl;
 			std::cout << "***Modify IN PROGRESS***" << std::endl;
-			/*if(flag != 'd') 
-				out = demand_in_balisev4(construction,0);
+			std::fstream file(save_option,std::ios::in | std::ios::out);
+			std::string test_modif = "1span sp;1p paragpraphe";	// ok
+			std::string test_modifn = "";								// ?
+			//
+			//
+			//
+			//ileModification(file,test_modif);	//GOOD
+			//file,..file 					 	//GOOD
+			//Manque la gestion des erreurs		
+			if(flag != 'd') 
+				fileModification(file,modification);
 			else 
-				out = demand_in_balisev4(test5,0);*/
+				fileModification(file,test_modif);
 			
 		}
 	}
-
-	std::vector<Balise> vec_html = {out};
-    HTML one_html{"../test/test.html",vec_html};
-	//CSS on_css{"../test/test.css",vec_html};
-	one_html.addinfile();
-	//on_css.addinfile();
-
-	std::cout << extract_balise("p paragraphe") << std::endl;
-	for(auto line : parseLine("coucou;c'estmoi",';'))
-		std::cout << line << std::endl;
-
-	std::vector<modif_struct> contenu = extractLineContent("1p paragraphe");
-	std::cout << contenu.at(0).contenu << std::endl;
-
-	std::fstream file("../test2.html",std::ios::in | std::ios::out);
-	fileModification(file,"1body bodybal");
     return 0;
 }

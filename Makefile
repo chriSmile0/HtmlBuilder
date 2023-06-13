@@ -9,7 +9,7 @@ main : clean
 exec : clean main 
 	mkdir test 2> /dev/null ; \
 	cd build ; \
-	./htmlbuilder --d just_past_option ;\
+	./htmlbuilder --d ../test2.html ;\
 
 test : clean main
 	mkdir test 2> /dev/null ; \

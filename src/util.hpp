@@ -1,4 +1,5 @@
 #include "../inc/util.h"
+#include "../inc/util2.h"
 
 std::vector<std::string> readLines(std::fstream f) {
 	std::string line;
@@ -90,6 +91,14 @@ std::vector<std::string> parseLine(std::string str, char splitter) {
 	return lines;
 }
 
+int countTab(std::string str) {
+	int cpt = 0;
+	for(auto c : str)
+		if(c == '\t')
+			cpt++;
+	return cpt;
+}
+
 std::vector<modif_struct> extractLineContent(std::string str) {
 	std::vector<modif_struct> content;
 	std::vector<std::string> lines = parseLine(str,';');
@@ -113,24 +122,53 @@ int inLine(std::string str, std::string token) {
 	return str.find(token);
 }
 
-int searchBaliseInFile(std::fstream& f, int num, std::string balise) {
-	std::string true_balise = "<"+balise+">";
+/*int eolInStr(std::string str) {
+	int i = 0;
+	int size = str.length();
+	while((i < size) && (str[i] != '\n'))
+		i++;
+	return i;
+}*/
+
+idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise) {
+	idx_tabs i_t;
+	f.seekp(0,std::ios::beg);
+	std::string true_balise = "</"+balise+">"; // OU <balise> true_index += balise.length()
 	std::string recup_line;
 	std::string total_bloc;
 	int goon = 1;
 	int index = 0;
 	int past = 0;
-	while(getline(f,recup_line) && (goon && (past < num))) {
+	while(((goon) && (past < num)) && (getline(f,recup_line))) {
 		goon = ((index = inLine(recup_line,true_balise)) == -1) ? 1 : 0; 
 		past = (index != -1) ? past+1 : past;
 		if(past < num) 
 			total_bloc += recup_line + "\n";
+		//std::cout << countTab(recup_line) << std::endl;
 	}
-	int true_index = total_bloc.length() + index + true_balise.length();
-	return true_index;
+	//ici on peut compter les tabs en fonction du type de balise !!!
+	bool isbloc = toIsBloc(toAsValue(balise));
+	int nb_tab = countTab(recup_line);
+	if(isbloc)
+		i_t.nb_tabs = nb_tab;
+	else 
+		i_t.nb_tabs = 0;
+
+	int true_index = total_bloc.length() + index; //+ (nb_tab-1);
+
+	i_t.idx = true_index;
+	return i_t;
 }
 
 void fileModification(std::fstream& f, std::string str) {
-	for(auto m_f : extractLineContent(str))
-		insertLineInFile(f,m_f.contenu,searchBaliseInFile(f,m_f.index,m_f.balise));
+	for(auto m_f : extractLineContent(str)) {
+		idx_tabs i_t = searchBaliseInFile(f,m_f.index,m_f.balise);
+		if(i_t.nb_tabs != 0) {
+			m_f.contenu += "\n";
+			for(int i = 0 ; i < i_t.nb_tabs; i++) 
+				m_f.contenu += "\t";
+		}
+		insertLineInFile(f,m_f.contenu,i_t.idx);
+
+	}
 }
