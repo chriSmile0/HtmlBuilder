@@ -29,4 +29,29 @@ Définition et implémentation du format et sa prise en compte dans l'exec
 - [ ] On aura donc 2 modes , celui pour construction et celui pour modfication 
 
 
+## Build and Exec
+### Construction
+	./htmlbuilder -f 
+	./htmlbuilder -l
+	./htmlbuilder -c
+	./htmlbuilder --d 
+
+### Modification 
+	./htmlbuilder -f file file.html
+	./htmlbuilder -l "1p\ paragraphe" file.html
+	./htmlbuilder -c file.html
+	./htmlbuilder --d _
+
+### Construction 
+	make test ARG=1-f ARG2=file
+	make test ARG=1-l ARG2={article\;p}
+	make test ARG=1-c 
+	make test ARG=1--d 
+	
+### Modification 
+	make test ARG=1-f ARG2=file ARG3=file.html
+	make test ARG=1-l ARG2="1p\ paragraphe" ARG3=file.html
+	make test ARG=1-c ARG2=file.html 
+	make test ARG=1--d ARG2=_
+
 ## Conclusion 
