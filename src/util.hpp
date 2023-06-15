@@ -123,14 +123,6 @@ int inLine(std::string str, std::string token) {
 	return str.find(token);
 }
 
-/*int eolInStr(std::string str) {
-	int i = 0;
-	int size = str.length();
-	while((i < size) && (str[i] != '\n'))
-		i++;
-	return i;
-}*/
-
 idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise) {
 	idx_tabs i_t;
 	f.seekp(0,std::ios::beg);
@@ -170,11 +162,8 @@ void fileModification(std::fstream& f, std::string str) {
 				m_f.contenu += "\t";
 		}
 		insertLineInFile(f,m_f.contenu,i_t.idx);
-
 	}
 }
-
-
 
 int searchBaliseInFileForStyle(std::fstream& f, int num, std::string balise) {
 	f.seekp(0,std::ios::beg);
@@ -197,32 +186,91 @@ int searchBaliseInFileForStyle(std::fstream& f, int num, std::string balise) {
 			total_bloc += recup_line + "\n";
 	}
 	std::string *balise_ptr = (isempty) ? &true_balise : &true_baliseNEmpty ;
-	std::cout << "is empty : " << isempty << std::endl;
-	std::cout << "balise_ptr " << *balise_ptr << std::endl;
-	//ici on peut compter les tabs en fonction du type de balise !!!
 	int true_index = total_bloc.length() + index + balise_ptr->length()-1; //+ (nb_tab-1);
 	return true_index;
 }
 
 
-std::string lineInAttributLine(std::string str) {
+line_options lineInAttributLine(std::string balise, std::string str) {
 	std::vector<std::string> vec_str = parseLine(str,'|');
-	//On défini le fait que l'on peut avoir une ligne comme celle ci : 
-		// 1p id=ID|classe=CLASSE|style=styler
 	std::string out_str = "";
+	line_options lo;
+	std::string option = "";
+	std::string value = "";
 	for(auto v : vec_str) {
+		option_and_value ov;
 		std::vector<std::string> sv_str = parseLine(v,'=');
-		out_str += sv_str.at(0)+"=";
-		out_str += "\""+sv_str.at(1)+"\" ";
+		option = sv_str.at(0);
+		//CHECK DE LA VALIDITE DE L'OPTION 
+		if(!IsAssociateAttribute(toAsValue(balise),option)) {
+			std::cerr << "\n***Erreur option non reconnu : ***[" << option + "]\n" << std::endl;
+			exit(1);
+		}
+		value = sv_str.at(1);
+		//CHECK DE LA VALIDITE DE LA VALEUR -> Peut-être + tard
+		out_str += option+"=";
+		out_str += "\""+value+"\" ";
+		ov.option = option;
+		ov.value = value;
+		lo.v.push_back(ov);
 	}
-	return out_str;
+	lo.str = out_str;
+	return lo;
 }
 
-void fileModificationAttributeTags(std::fstream& f, std::string str) {
-	for(auto m_f : extractLineContent(str)) {
-		int index  = searchBaliseInFileForStyle(f,m_f.index,m_f.balise);
-		//il faut ici parser le contenu potentiellement 
-		insertLineInFile(f," "+lineInAttributLine(m_f.contenu),index);
+void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs) {
+	std::ofstream f(fout);
+	for(auto ov : vecs)
+		std::cout << "o:" << ov.option << " v:" << ov.value << std::endl;
+	std::sort(vecs.begin(),vecs.end(),sort_ov);	
+	vecs.erase(std::unique(vecs.begin(),vecs.end(),m_class_u_id),vecs.end());
+	for(auto ov : vecs) {
+		std::cout << "o:" << ov.option << " v:" << ov.value << std::endl;
+		if(ov.option == "id") {
+			f <<  "#"+ov.value+" {\n}\n";
+			std::cout << "in file ?" << std::endl;
+		}
+		else if(ov.option == "class") {
+			f << "."+ov.value+" {\n}\n";
+		}
+		else {
+			std::cout << "option non reconnue " << std::endl;
+		}
 
 	}
+
+	return;
+}
+
+void fileModificationAttributeTags(std::fstream& f, std::string str, std::string fileout) {
+	int flagout_css = 0;
+	if(fileout != "") 
+		flagout_css = 1;
+	vecOV v_o;
+	/*vecOV vo;
+	option_and_value o_a_v;
+	o_a_v.option = "id";
+	o_a_v.value = "ID";
+	vo.push_back(o_a_v);
+	std::cout << vo.at(0).value << std::endl;
+	vec_vo.push_back(vo);
+	std::cout << vec_vo.at(0).at(0).value << std::endl;*/
+	//option_ad_value ov = {"id","coucou"};
+	
+	//lo.vec_ov.push_back(one);
+
+	//vec_optV.push_back(lo.vec_ov);
+	for(auto m_f : extractLineContent(str)) {
+		int index = searchBaliseInFileForStyle(f,m_f.index,m_f.balise);
+		line_options lineAttrLine = lineInAttributLine(m_f.balise,m_f.contenu);
+		std::string str_line = lineAttrLine.str;
+		vecOV ov = lineAttrLine.v;
+		insertLineInFile(f," "+str_line,index);
+		if(flagout_css) 
+			for(auto o_v : ov)
+				v_o.push_back(o_v);
+
+	}
+	if(flagout_css)
+		insertLineInFileCss(fileout,v_o);
 }

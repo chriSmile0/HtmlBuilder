@@ -5,6 +5,7 @@
 #include <iostream>
 #include "util2.h"
 #include <fstream>
+#include <algorithm>
 #include <vector>
 
 /** LOREM IPSUM
@@ -42,6 +43,7 @@ std::string lorem_ipsum = "lorem ipsum";
 using pair = std::pair<std::string, std::string>;
 using pairvec = std::vector<pair>;
 
+
 typedef struct {
 	std::string tags;
 	std::string options;
@@ -69,6 +71,14 @@ typedef struct {
 	int idx;
 	int nb_tabs;
 } idx_tabs;
+
+using vecOV = std::vector<option_and_value>;
+
+typedef struct {
+	std::string str;
+	vecOV v;
+} line_options;
+
 
 
 /*enum balise {Head,Body,Section,Article,Div,Span,Footer,Img,
@@ -211,8 +221,15 @@ void fileModification(std::fstream& f, std::string str);
  * @param
  * @return
 */
-std::string lineInAttributLine(std::string str);
+line_options lineInAttributLine(std::string balise, std::string str);
 
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
+void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
 
 /**
  * @brief
@@ -221,11 +238,22 @@ std::string lineInAttributLine(std::string str);
 */
 
 
-/**
- * @brief
- * @param
- * @return
-*/
+//************************* CSS **********************//
+bool m_class_u_id(option_and_value a, option_and_value b)
+{
+    if(((a.option == "id") && (b.option == "id")) 
+		|| ((a.option == "class") && (b.option == "class")))
+		if(a.value == b.value)
+			return 1;
+	return 0;
+}
+
+bool sort_ov(option_and_value a, option_and_value b)
+{
+	if((a.option < b.option) && (a.value < b.option))
+		return 1;
+	return 0;
+}
 
 #include "../src/util.hpp"
 

@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
 			std::fstream file(save_option,std::ios::in | std::ios::out);
 			std::string test_modif = "1span sp;1p paragpraphe";	// ok
 			std::string test_modifn = "";
-			std::string stylebalise_test = "1p id=ID|classe=CLASSE";// ?
+			std::string stylebalise_test = "1p id=ID|class=classe;1span id=IDs";// ?
 			//
 			//
 			//
@@ -154,11 +154,15 @@ int main(int argc, char *argv[]) {
 				fileModification(file,modification);
 			else {
 				if(flag == 's') 
-					fileModificationAttributeTags(file,stylebalise_test);
+					fileModificationAttributeTags(file,stylebalise_test,"../test2.css");
 				else 
-					fileModification(file,test_modif);
+					fileModificationAttributeTags(file,test_modif,"../test2.css");
 			}
 		}
 	}
+	//std::cout << share_attr.at(Body).at(0) << std::endl;
+	/*for(auto s : share_attr.at(Article))
+		std::cout << s << std::endl;*/
+	std::cout << IsAssociateAttribute(Body,"onerror") << std::endl;
     return 0;
 }

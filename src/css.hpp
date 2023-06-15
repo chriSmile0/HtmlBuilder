@@ -1,18 +1,10 @@
 #include "../inc/css.h"
-#include <algorithm>
 
 //Attention car on peut avoir plusieurs classe dans le 
 //cadre de l'héritage 
 //On pourrais créer cette héritage directement 
 //en fonction de la balise du parent 
-bool m_class_u_id(option_and_value a, option_and_value b)
-{
-    if(((a.option == "id") && (b.option == "id")) 
-		|| ((a.option == "class") && (b.option == "class")))
-		if(a.value == b.value)
-			return 1;
-	return 0;
-}
+
 
 CSS::CSS(std::string name,std::vector<Balise> vec_balise) {
     Filename = name;
