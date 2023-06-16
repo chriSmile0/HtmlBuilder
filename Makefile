@@ -18,7 +18,8 @@ execstyle : clean main
 checkexec : clean main
 	mkdir test 2> /dev/null ; \
 	cd build ; \
-	./htmlbuilder --ts --ts -c -c ../test3.html
+	./htmlbuilder --mf -f ../modif_lines ../test2.html
+#Il faut forcer un argument si on a mf ou sy sur --d et -c
 
 test : clean main
 	mkdir test 2> /dev/null ; \
