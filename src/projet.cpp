@@ -7,7 +7,9 @@ int main(int argc, char *argv[]) {
 		{"l",required_argument,NULL,'l'},
 		{"c",optional_argument,NULL,'c'},
 		{"d",optional_argument,NULL,'d'},
-		{"s",optional_argument,NULL,'s'},
+		{"sy",optional_argument,NULL,'y'},
+		{"ts",optional_argument,NULL,'s'},
+		{"mf",optional_argument,NULL,'m'},
 		{NULL, 0, NULL,0}
 	};
 
@@ -15,42 +17,73 @@ int main(int argc, char *argv[]) {
 	std::string out_opt = "";
 	int opt, index = 0;
 	char flag = '-'; 
-	char flag_cs_mf = 'c';
+	char flag_cs_mf_sy = 'c';
 	char flag_mf_s = '-';
 	int cpt = 0;
 	std::cout << "argc : " << argc << std::endl;
-	while((opt = getopt_long(argc, argv, "flcsd", options, &index)) != -1) {
+	while((opt = getopt_long(argc, argv, "sym:f:l:cd", options, &index)) != -1) {
 		cpt++;
 		switch(opt) {
-			case 'f': save_option = argv[2];
+			case 'f': 
+				std::cout << "f " << std::endl;
 				flag = 'f';
-				if(argc == 4) {
-					out_opt = argv[3];
-					if(out_opt.substr(out_opt.find_last_of(".") + 1) == "html")
-						flag_cs_mf = 'm';
+				if(flag_cs_mf_sy != '-') {
+					save_option = argv[optind];
+					//std::cout << "optarg : " << argv[optind] << std::endl;
+					if(flag_cs_mf_sy != 's') {
+						out_opt = argv[optind+1];
+						if(out_opt.substr(out_opt.find_last_of(".")+1)=="html")
+							flag_mf_s = 'm';
+					}
 				}
 				break;
-			case 'l': save_option = argv[2];
+			case 'l': 
+				std::cout << "l " << std::endl;
 				flag = 'l';
-				if(argc == 4) {
-					out_opt = argv[3];
-					if(out_opt.substr(out_opt.find_last_of(".") + 1) == "html")
-						flag_cs_mf = 'm';
+				if(flag_cs_mf_sy != '-') {
+					save_option = argv[optind];
+					//std::cout << "optarg : " << argv[optind] << std::endl;
+					if(flag_cs_mf_sy != 's') {
+						out_opt = argv[optind+1];
+						if(out_opt.substr(out_opt.find_last_of(".")+1)=="html")
+							flag_mf_s = 'm';
+					}
 				}
 				break;
 			case 'c': flag = 'c';
-				if(argc == 3) {
-					flag_cs_mf = 'm';
-					save_option = argv[2];
+				std::cout << "c" << std::endl;
+				if(flag_cs_mf_sy != '-') {
+					if(argc-optind >= 1) {
+						std::cout << "passage ici" << std::endl;
+						flag_mf_s = 'm';
+						out_opt = argv[optind];
+						if(out_opt.substr(out_opt.find_last_of(".")+1)=="html")
+							save_option = out_opt;
+						out_opt = "";
+					}
+					else if(argc==optind == 1) {
+						flag_mf_s = 'm';
+						save_option = "../test/test.html";
+					}
 				}
 				break;
 			case 'd': flag = 'd';
-				if(argc == 3) {
-					flag_cs_mf = 'm';
-					save_option = "../test2.html";
+				std::cout << "d " << std::endl;
+				if(flag_cs_mf_sy != '-') {
+					if(argc-optind == 0) {
+						std::cout << "sans param" << std::endl;
+						flag_mf_s = 'm';
+						save_option = "../test/test.html";
+					}
+					else if(argc-optind == 1) {
+						std::cout << "avec param" << std::endl;
+						flag_mf_s = 'm';
+						save_option = argv[optind];
+					}
 				}
 				break;
-			case 's': flag = 's';
+			/*case 's': flag = 's';
+				std::cout << "s " << std::endl;
 				if(argc >= 3) {
 					flag_cs_mf = 'm';
 					save_option = "../test2.html";
@@ -59,6 +92,21 @@ int main(int argc, char *argv[]) {
 						flag_mf_s = 's';
 					}
 				}
+				break;*/
+			case 's'://Construction
+				std::cout << "s " << std::endl;
+				flag = 's';
+				flag_cs_mf_sy = 's';
+				break;
+			case 'y'://Style
+				std::cout << "y " << std::endl;
+				flag = 'y';
+				flag_cs_mf_sy = 'y';
+				break;
+			case 'm'://Modification
+				std::cout << "m " << std::endl;
+				flag = 'm';
+				flag_cs_mf_sy = 'm';
 				break;
 			default: 
 				return EXIT_FAILURE;
@@ -66,9 +114,18 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	if((flag == 's') || (flag == 'y') || (flag == 'm')) {
+		std::cerr << "Error minimum 2 options " << std::endl;
+		return 1;
+	}
+
+	std::cout << "s_opt: " << save_option << " out_opt: " << out_opt << std::endl;
+
 	std::string construction = "";
 	std::string modification = "";
 	std::string recup_line = "";
+
+
 	if(flag == 'c') {
 		std::cout << "***Command Line Process***" << std::endl;
 		int goon = 1;
@@ -95,6 +152,10 @@ int main(int argc, char *argv[]) {
 		std::cout << "***Input One Line Process***" << std::endl;
 		construction = save_option;
 	}
+	else if(flag == 'd') {
+		std::cout << "***Debug Process***" << std::endl;
+		//construction = save_option;
+	}
 	
 	std::string test0 = "{article div}";					// ok V5
 	std::string test1 = "{article {div p}}";				// ok V5
@@ -111,8 +172,8 @@ int main(int argc, char *argv[]) {
 	std::string testAltREADME2 = "{p {2div {p;p}}}";		// ok V5
 	std::string testAltREADMEn = "{2section;2article}";		// ok V5
 
-	std::cout << flag_cs_mf << std::endl;
-	if(flag_cs_mf == 'c') { 
+	std::cout << flag_cs_mf_sy << std::endl;
+	if(flag_cs_mf_sy == 's') { 
 		if((flag != 'd') && ((construction == "stop") || (construction == ""))) 
 			std::cout << "***Nothing to Build***" << std::endl;
 		else {
@@ -125,13 +186,13 @@ int main(int argc, char *argv[]) {
 				out = demand_in_balisev4(test5,0);
 			
 			std::vector<Balise> vec_html = {out};
-			HTML one_html{"../test/test.html",vec_html};
+			HTML one_html{save_option,vec_html};
 			//CSS on_css{"../test/test.css",vec_html};
 			one_html.addinfile();
 			//on_css.addinfile();
 		}
 	}
-	else {
+	/*else {
 		modification = construction;
 		if(((flag != 'd') && (flag != 's')) && ((modification == "stop") || (modification == ""))) 
 			std::cout << "***Nothing to Modify***" << std::endl;
@@ -159,10 +220,10 @@ int main(int argc, char *argv[]) {
 					fileModificationAttributeTags(file,test_modif,"../test2.css");
 			}
 		}
-	}
+	}*/
 	//std::cout << share_attr.at(Body).at(0) << std::endl;
 	/*for(auto s : share_attr.at(Article))
 		std::cout << s << std::endl;*/
-	std::cout << IsAssociateAttribute(Body,"onerror") << std::endl;
+	//std::cout << IsAssociateAttribute(Body,"onerror") << std::endl;
     return 0;
 }
