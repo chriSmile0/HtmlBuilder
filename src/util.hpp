@@ -271,6 +271,7 @@ void fileModificationAttributeTags(std::fstream& f, std::string str, std::string
 				v_o.push_back(o_v);
 
 	}
+	std::cout << "here" << std::endl;
 	if(flagout_css)
 		insertLineInFileCss(fileout,v_o);
 }

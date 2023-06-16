@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
 
 	std::string save_option = "";
 	std::string out_opt = "";
+	std::string out_opt2 = "";
 	int opt, index = 0;
 	char flag = '-'; 
 	char flag_cs_mf_sy = 'c';
@@ -32,8 +33,19 @@ int main(int argc, char *argv[]) {
 					if((flag_cs_mf_sy == 's') || (flag_cs_mf_sy == 'm')) {
 						if(argc-optind == 1)
 							out_opt = argv[optind];//check du .html(!)
+						else if((argc-optind == 3) && (flag_cs_mf_sy == 's')) {
+							save_option = argv[optind];
+							out_opt = argv[optind+1];
+							out_opt2 = argv[optind+2];
+						}
 						else 
 							out_opt = "../test2.html";
+
+					}
+					else if((argc-optind == 2)&& (flag_cs_mf_sy == 'y')) {
+						flag_mf_s = 's';
+						out_opt = argv[optind]; //verif html
+						out_opt2 = argv[optind+1]; //verif css
 					}
 				}
 				break;
@@ -47,6 +59,12 @@ int main(int argc, char *argv[]) {
 							out_opt = argv[optind];//check du .html(!)
 						else 
 							out_opt = "../test2.html";
+						std::cout << argc-optind << std::endl;
+					}
+					else if((argc-optind == 2)&& (flag_cs_mf_sy == 'y')) {
+						flag_mf_s = 's';
+						out_opt = argv[optind]; //verif html
+						out_opt2 = argv[optind+1]; //verif css
 					}
 				}
 				break;
@@ -71,6 +89,11 @@ int main(int argc, char *argv[]) {
 						flag_mf_s = 'm';
 						out_opt = "../test/test.html";
 					}
+					else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+						flag_mf_s = 's';
+						save_option = argv[optind+1];//verif css
+						out_opt = argv[optind];	//verif html
+					}
 				}
 				break;
 			case 'd': flag = 'd';
@@ -94,6 +117,11 @@ int main(int argc, char *argv[]) {
 								out_opt = "../test2.html";
 							save_option = "";
 						}
+					}
+					else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+						flag_mf_s = 's';
+						save_option = argv[optind+1];//verif css
+						out_opt = argv[optind];	//verif html 
 					}
 				}
 				break;
@@ -205,6 +233,9 @@ int main(int argc, char *argv[]) {
 			std::cout << "***Modify IN PROGRESS***" << std::endl;
 			/*if((flag == 'f') || (flag == 'l'))
 				save_option = out_opt;*/
+			if(flag_mf_s == 's')
+				if((flag == 'f') || (flag == 'l'))
+					save_option = out_opt2;
 			std::fstream file(out_opt,std::ios::in | std::ios::out);
 			std::string test_modif = "1span sp;1p paragpraphe";	// ok
 			std::string test_modifn = "";
@@ -214,16 +245,19 @@ int main(int argc, char *argv[]) {
 			//
 			//ileModification(file,test_modif);	//GOOD
 			//file,..file 					 	//GOOD
-			//Manque la gestion des erreurs		
-			if((flag != 'd') && (flag != 's')) {
-				fileModification(file,modification);
+			//Manque la gestion des erreurs	
+			std::cout << flag_mf_s << std::endl;	
+			if(flag_mf_s == 's') {
+				if(flag == 'd') 
+					fileModificationAttributeTags(file,stylebalise_test,save_option);
+				else 
+					fileModificationAttributeTags(file,modification,save_option);
 			}
-			else {
-				if(flag == 's') 
-					fileModificationAttributeTags(file,stylebalise_test,"../test2.css");
-				else if(flag == 'd') {
+			else if(flag_mf_s = 'm') {
+				if(flag == 'd')
 					fileModification(file,test_modif);
-				}
+				else 
+					fileModification(file,modification);
 			}
 		}
 	}
