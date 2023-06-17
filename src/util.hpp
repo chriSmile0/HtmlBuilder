@@ -87,7 +87,6 @@ std::vector<std::string> parseLine(std::string str, char splitter) {
 			lines.push_back(str.substr(depart,i-depart));
 			depart = i+1;
 		}
-	
 	lines.push_back(str.substr(depart,i));
 	return lines;
 }
@@ -118,7 +117,6 @@ std::vector<modif_struct> extractLineContent(std::string str) {
 	return content;
 }
 
-
 int inLine(std::string str, std::string token) {
 	return str.find(token);
 }
@@ -137,7 +135,6 @@ idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise) {
 		past = (index != -1) ? past+1 : past;
 		if(past < num) 
 			total_bloc += recup_line + "\n";
-		//std::cout << countTab(recup_line) << std::endl;
 	}
 	//ici on peut compter les tabs en fonction du type de balise !!!
 	bool isbloc = toIsBloc(toAsValue(balise));
@@ -148,7 +145,6 @@ idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise) {
 		i_t.nb_tabs = 0;
 
 	int true_index = total_bloc.length() + index; //+ (nb_tab-1);
-
 	i_t.idx = true_index;
 	return i_t;
 }
@@ -220,26 +216,16 @@ line_options lineInAttributLine(std::string balise, std::string str) {
 
 void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs) {
 	std::ofstream f(fout);
-	for(auto ov : vecs)
-		std::cout << "o:" << ov.option << " v:" << ov.value << std::endl;
 	std::sort(vecs.begin(),vecs.end(),sort_ov);	
 	vecs.erase(std::unique(vecs.begin(),vecs.end(),m_class_u_id),vecs.end());
 	for(auto ov : vecs) {
-		std::cout << "o:" << ov.option << " v:" << ov.value << std::endl;
-		if(ov.option == "id") {
+		if(ov.option == "id") 
 			f <<  "#"+ov.value+" {\n}\n";
-			std::cout << "in file ?" << std::endl;
-		}
-		else if(ov.option == "class") {
+		else if(ov.option == "class") 
 			f << "."+ov.value+" {\n}\n";
-		}
-		else {
-			std::cout << "option non reconnue " << std::endl;
-		}
-
+		else 
+			std::cerr << "option non reconnue " << std::endl;
 	}
-
-	return;
 }
 
 void fileModificationAttributeTags(std::fstream& f, std::string str, std::string fileout) {
@@ -247,19 +233,6 @@ void fileModificationAttributeTags(std::fstream& f, std::string str, std::string
 	if(fileout != "") 
 		flagout_css = 1;
 	vecOV v_o;
-	/*vecOV vo;
-	option_and_value o_a_v;
-	o_a_v.option = "id";
-	o_a_v.value = "ID";
-	vo.push_back(o_a_v);
-	std::cout << vo.at(0).value << std::endl;
-	vec_vo.push_back(vo);
-	std::cout << vec_vo.at(0).at(0).value << std::endl;*/
-	//option_ad_value ov = {"id","coucou"};
-	
-	//lo.vec_ov.push_back(one);
-
-	//vec_optV.push_back(lo.vec_ov);
 	for(auto m_f : extractLineContent(str)) {
 		int index = searchBaliseInFileForStyle(f,m_f.index,m_f.balise);
 		line_options lineAttrLine = lineInAttributLine(m_f.balise,m_f.contenu);
@@ -269,9 +242,7 @@ void fileModificationAttributeTags(std::fstream& f, std::string str, std::string
 		if(flagout_css) 
 			for(auto o_v : ov)
 				v_o.push_back(o_v);
-
 	}
-	std::cout << "here" << std::endl;
 	if(flagout_css)
 		insertLineInFileCss(fileout,v_o);
 }

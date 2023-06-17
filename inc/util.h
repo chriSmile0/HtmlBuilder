@@ -79,17 +79,6 @@ typedef struct {
 	vecOV v;
 } line_options;
 
-
-
-/*enum balise {Head,Body,Section,Article,Div,Span,Footer,Img,
-
-				h1,h2,h3,h4,h5,h6,a,br,pre,hr,p,button,form,textarea,
-				table,th,tr,td,caption,colgroup,col,thead,tbody,tfoot,
-				ul,li,ol,dt,dd,dl,iframe,Link,meta};*/
-//enum bloc {address,article,aside,blockquote,canvas,dd,div,dl,dt,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hr,li,main,nav,noscript,ol,p,pre,section,table,tfoot,ul,video};
-//enum inlin {a,abbr,acronym,b,bdo,big,br,button,cite,code,dfn,em,i,img,input,kbd,label,map,object,output,q,samp,script,select,small,span,strong,sub,sup,textarea,time,tt,var};
-
-
 /**
  * @brief	Ecriture d'une ligne ligne dans le fichier en entrée
  * @param{line} la ligne à écrire dans le fichier
@@ -129,7 +118,6 @@ std::string getFpv2(std::string s, int jump, int nb_tab);
  * @return	la chaine qui contient la balise fermante
 */
 std::string getLpv2(std::string s, int jb, int ja, int nb_tab);
-
 
 /**
  * @brief	Extraire la balise d'une chaine comme {  p }
@@ -199,7 +187,6 @@ std::vector<modif_struct> extractLineContent(std::string str);
  * @return L'index précis pour l'insertion du contenu 
 */
 idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise);
-
 
 /**
  * @brief
