@@ -168,52 +168,87 @@ void growUpFile(std::fstream& f, int extend_size);
 void insertLineInFile(std::fstream& f, std::string str, int index);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Découper une chaine de caractère en fonction d'un splitter
+ * 			
+ * @param{str}	La chaine à parser
+ * @param{splitter} Le splitter 
+ * @return	Un vecteur de chaines de caracteres
 */
 std::vector<std::string> parseLine(std::string str);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Extraire d'une ligne séparer par un splitter différentes
+ * 			informations comme la balise, le contenu ou encore l'index
+ * 			de cette balise dans la page cible
+ * @param{str}	La chaine sur laquelle on fait les extractions
+ * 
+ * @return	Un vecteur de modif_struct une structure qui contient 2 chaines 
+ * 			de caracteres que sont le contenu et la balise cible de l'insertion 
+ *			de contenu et un index qui permet de savoir la n-ième balise de ce 
+ *			nom que l'on cherche à modifier
 */
 std::vector<modif_struct> extractLineContent(std::string str);
 
 /**
- * @brief
- * @param
- * @return L'index précis pour l'insertion du contenu 
+ * @brief	Chercher l'index dans un fichier d'une balise en fonction de son nom
+ * 			et d'un numéro 
+ * @param{f}		Le fichier dans lequel nous cherchons
+ * @param{num}		La n-ième balise similaire à 'balise' dans le fichier
+ * @param{balise}	La balise que l'on recherche
+ * @return L'index précis pour l'insertion du contenu + un nombre de tabulation
 */
 idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Chercher un token dans une chaine de caracteres
+ * @param{str}	La chaine où chercher le token
+ * @param{token}Le token rechercher
+ * @return	Un entier qui est l'index où début le token dans la chaine
 */
 int inLine(std::string str, std::string token);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Insérer une chaine dans un fichier en tant que contenu 
+ * 			de balise comme par exemple le contenu d'un paragraphe
+ * @param{f}	Le fichier à modifier
+ * @param{str}	La chaine de caracteres à insérer dans le fichier
+ * @return	
 */
 void fileModification(std::fstream& f, std::string str);
 
+/**
+ * @brief	De la même façon que la fonction 'searchBaliseInFile' sauf que
+ * 			cette fois ci on insère les attributs de la balise et non pas
+ * 			son contenu comme précédemment, ce qui change légèrement la fonction
+ * @param{f}		Le fichier où l'on recherche la balise
+ * @param{num}		La n-ième balise
+ * @param{balise}	La balise rechercher
+ * @return	Pas besoin de retourner un nombre tabulation donc cette fois 
+ * 			ci on retourne juste l'index du début d'insertion c'est à dire juste
+ * 			après le nom de balise par exemple <p> -> <p{INSERTION}>
+*/
+int searchBaliseInFileForStyle(std::fstream& f, int num, std::string balise);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Parsing d'une ligne id=Id|class=classe afin de les ajouter 
+ * 			comme attribut d'une balise 
+ * 			Attention il y une vérification des balises!
+ * 			et pourquoi pas des valeurs émises (en option pour la suite!)
+ * @param{balise}	La balise cible
+ * @param{str}		La chaine à analyser
+ * @return	Une structure qui contient la chaine à insérer ainsi qu'un vecteur
+ * 			de structure de option_and_value qui est une structure qui associe
+ * 			une option a une valeur
 */
 line_options lineInAttributLine(std::string balise, std::string str);
 
 
 /**
- * @brief
- * @param
+ * @brief	Insertion d'un champ CSS c'est à dire d'une option valide 
+ * 			dans le langage css.
+ * @param{fout}	Le fichier css dans lequel l'insertion à lieu
+ * @param{vecs} L'ensemble des options et valeurs que contient les options
+ * 				du launcher
  * @return
 */
 void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
@@ -223,7 +258,6 @@ void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
  * @param
  * @return
 */
-
 
 //************************* CSS **********************//
 bool m_class_u_id(option_and_value a, option_and_value b)
