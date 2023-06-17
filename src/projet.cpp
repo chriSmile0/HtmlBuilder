@@ -2,6 +2,24 @@
 #include <getopt.h>
 
 
+int CheckOpenFile(std::string f, std::string type) { //Voir pour macro 
+	std::fstream file(f, std::ios::in);
+	int retour = file.fail();
+	if(retour == -1) {
+		std::cerr << "Error " << f << " not readable, use " << type << " file" << std::endl;
+		exit(1);
+	}
+	file.close();
+	return retour;
+}
+
+std::string CheckExtension(char *path, std::string extension) {
+	std::string tmp = path;
+	if(tmp.substr(tmp.find_last_of(".")+1) == extension) 
+		if(CheckOpenFile(tmp,extension) != -1)
+			return tmp;
+}
+
 void checkDandC(std::string& save_option, int argc, int optind, 
 				std::string& out_opt, char *argv[], char& flag_mf_s, char flag_cs_mf_sy) 
 {
@@ -11,7 +29,7 @@ void checkDandC(std::string& save_option, int argc, int optind,
 		}
 		else if(argc-optind == 1) {
 			flag_mf_s = 'm';
-			out_opt = argv[optind];
+			out_opt = CheckExtension(argv[optind],"html");
 			if(flag_cs_mf_sy != 's') {//a mettre sous fct
 				save_option = out_opt;
 				if(save_option.substr(save_option.find_last_of(".")+1)=="html")
@@ -23,8 +41,8 @@ void checkDandC(std::string& save_option, int argc, int optind,
 		}
 		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
 			flag_mf_s = 's';
-			save_option = argv[optind+1];//verif css
-			out_opt = argv[optind];	//verif html 
+			save_option = CheckExtension(argv[optind+1],"css");//verif css
+			out_opt = CheckExtension(argv[optind],"html");	//verif html 
 		}
 	}
 }
@@ -38,14 +56,13 @@ void checkL(std::string& save_option, int argc, int optind,
 		out_opt = "../test/test.html";
 		if(flag_cs_mf_sy != 'y') {
 			if(argc-optind == 1)
-				out_opt = argv[optind];//check du .html(!)
+				out_opt = CheckExtension(argv[optind],"html");//check du .html(!)
 			flag_mf_s = flag_cs_mf_sy;
 		}
 		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
-			std::cout << "l sy " << std::endl;
 			flag_mf_s = 's';
-			out_opt = argv[optind]; //verif html
-			out_opt2 = argv[optind+1]; //verif css
+			out_opt = CheckExtension(argv[optind],"html"); //verif html
+			out_opt2 = CheckExtension(argv[optind+1],"css"); //verif css
 		}
 	}
 }
@@ -59,14 +76,13 @@ void checkF(std::string& save_option, int argc, int optind,
 		out_opt = "../test/test.html";
 		if(flag_cs_mf_sy != 'y') {
 			if(argc-optind == 1)
-				out_opt = argv[optind];//check du .html(!)
+				out_opt = CheckExtension(argv[optind],"html");//check du .html(!)
 			flag_mf_s = flag_cs_mf_sy;
-
 		}
 		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
 			flag_mf_s = 's';
-			out_opt = argv[optind]; //verif html
-			out_opt2 = argv[optind+1]; //verif css
+			out_opt = CheckExtension(argv[optind],"html"); //verif html
+			out_opt2 = CheckExtension(argv[optind+1],"css"); //verif css
 		}
 	}
 }
@@ -150,7 +166,6 @@ int main(int argc, char *argv[]) {
 		while(getline(readfile,recup_line)) 
 			construction += recup_line+";";
 		readfile.close();
-		std::cout << construction << std::endl;
 		construction = construction.substr(0,construction.length()-1);
 	}
 	else if(flag == 'l') {
@@ -168,8 +183,6 @@ int main(int argc, char *argv[]) {
 	std::string test4 = "{article;section;p}";				// ok V5
 	std::string test5 = "{article {div p};article {div p}}";// ok V5
 	std::string test6 = "{article {div;p {span li}}}";		// n_ok/ok V5
-	//On pourrais forcer le fait de forcer le li comme un inline pour ne pas
-	//casser le inline du span
 	std::string test7 = "{article {div;p span}}";			// ok V5
 	std::string testREADME = "{p {1div {{p};{p}}}}";		// ok V5
 	std::string testAltREADME = "{p {1div {p;p}}}";			// ok V5
@@ -191,9 +204,7 @@ int main(int argc, char *argv[]) {
 			
 			std::vector<Balise> vec_html = {out};
 			HTML one_html{out_opt,vec_html};
-			//CSS on_css{"../test/test.css",vec_html};
 			one_html.addinfile();
-			//on_css.addinfile();
 		}
 	}
 	else {
@@ -223,9 +234,5 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	//std::cout << share_attr.at(Body).at(0) << std::endl;
-	/*for(auto s : share_attr.at(Article))
-		std::cout << s << std::endl;*/
-	//std::cout << IsAssociateAttribute(Body,"onerror") << std::endl;
     return 0;
 }
