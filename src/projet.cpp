@@ -1,6 +1,76 @@
 #include "../inc/util_wo.h"
 #include <getopt.h>
 
+
+void checkDandC(std::string& save_option, int argc, int optind, 
+				std::string& out_opt, char *argv[], char& flag_mf_s, char flag_cs_mf_sy) 
+{
+	if(flag_cs_mf_sy != '-') {
+		if(argc-optind == 0) {
+			out_opt = "../test/test.html";
+		}
+		else if(argc-optind == 1) {
+			flag_mf_s = 'm';
+			out_opt = argv[optind];
+			if(flag_cs_mf_sy != 's') {//a mettre sous fct
+				save_option = out_opt;
+				if(save_option.substr(save_option.find_last_of(".")+1)=="html")
+					out_opt = save_option;
+				else 
+					out_opt = "../page.html";
+				save_option = "";
+			}
+		}
+		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+			flag_mf_s = 's';
+			save_option = argv[optind+1];//verif css
+			out_opt = argv[optind];	//verif html 
+		}
+	}
+}
+
+void checkL(std::string& save_option, int argc, int optind, 
+				std::string& out_opt, std::string& out_opt2, char *argv[], 
+				char& flag_mf_s, char flag_cs_mf_sy) 
+{
+	if(flag_cs_mf_sy != '-') {
+		save_option = argv[optind-1];
+		out_opt = "../test/test.html";
+		if(flag_cs_mf_sy != 'y') {
+			if(argc-optind == 1)
+				out_opt = argv[optind];//check du .html(!)
+			flag_mf_s = flag_cs_mf_sy;
+		}
+		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+			std::cout << "l sy " << std::endl;
+			flag_mf_s = 's';
+			out_opt = argv[optind]; //verif html
+			out_opt2 = argv[optind+1]; //verif css
+		}
+	}
+}
+
+void checkF(std::string& save_option, int argc, int optind, 
+			std::string& out_opt, std::string& out_opt2, char *argv[], 
+			char& flag_mf_s, char flag_cs_mf_sy) 
+{
+	if(flag_cs_mf_sy != '-') {
+		save_option = argv[optind-1];
+		out_opt = "../test/test.html";
+		if(flag_cs_mf_sy != 'y') {
+			if(argc-optind == 1)
+				out_opt = argv[optind];//check du .html(!)
+			flag_mf_s = flag_cs_mf_sy;
+
+		}
+		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+			flag_mf_s = 's';
+			out_opt = argv[optind]; //verif html
+			out_opt2 = argv[optind+1]; //verif css
+		}
+	}
+}
+
 int main(int argc, char *argv[]) {
 	static struct option options[] = {
 		{"f",required_argument,NULL,'f'},
@@ -21,123 +91,29 @@ int main(int argc, char *argv[]) {
 	char flag_cs_mf_sy = 'c';
 	char flag_mf_s = '-';
 	int cpt = 0;
-	std::cout << "argc : " << argc << std::endl;
-	while((opt = getopt_long(argc, argv, "sym:f:l:cd", options, &index)) != -1) {
+	while((opt = getopt_long(argc,argv,"sym:f:l:cd",options,&index)) != -1) {
 		cpt++;
+		flag = (char)opt;
 		switch(opt) {
-			case 'f': 
-				std::cout << "f " << std::endl;
-				flag = 'f';
-				if(flag_cs_mf_sy != '-') {
-					save_option = argv[optind-1];
-					if((flag_cs_mf_sy == 's') || (flag_cs_mf_sy == 'm')) {
-						if(argc-optind == 1)
-							out_opt = argv[optind];//check du .html(!)
-						else if((argc-optind == 3) && (flag_cs_mf_sy == 's')) {
-							save_option = argv[optind];
-							out_opt = argv[optind+1];
-							out_opt2 = argv[optind+2];
-						}
-						else 
-							out_opt = "../test2.html";
-
-					}
-					else if((argc-optind == 2)&& (flag_cs_mf_sy == 'y')) {
-						flag_mf_s = 's';
-						out_opt = argv[optind]; //verif html
-						out_opt2 = argv[optind+1]; //verif css
-					}
-				}
+			case 'f': checkF(save_option,argc,optind,out_opt,out_opt2,argv,
+						flag_mf_s,flag_cs_mf_sy);
 				break;
-			case 'l': 
-				std::cout << "l " << std::endl;
-				flag = 'l';
-				if(flag_cs_mf_sy != '-') {
-					save_option = argv[optind-1];
-					if((flag_cs_mf_sy == 's') || (flag_cs_mf_sy == 'm')) {
-						if(argc-optind == 1)
-							out_opt = argv[optind];//check du .html(!)
-						else 
-							out_opt = "../test2.html";
-						std::cout << argc-optind << std::endl;
-					}
-					else if((argc-optind == 2)&& (flag_cs_mf_sy == 'y')) {
-						flag_mf_s = 's';
-						out_opt = argv[optind]; //verif html
-						out_opt2 = argv[optind+1]; //verif css
-					}
-				}
+			case 'l': checkL(save_option,argc,optind,out_opt,out_opt2,argv,
+						flag_mf_s,flag_cs_mf_sy);
 				break;
-			case 'c': flag = 'c';
-				std::cout << "c" << std::endl;
-				if(flag_cs_mf_sy != '-') {
-					if(argc-optind == 1) {
-						std::cout << "passage ici" << std::endl;
-						flag_mf_s = 'm';
-						out_opt = argv[optind];
-						if(flag_cs_mf_sy != 's') {//a mettre sous fct
-							save_option = out_opt;
-							std::cout << "s_v:" << save_option << std::endl;
-							if(save_option.substr(save_option.find_last_of(".")+1)=="html")
-								out_opt = save_option;
-							else 
-								out_opt = "../test2.html";
-							save_option = "";
-						}
-					}
-					else if(argc-optind == 0) {
-						flag_mf_s = 'm';
-						out_opt = "../test/test.html";
-					}
-					else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
-						flag_mf_s = 's';
-						save_option = argv[optind+1];//verif css
-						out_opt = argv[optind];	//verif html
-					}
-				}
+			case 'c': checkDandC(save_option,argc,optind,out_opt,argv,flag_mf_s,
+						flag_cs_mf_sy);
 				break;
-			case 'd': flag = 'd';
-				std::cout << "d " << std::endl;
-				if(flag_cs_mf_sy != '-') {
-					if(argc-optind == 0) {
-						std::cout << "sans param" << std::endl;
-						flag_mf_s = 'm';
-						out_opt = "../test/test.html";
-					}
-					else if(argc-optind == 1) {
-						std::cout << "avec param" << std::endl;
-						flag_mf_s = 'm';
-						out_opt = argv[optind];
-						if(flag_cs_mf_sy != 's') {//a mettre sous fct
-							save_option = out_opt;
-							std::cout << "s_v:" << save_option << std::endl;
-							if(save_option.substr(save_option.find_last_of(".")+1)=="html")
-								out_opt = save_option;
-							else 
-								out_opt = "../test2.html";
-							save_option = "";
-						}
-					}
-					else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
-						flag_mf_s = 's';
-						save_option = argv[optind+1];//verif css
-						out_opt = argv[optind];	//verif html 
-					}
-				}
+			case 'd': checkDandC(save_option,argc,optind,out_opt,argv,flag_mf_s,
+						flag_cs_mf_sy);
 				break;
 			case 's'://Construction
-				std::cout << "s " << std::endl;
-				flag = 's';
 				flag_cs_mf_sy = 's';
 				break;
 			case 'y'://Style
-				std::cout << "y " << std::endl;
-				flag = 'y';
 				flag_cs_mf_sy = 'y';
 				break;
 			case 'm'://Modification
-				std::cout << "m " << std::endl;
-				flag = 'm';
 				flag_cs_mf_sy = 'm';
 				break;
 			default: 
@@ -151,12 +127,9 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	std::cout << "s_opt: " << save_option << " out_opt: " << out_opt << std::endl;
-
 	std::string construction = "";
 	std::string modification = "";
 	std::string recup_line = "";
-
 
 	if(flag == 'c') {
 		std::cout << "***Command Line Process***" << std::endl;
@@ -186,7 +159,6 @@ int main(int argc, char *argv[]) {
 	}
 	else if(flag == 'd') {
 		std::cout << "***Debug Process***" << std::endl;
-		//construction = save_option;
 	}
 	
 	std::string test0 = "{article div}";					// ok V5
@@ -231,22 +203,12 @@ int main(int argc, char *argv[]) {
 		else {
 			std::cout << "***Possibility to Modify HTML***" << std::endl;
 			std::cout << "***Modify IN PROGRESS***" << std::endl;
-			/*if((flag == 'f') || (flag == 'l'))
-				save_option = out_opt;*/
 			if(flag_mf_s == 's')
 				if((flag == 'f') || (flag == 'l'))
 					save_option = out_opt2;
 			std::fstream file(out_opt,std::ios::in | std::ios::out);
 			std::string test_modif = "1span sp;1p paragpraphe";	// ok
-			std::string test_modifn = "";
 			std::string stylebalise_test = "1p id=ID|class=classe;1span id=IDs";// ?
-			//
-			//
-			//
-			//ileModification(file,test_modif);	//GOOD
-			//file,..file 					 	//GOOD
-			//Manque la gestion des erreurs	
-			std::cout << flag_mf_s << std::endl;	
 			if(flag_mf_s == 's') {
 				if(flag == 'd') 
 					fileModificationAttributeTags(file,stylebalise_test,save_option);

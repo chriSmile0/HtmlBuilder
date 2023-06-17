@@ -26,31 +26,45 @@ Associer une classe, un id à une balise
 - [ ] Chacun possède donc un id afin de le modifier plus tard.  
   On aura donc une table de correspondance id,objet trié de manière croissante en termes de ligne.  
 
-
-
-## Build and Exec
-### Construction
-	./htmlbuilder -f 
-	./htmlbuilder -l
-	./htmlbuilder -c
-	./htmlbuilder --d 
-
-### Modification 
-	./htmlbuilder -f file file.html
-	./htmlbuilder -l "1p\ paragraphe" file.html
-	./htmlbuilder -c file.html
-	./htmlbuilder --d _
-
+## Build and Exec 
 ### Construction 
-	make test ARG1=-f ARG2=file
-	make test ARG1=-l ARG2={article\;p}
-	make test ARG1=-c 
-	make test ARG1=--d 
-	
+	./htmlbuilder --ts --d
+	./htmlbuilder --ts --d page.html
+	./htmlbuilder --ts -c
+	./htmlbuilder --ts -c page.html
+	./htmlbuilder --ts -l "article;p"
+	./htmlbuilder --ts -l "article;p" page.html
+	./htmlbuilder --ts -f ../build_lines 
+	./htmlbuilder --ts -f ../build_lines page.html
+
 ### Modification 
-	make test ARG1=-f ARG2=file ARG3=file.html
-	make test ARG1=-l ARG2="1p\ paragraphe" ARG3=file.html
-	make test ARG1=-c ARG2=file.html 
-	make test ARG1=--d ARG2=_
+	./htmlbuilder --mf --d page.html
+	./htmlbuilder --mf -c page.html
+	./htmlbuilder --mf -l "1p paragraphe" page.html
+	./htmlbuilder --mf -f ../modif_lines page.html
+
+### Modification Style 
+	./htmlbuilder --sy --d page.html style.css
+	./htmlbuilder --sy -c page.html style.css
+	./htmlbuilder --sy -l "1p id=ID" page.html style.css
+	./htmlbuilder --sy -f ../style_lines page.html style.css
+
+### MakeTarget 
+**Test: ->NB : {option1/option2}=correct options**   
+    `make test OPT0=--{ts/mf/sy} OPT1=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html} ARG3={""/s.css}`
+
+**Others tests:**
+- **testconstruction**  
+	`make test OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html}`
+- **testmodifcation**  
+	`make test OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html}`
+- **testmodifcationstyle**   
+	`make test OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html} ARG3={""/s.css}`
+
+**Examples:**
+- `make testconstruction OPT=-l ARG1="article\;p" ARG2=page.html`
+- `make testmodifcation OPT=-f ARG1=../modif_lines ARG2=../page.html`
+- `make testmodifcationstyle OPT=-f ARG1=../style_lines ARG2=../page.html ARG3=../style.css`
+- `make testmodifcationstyle OPT=-l ARG1="1p id=ID" ARG2=../page.html ARG3=../style.css`
 
 ## Conclusion 
