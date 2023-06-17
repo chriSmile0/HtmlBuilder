@@ -1,64 +1,136 @@
 #include "../inc/util_wo.h"
 #include <getopt.h>
 
+
+int CheckOpenFile(std::string f, std::string type) { //Voir pour macro 
+	std::fstream file(f, std::ios::in);
+	int retour = file.fail();
+	if(retour == -1) {
+		std::cerr << "Error " << f << " not readable, use " << type << " file" << std::endl;
+		exit(1);
+	}
+	file.close();
+	return retour;
+}
+
+std::string CheckExtension(char *path, std::string extension) {
+	std::string tmp = path;
+	if(tmp.substr(tmp.find_last_of(".")+1) == extension) 
+		if(CheckOpenFile(tmp,extension) != -1)
+			return tmp;
+}
+
+void checkDandC(std::string& save_option, int argc, int optind, 
+				std::string& out_opt, char *argv[], char& flag_mf_s, char flag_cs_mf_sy) 
+{
+	if(flag_cs_mf_sy != '-') {
+		if(argc-optind == 0) {
+			out_opt = "../test/test.html";
+		}
+		else if(argc-optind == 1) {
+			flag_mf_s = 'm';
+			out_opt = CheckExtension(argv[optind],"html");
+			if(flag_cs_mf_sy != 's') {//a mettre sous fct
+				save_option = out_opt;
+				if(save_option.substr(save_option.find_last_of(".")+1)=="html")
+					out_opt = save_option;
+				else 
+					out_opt = "../page.html";
+				save_option = "";
+			}
+		}
+		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+			flag_mf_s = 's';
+			save_option = CheckExtension(argv[optind+1],"css");//verif css
+			out_opt = CheckExtension(argv[optind],"html");	//verif html 
+		}
+	}
+}
+
+void checkL(std::string& save_option, int argc, int optind, 
+				std::string& out_opt, std::string& out_opt2, char *argv[], 
+				char& flag_mf_s, char flag_cs_mf_sy) 
+{
+	if(flag_cs_mf_sy != '-') {
+		save_option = argv[optind-1];
+		out_opt = "../test/test.html";
+		if(flag_cs_mf_sy != 'y') {
+			if(argc-optind == 1)
+				out_opt = CheckExtension(argv[optind],"html");//check du .html(!)
+			flag_mf_s = flag_cs_mf_sy;
+		}
+		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+			flag_mf_s = 's';
+			out_opt = CheckExtension(argv[optind],"html"); //verif html
+			out_opt2 = CheckExtension(argv[optind+1],"css"); //verif css
+		}
+	}
+}
+
+void checkF(std::string& save_option, int argc, int optind, 
+			std::string& out_opt, std::string& out_opt2, char *argv[], 
+			char& flag_mf_s, char flag_cs_mf_sy) 
+{
+	if(flag_cs_mf_sy != '-') {
+		save_option = argv[optind-1];
+		out_opt = "../test/test.html";
+		if(flag_cs_mf_sy != 'y') {
+			if(argc-optind == 1)
+				out_opt = CheckExtension(argv[optind],"html");//check du .html(!)
+			flag_mf_s = flag_cs_mf_sy;
+		}
+		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+			flag_mf_s = 's';
+			out_opt = CheckExtension(argv[optind],"html"); //verif html
+			out_opt2 = CheckExtension(argv[optind+1],"css"); //verif css
+		}
+	}
+}
+
 int main(int argc, char *argv[]) {
 	static struct option options[] = {
 		{"f",required_argument,NULL,'f'},
 		{"l",required_argument,NULL,'l'},
 		{"c",optional_argument,NULL,'c'},
 		{"d",optional_argument,NULL,'d'},
-		{"s",optional_argument,NULL,'s'},
+		{"sy",optional_argument,NULL,'y'},
+		{"ts",optional_argument,NULL,'s'},
+		{"mf",optional_argument,NULL,'m'},
 		{NULL, 0, NULL,0}
 	};
 
 	std::string save_option = "";
 	std::string out_opt = "";
+	std::string out_opt2 = "";
 	int opt, index = 0;
 	char flag = '-'; 
-	char flag_cs_mf = 'c';
+	char flag_cs_mf_sy = 'c';
 	char flag_mf_s = '-';
 	int cpt = 0;
-	std::cout << "argc : " << argc << std::endl;
-	while((opt = getopt_long(argc, argv, "flcsd", options, &index)) != -1) {
+	while((opt = getopt_long(argc,argv,"sym:f:l:cd",options,&index)) != -1) {
 		cpt++;
+		flag = (char)opt;
 		switch(opt) {
-			case 'f': save_option = argv[2];
-				flag = 'f';
-				if(argc == 4) {
-					out_opt = argv[3];
-					if(out_opt.substr(out_opt.find_last_of(".") + 1) == "html")
-						flag_cs_mf = 'm';
-				}
+			case 'f': checkF(save_option,argc,optind,out_opt,out_opt2,argv,
+						flag_mf_s,flag_cs_mf_sy);
 				break;
-			case 'l': save_option = argv[2];
-				flag = 'l';
-				if(argc == 4) {
-					out_opt = argv[3];
-					if(out_opt.substr(out_opt.find_last_of(".") + 1) == "html")
-						flag_cs_mf = 'm';
-				}
+			case 'l': checkL(save_option,argc,optind,out_opt,out_opt2,argv,
+						flag_mf_s,flag_cs_mf_sy);
 				break;
-			case 'c': flag = 'c';
-				if(argc == 3) {
-					flag_cs_mf = 'm';
-					save_option = argv[2];
-				}
+			case 'c': checkDandC(save_option,argc,optind,out_opt,argv,flag_mf_s,
+						flag_cs_mf_sy);
 				break;
-			case 'd': flag = 'd';
-				if(argc == 3) {
-					flag_cs_mf = 'm';
-					save_option = "../test2.html";
-				}
+			case 'd': checkDandC(save_option,argc,optind,out_opt,argv,flag_mf_s,
+						flag_cs_mf_sy);
 				break;
-			case 's': flag = 's';
-				if(argc >= 3) {
-					flag_cs_mf = 'm';
-					save_option = "../test2.html";
-					if(argc == 4) {
-						out_opt = "../test2style.css"; //-> V2-3
-						flag_mf_s = 's';
-					}
-				}
+			case 's'://Construction
+				flag_cs_mf_sy = 's';
+				break;
+			case 'y'://Style
+				flag_cs_mf_sy = 'y';
+				break;
+			case 'm'://Modification
+				flag_cs_mf_sy = 'm';
 				break;
 			default: 
 				return EXIT_FAILURE;
@@ -66,9 +138,15 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	if((flag == 's') || (flag == 'y') || (flag == 'm')) {
+		std::cerr << "Error minimum 2 options " << std::endl;
+		return 1;
+	}
+
 	std::string construction = "";
 	std::string modification = "";
 	std::string recup_line = "";
+
 	if(flag == 'c') {
 		std::cout << "***Command Line Process***" << std::endl;
 		int goon = 1;
@@ -88,12 +166,14 @@ int main(int argc, char *argv[]) {
 		while(getline(readfile,recup_line)) 
 			construction += recup_line+";";
 		readfile.close();
-		std::cout << construction << std::endl;
 		construction = construction.substr(0,construction.length()-1);
 	}
 	else if(flag == 'l') {
 		std::cout << "***Input One Line Process***" << std::endl;
 		construction = save_option;
+	}
+	else if(flag == 'd') {
+		std::cout << "***Debug Process***" << std::endl;
 	}
 	
 	std::string test0 = "{article div}";					// ok V5
@@ -103,16 +183,14 @@ int main(int argc, char *argv[]) {
 	std::string test4 = "{article;section;p}";				// ok V5
 	std::string test5 = "{article {div p};article {div p}}";// ok V5
 	std::string test6 = "{article {div;p {span li}}}";		// n_ok/ok V5
-	//On pourrais forcer le fait de forcer le li comme un inline pour ne pas
-	//casser le inline du span
 	std::string test7 = "{article {div;p span}}";			// ok V5
 	std::string testREADME = "{p {1div {{p};{p}}}}";		// ok V5
 	std::string testAltREADME = "{p {1div {p;p}}}";			// ok V5
 	std::string testAltREADME2 = "{p {2div {p;p}}}";		// ok V5
 	std::string testAltREADMEn = "{2section;2article}";		// ok V5
 
-	std::cout << flag_cs_mf << std::endl;
-	if(flag_cs_mf == 'c') { 
+	std::cout << flag_cs_mf_sy << std::endl;
+	if(flag_cs_mf_sy == 's') { 
 		if((flag != 'd') && ((construction == "stop") || (construction == ""))) 
 			std::cout << "***Nothing to Build***" << std::endl;
 		else {
@@ -125,10 +203,8 @@ int main(int argc, char *argv[]) {
 				out = demand_in_balisev4(test5,0);
 			
 			std::vector<Balise> vec_html = {out};
-			HTML one_html{"../test/test.html",vec_html};
-			//CSS on_css{"../test/test.css",vec_html};
+			HTML one_html{out_opt,vec_html};
 			one_html.addinfile();
-			//on_css.addinfile();
 		}
 	}
 	else {
@@ -138,31 +214,25 @@ int main(int argc, char *argv[]) {
 		else {
 			std::cout << "***Possibility to Modify HTML***" << std::endl;
 			std::cout << "***Modify IN PROGRESS***" << std::endl;
-			if((flag == 'f') || (flag == 'l'))
-				save_option = out_opt;
-			std::fstream file(save_option,std::ios::in | std::ios::out);
+			if(flag_mf_s == 's')
+				if((flag == 'f') || (flag == 'l'))
+					save_option = out_opt2;
+			std::fstream file(out_opt,std::ios::in | std::ios::out);
 			std::string test_modif = "1span sp;1p paragpraphe";	// ok
-			std::string test_modifn = "";
 			std::string stylebalise_test = "1p id=ID|class=classe;1span id=IDs";// ?
-			//
-			//
-			//
-			//ileModification(file,test_modif);	//GOOD
-			//file,..file 					 	//GOOD
-			//Manque la gestion des erreurs		
-			if((flag != 'd') && (flag != 's')) 
-				fileModification(file,modification);
-			else {
-				if(flag == 's') 
-					fileModificationAttributeTags(file,stylebalise_test,"../test2.css");
+			if(flag_mf_s == 's') {
+				if(flag == 'd') 
+					fileModificationAttributeTags(file,stylebalise_test,save_option);
 				else 
-					fileModificationAttributeTags(file,test_modif,"../test2.css");
+					fileModificationAttributeTags(file,modification,save_option);
+			}
+			else if(flag_mf_s = 'm') {
+				if(flag == 'd')
+					fileModification(file,test_modif);
+				else 
+					fileModification(file,modification);
 			}
 		}
 	}
-	//std::cout << share_attr.at(Body).at(0) << std::endl;
-	/*for(auto s : share_attr.at(Article))
-		std::cout << s << std::endl;*/
-	std::cout << IsAssociateAttribute(Body,"onerror") << std::endl;
     return 0;
 }

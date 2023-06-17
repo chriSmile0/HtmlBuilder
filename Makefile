@@ -1,24 +1,34 @@
-all : main
+all : clean main
 
-main : clean
+main :
 	mkdir build 2> /dev/null ;\
 	cd build ; \
 	cmake .. ; \
 	make ; \
 
-exec : clean main 
+checkexec : main
 	mkdir test 2> /dev/null ; \
 	cd build ; \
-	./htmlbuilder --d ../test2.html ;\
+	./htmlbuilder --sy -f ../style_lines ../test2.html ../test3.css
+#Il faut forcer un argument si on a mf ou sy sur --d et -c 
 
-execstyle : clean main 
-	cd build ; \
-	./htmlbuilder -s ../test2.html _ ;\
-
-test : clean main
+test : main
 	mkdir test 2> /dev/null ; \
 	cd build ; \
-	./htmlbuilder ${ARG1} ${ARG2} ${ARG3}
+	./htmlbuilder ${OPT0} ${OPT} ${ARG1} ${ARG2} ${ARG3}
+
+testconstruction : main 
+	mkdir test 2> /dev/null ; \
+	cd build ; \
+	./htmlbuilder --ts ${OPT} ${ARG1} ${ARG2}
+
+testmodification : main 
+	cd build ; \
+	./htmlbuilder --mf ${OPT} ${ARG1} ${ARG2}
+
+testmodificationstyle : main 
+	cd build ; \
+	./htmlbuilder --sy ${OPT} ${ARG1} ${ARG2} ${ARG3}
 
 clean : 
 	-$(RM) -r build test
