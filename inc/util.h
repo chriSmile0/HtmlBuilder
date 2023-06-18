@@ -260,6 +260,17 @@ void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
 */
 
 //************************* CSS **********************//
+/**
+ * @brief	Détecter la présence de plusieurs ID similaire pour 2 balises 
+ * 			différentes mais aussi le fait que d'écrire une option qu'une 
+ * 			seule fois dans le fichier css alors que techniquement 
+ * 			avec l'héritage on pourrais l'écrire plusieurs fois 
+ *			dans le fichier. L'héritage étant une option que l'on 
+ *			va mettre en place plus tard.
+ * @param{a,b}	Les 2 structures option_and_value en comparaison
+ * @return 1 pour suppression 0 pour ignorer
+*/
+
 bool m_class_u_id(option_and_value a, option_and_value b)
 {
     if(((a.option == "id") && (b.option == "id")) 
