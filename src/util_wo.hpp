@@ -4,16 +4,6 @@
 
 #include "../inc/util_wo.h"
 
-
-/***
- * @brief : Recursion  
- * Step 0 : Article {p {span} {span}}
- * Step 1 : Article -> Création article 
- * Step 2 : <article>p -> création p </article>
- * Step 3 : <article><p>-> création span ; création span</p></article>
- * Step 4 : <article><p><span></span><span></span></p></article>
-*/
-
 std::string without_accolade(std::string str) {
 	int i = 0;
 	int depart = 0;
@@ -25,7 +15,6 @@ std::string without_accolade(std::string str) {
 			break;
 		}
 	}
-	
 	int j = fin;
 	while(j > depart) {
 		j--;
@@ -61,7 +50,6 @@ std::vector<int> split_or_not(std::string str, char splitter) {
 		i++;
 	}
 	return vec_index_split;
-	
 }
 
 std::vector<std::string> split_str_homemade(std::string str, char splitter) {
@@ -81,8 +69,6 @@ std::vector<std::string> split_str_homemade(std::string str, char splitter) {
 	vec_str.push_back(tmp);
 	return vec_str;
 }	
-
-
 
 Balise demand_in_balisev4(std::string str, int tabulation) {
 	std::string without_acc = str;

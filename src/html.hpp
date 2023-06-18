@@ -23,7 +23,6 @@ void HTML::addinfile() {
     for(auto bal : b_vec)
         sfile << bal.getBloc_balise();
     setLpHtml();
-    //insertLineInFile(sfile,"paragraphe",55);
     sfile.close();
 }
 

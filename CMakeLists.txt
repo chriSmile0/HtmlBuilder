@@ -9,8 +9,6 @@ target_sources(htmlbuilder PRIVATE
 	src/projet.cpp
 	inc/html.h
 	src/html.hpp
-	inc/css.h
-	src/css.hpp
 	inc/balise.h
 	src/balise.hpp
 	inc/util_wo.h
@@ -18,8 +16,6 @@ target_sources(htmlbuilder PRIVATE
 	inc/util.h
 	src/util.hpp)
 
-
 IF (MSVC)
 	set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 ENDIF()
-
