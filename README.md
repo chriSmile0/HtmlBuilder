@@ -1,32 +1,29 @@
-# BotBuildHtml
+# HTMLBuilder
 
-## Objectifs 
-Construire de manière très rapide une page html avec seulement des balises en entrée.  
-Rendre ce contenu modifiable afin d'insérer le contenu "affichables" 
+## Why ? 
+Create a tool for create html page with a file or one line 
+with a simple system of parse line and inheritance.   
+Many Framework demand to write the classic tag line for create 
+the page.  
+We suggest to delete the '<>' use for more comprehension and 
+more accessibility.  
+The inheritance is replace by '{}' and the tabulations and the level of 
+any block is create by the inline or not inline level.
 
-## Construction 
+## For Who ? 
+- For the user of the command line 
+- For the user don't want to write in Web languages -> Write a file with many specifics tags and the tool create the html file
 
-## Modification 
-On cherche maintenant à affecter un style à nos balises
-On doit pour cela pouvoir : 
-- [x] Associer une classe, un id à une balise : `1p id=ID;1p classe=CLASSE`
-- [ ] Créer l'entête qui permet d'ajouter le fichier style correspondant : 
-	`./htmlbuilder -s page.html style.css`
-- [ ] Ajouter le fichier css correspondant aux balises 
-		Pour le moment pas d'héritage juste les balises et les classes et id 
-		associés.
+## Version 
+### V1 
+- A 'cut' version to create tags and add content and style separatly
+- Excellent for modify a skeleton of html page with our style and our content
+### V2 -> Future Version
+- Combine version to create tags and add content and style in the creation 
+  process
 
-### V1 -> Spec 
-Ajouter un fichier css au fichier html 
 
-### V2 -> 
-Associer une classe, un id à une balise
-
-## Ajouts et améliorations possibles 
-- [ ] Chacun possède donc un id afin de le modifier plus tard.  
-  On aura donc une table de correspondance id,objet trié de manière croissante en termes de ligne.  
-
-## Build and Exec 
+## Build and Exec (V1)
 ### Construction 
 	./htmlbuilder --ts --d
 	./htmlbuilder --ts --d page.html
@@ -66,5 +63,8 @@ Associer une classe, un id à une balise
 - `make testmodifcation OPT=-f ARG1=../modif_lines ARG2=../page.html`
 - `make testmodifcationstyle OPT=-f ARG1=../style_lines ARG2=../page.html ARG3=../style.css`
 - `make testmodifcationstyle OPT=-l ARG1="1p id=ID" ARG2=../page.html ARG3=../style.css`
+
+
+## Features 
 
 ## Conclusion 
