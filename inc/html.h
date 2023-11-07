@@ -24,7 +24,7 @@ class HTML {
 		
 		//AddInFile
 		/**
-		 * @brief	Ajout des blocs de chaque balise dans le fichier html
+		 * @brief	Add blocks of each tag in the html file
 		 * @param{none}
 		 * @return
 		*/

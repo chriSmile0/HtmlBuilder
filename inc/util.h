@@ -80,175 +80,168 @@ typedef struct {
 } line_options;
 
 /**
- * @brief	Ecriture d'une ligne ligne dans le fichier en entrée
- * @param{line} la ligne à écrire dans le fichier
- * @param{f}	le fichier en entrée
- * @return
+ * @brief	Write a line in the In file
+ * @param{line} the line to write in file
+ * @param{f}	In file
+ * @return 
 */
 inline void writeLine(std::string line, std::fstream f) {f << line;}
 
 /**
- * @brief	Écrit toutes les lignes d'un fichier dans un vecteur
- * 			de chaine
- * @param{f}	le fichier à lire
- * @return	L'ensemble des lignes du fichier
+ * @brief	Write all lines of a file in a string vector
+ * @param{f}	file to read
+ * @return	All lines of the file
 */
 std::vector<std::string> readLines(std::fstream f);
 
 /**
- * @brief	Réecriture de la fermeture de la fonction close d'un fichier
- * @param{f}	le fichier à cloturer
+ * @brief	Re writing of the close file function
+ * @param{f}	file to close
  * @return
 */
 inline void closeFile(std::fstream f) {f.close();}
 
 /**
- * @brief	Fonction qui permet d'écrire le premier bloc balise d'une balise
- * @param{s}	la balise à créer
- * @param{jump}	Jump avant la balise ?
- * @return	la chaine qui contient la balise ouvrante
+ * @brief	Function which allows to write the first part of a tag
+ * @param{s}	tag to create
+ * @param{jump}	Jump before the tag ?
+ * @return	the string which contains the tag opener
 */
 std::string getFpv2(std::string s, int jump, int nb_tab);
 
 /**
  * @brief	Fonction qui permet d'écrire le second bloc balise d'une balise
- * @param{s}	la balise à créer
- * @param{jb}	Jump avant la balise ?
- * @param{ja}	Jump après la balise ?
- * @return	la chaine qui contient la balise fermante
+ * @brief 	Function which allows to write the last part of a tag
+ * @param{s}	tag to create
+ * @param{jb}	Jump before the tag ?
+ * @param{ja}	Jump after the tag ?
+ * @return	the stirng which contains the tag closer
 */
 std::string getLpv2(std::string s, int jb, int ja, int nb_tab);
 
 /**
- * @brief	Extraire la balise d'une chaine comme {  p }
- * 			ce qui donne 'p'
- * @param{str}	la chaine à parser
- * @return	la chaine en entrée ou la balise si il y'a des choses à parser
+ * @brief	Extract the tag of the string like "{ p }" -> 'p'
+ * @param{str}	string to parse
+ * @return 	the string in parameter or the tag if there is things to parse
 */
 std::string extract_balise(std::string str);
 
 /**
- * @brief	Extraire un entier d'une chaine comme 2p 
- * 			ce qui donne '2'
- * @param{str} la chaine à parser
- * @return	le digit correspondant ou "0" si pas de digit dans la chaine
+ * @brief	Extract an integer of a string like "2p" -> '2'
+ * @param{str} string to parse
+ * @return 	the corresponding digit or "0" if not digit in the string
  */
 std::string extract_digit(std::string str);
 
 /**
- * @brief	Renvoyer la balise d'entrée si elle correspond à une balise reconnue
- * 			Sinon renvoyer chaine vide 
- * @param{str}	la chaine en entrée	
- * @return	la chaine en entrée ou une chaine vide
+ * @brief 	Return the tag in string if he corresponds to a recognize tag.
+ * 			Else return a empty string
+ * @param{str}	The string In
+ * @return	The string In or empty string
 */
 std::string check_balise(std::string str);
 
 /**
- * @brief	Sauter les accolades et les espaces blancs si nécessaire 
- * 			pour connaître la suite de la chaine
- * @param{str}	la chaine à parser
- * @return	l'entier qui représente le nombre de sauts jusqu'au début de la suite
+ * @brief	Jump the '{''}' and the spaces if it's necessary for known the 
+ * 			next part of the string
+ * @param{str}	string to parse
+ * @return 	The integer which represent the number of jumps to reach the following
 */
 int jump_to_next_balise(std::string str);
 
 /**
- * @brief	Agrandir le fichier cible 
- * @param{f}	le fichier cible
+ * @brief	Grow up target file
+ * @param{f}	target file
  * @return
 */
 void growUpFile(std::fstream& f, int extend_size);
 
 /**
- * @brief	Insérer une ligne dans un fichier
- * @param{f}	Le fichier cible
- * @param{str}	La chaine à insérer
- * @param{index}	L'index de d"part de la chaine
+ * @brief	Insert a line in the file
+ * @param{f}	target file
+ * @param{str}	string to insert
+ * @param{index}	index of the start of the string
  * @return
 */
 void insertLineInFile(std::fstream& f, std::string str, int index);
 
 /**
- * @brief	Découper une chaine de caractère en fonction d'un splitter
+ * @brief	Split a string with a splitter
  * 			
- * @param{str}	La chaine à parser
- * @param{splitter} Le splitter 
- * @return	Un vecteur de chaines de caracteres
+ * @param{str}	string to parse
+ * @param{splitter} the splitter 
+ * @return	a vector of strings
 */
 std::vector<std::string> parseLine(std::string str);
 
 /**
- * @brief	Extraire d'une ligne séparer par un splitter différentes
- * 			informations comme la balise, le contenu ou encore l'index
- * 			de cette balise dans la page cible
- * @param{str}	La chaine sur laquelle on fait les extractions
+ * @brief	Extract of a split string differents informations like as the tag
+ * 			, the content or the tag index in the target page
  * 
- * @return	Un vecteur de modif_struct une structure qui contient 2 chaines 
- * 			de caracteres que sont le contenu et la balise cible de l'insertion 
- *			de contenu et un index qui permet de savoir la n-ième balise de ce 
- *			nom que l'on cherche à modifier
+ * @param{str}	The string to extract lines 
+ * @return 	A vector of modif_struct, a struct which contains two strings which 
+ * 			was the content and the tag.
 */
 std::vector<modif_struct> extractLineContent(std::string str);
 
 /**
- * @brief	Chercher l'index dans un fichier d'une balise en fonction de son nom
- * 			et d'un numéro 
- * @param{f}		Le fichier dans lequel nous cherchons
- * @param{num}		La n-ième balise similaire à 'balise' dans le fichier
- * @param{balise}	La balise que l'on recherche
- * @return L'index précis pour l'insertion du contenu + un nombre de tabulation
+ * @brief	Search the index in a file of a tag in function of this name and a 
+ * 			number
+ * 
+ * @param{f}		In file to research
+ * @param{num}		The n tag to correspond at this name
+ * @param{balise}	The research tag
+ * @return The index for the insertion content and a number of tabs
 */
 idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise);
 
 /**
- * @brief	Chercher un token dans une chaine de caracteres
- * @param{str}	La chaine où chercher le token
- * @param{token}Le token rechercher
- * @return	Un entier qui est l'index où début le token dans la chaine
+ * @brief	Search a token in a string
+ * 
+ * @param{str}	The stirng to search the token
+ * @param{token}	The token
+ * @return  A digit who is the index of start of the token in the string
 */
 int inLine(std::string str, std::string token);
 
 /**
- * @brief	Insérer une chaine dans un fichier en tant que contenu 
- * 			de balise comme par exemple le contenu d'un paragraphe
- * @param{f}	Le fichier à modifier
- * @param{str}	La chaine de caracteres à insérer dans le fichier
+ * @brief	Insert a string in a file like as content of a tag. For example
+ * 			the content of a 'p' tag.
+ * 
+ * @param{f}	File to modify
+ * @param{str}	The string to insert in file
  * @return	
 */
 void fileModification(std::fstream& f, std::string str);
 
 /**
- * @brief	De la même façon que la fonction 'searchBaliseInFile' sauf que
- * 			cette fois ci on insère les attributs de la balise et non pas
- * 			son contenu comme précédemment, ce qui change légèrement la fonction
- * @param{f}		Le fichier où l'on recherche la balise
- * @param{num}		La n-ième balise
- * @param{balise}	La balise rechercher
- * @return	Pas besoin de retourner un nombre tabulation donc cette fois 
- * 			ci on retourne juste l'index du début d'insertion c'est à dire juste
- * 			après le nom de balise par exemple <p> -> <p{INSERTION}>
+ * @brief	Like 'searchBaliseInFile' but this time we insert the attributes in 
+ * 			the tag not in the content. 
+ * @param{f}		File to research the tag
+ * @param{num}		The n tag
+ * @param{balise}	The tag to research
+ * @return 	Not need to return a number of tabs. This time we return the index
+ * 			of the start of the insert -> <p> -> <p{INSERT}>
 */
 int searchBaliseInFileForStyle(std::fstream& f, int num, std::string balise);
 
 /**
- * @brief	Parsing d'une ligne id=Id|class=classe afin de les ajouter 
- * 			comme attribut d'une balise 
- * 			Attention il y une vérification des balises!
- * 			et pourquoi pas des valeurs émises (en option pour la suite!)
- * @param{balise}	La balise cible
- * @param{str}		La chaine à analyser
- * @return	Une structure qui contient la chaine à insérer ainsi qu'un vecteur
- * 			de structure de option_and_value qui est une structure qui associe
- * 			une option a une valeur
+ * @brief	Parse a line 'id=Id|class=Class for to adds as attributes of a tag
+ * 
+ * @param{balise}	The target tag
+ * @param{str}		string to analyze 
+ * @return 	A struct which contains the string to insert and one vector of 
+ * 			option_and_value who is a struct who associate an option to one 
+ * 			value
 */
 line_options lineInAttributLine(std::string balise, std::string str);
 
 
 /**
- * @brief	Insertion d'un champ CSS c'est à dire d'une option valide 
- * 			dans le langage css.
- * @param{fout}	Le fichier css dans lequel l'insertion à lieu
- * @param{vecs} L'ensemble des options et valeurs que contient les options
- * 				du launcher
+ * @brief	Insert of a CSS field -> a valid option in the css language
+ * 
+ * @param{fout}	The css file where the insert is make
+ * @param{vecs} All options and values what contains launcher options
  * @return
 */
 void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
@@ -261,14 +254,11 @@ void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
 
 //************************* CSS **********************//
 /**
- * @brief	Détecter la présence de plusieurs ID similaire pour 2 balises 
- * 			différentes mais aussi le fait que d'écrire une option qu'une 
- * 			seule fois dans le fichier css alors que techniquement 
- * 			avec l'héritage on pourrais l'écrire plusieurs fois 
- *			dans le fichier. L'héritage étant une option que l'on 
- *			va mettre en place plus tard.
- * @param{a,b}	Les 2 structures option_and_value en comparaison
- * @return 1 pour suppression 0 pour ignorer
+ * @brief	Detect the presence of many similar ID for two differents tags
+ * 			and write just one time this tag.
+ * 			In future version the inheritance change this behavior
+ * @param{a,b}	Compare a and b struct
+ * @return True for delete False for ignore 
 */
 
 bool m_class_u_id(option_and_value a, option_and_value b)
@@ -279,6 +269,12 @@ bool m_class_u_id(option_and_value a, option_and_value b)
 			return 1;
 	return 0;
 }
+
+/**
+ * @brief	Sort the struct a and b 
+ * @param{a,b}	Compare a and b struct
+ * @return True for sort False for ignore 
+*/
 
 bool sort_ov(option_and_value a, option_and_value b)
 {

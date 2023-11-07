@@ -33,23 +33,22 @@ class Balise {
         void setBal_with_str(std::string str);
 
 		/**
-		 * @brief	Voir pairvec_in_str mais cette fois avec en setter du vecteur
-		 * 			pv_o de l'objet balise
-		 * @param{pv}	L'ensemble de pair à ajouter au vecteur pv_o
-		 * @param{with_end} Savoir si on ajoute '/' à la fin de la balise
-		 * @return	La chaine correctement assembler pour debug
+		
+		 * @brief 	pairvec_in_str but the vector is in parameter
+		 * @param{pv}	 All pair to add to pv_o
+		 * @param{with_end} Known if add '/' at the end of the tag
+		 * @return	The string with options and the correct end tag
 		*/
 		std::string setOptionsBalise(pairvec pv, int with_end);
 		void setCoordonnees(int dF, int fF, int dL, int fL);
 
 		//Adds
 		/**
-		 * @brief	Afin de placer de manière correcte une balise dans une 
-		 * 			balise parent on doit utiliser les différents index de 
-		 * 			position de la balise parente afin d'insérer tout le contenu
-		 * 			de la balise en paramèètre dans la balise parente.
+		 * @brief	For a corerctly insert a tag in a parent tag. It's use
+		 *			differents index of position of the parent tag for insert 
+		 * 			the tag content in parameter of the parent tag.
 		 * 
-		 * @param{new_bal}	La nouvelle balise à ajouter au parent
+		 * @param{new_bal}	The new tag to add in the parent
 		 * @return
 		*/
 		void add_balisev2(Balise new_bal);
@@ -60,9 +59,9 @@ class Balise {
 		inline void bal_in_str() {bal_str = toString(tag);}
 		inline void str_in_bal() {tag = toAsValue(bal_str);}
 		/**
-		 * @brief	Retranscrire les options de l'objet dans la balise
+		 * @brief	Copy the object options in this tag
 		 * @param{none}
-		 * @return	la chaine qui contient les différentes option de la balise
+		 * @return	The string which contains the tag options
 		*/
 		std::string pairvec_in_str();
 
