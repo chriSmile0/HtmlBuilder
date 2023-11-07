@@ -6,41 +6,39 @@
 /**
  * @brief	Il s'agit là d'effacer de la chaine les '{'/'}' de la chaine en 
  * 			entrée
- * @param{str}	la chaine à parser
- * @return	la chaine sans les '{'/'}' à condition que ces caractères soit présent
+ * @brief	Remove the '{' '}' of the parameter string
+ * @param{str}	string to parse
+ * @return	the string without '{'/'}'
 */
-std::string without_accolade(std::string str);
+std::string withoutBracket(std::string str);
 
 /**
- * @brief	Création d'un split maison afin de split avec un caractère précis
- * 			mais des chaines qui sont au même niveau c'est à dire qui ont le
- * 			même parent
- * @param{str}	la chaine à découper
- * @param{spliiter}	le caractère de split
- * @return	la chaine découper en plusieurs parties dans un vecteur
+ * @brief	Homemade split with a precise character. But these string must 
+ * 			have the same parent
+ * @param{str}	the stirng to split
+ * @param{spliiter}	split character
+ * @return	the split string in diffetrents vector
 */
-std::vector<std::string> split_str_homemade(std::string str, char splitter);
+std::vector<std::string> splitStrHomemade(std::string str, char splitter);
 
 /**
- * @brief	Savoir si on peut couper la chaine en entrée avec le caractère 
- * 			demandé
- * @param{str}	la chaine à découper
- * @param{splitter}	le caractère de split
- * @return	un vecteur d'index qui signifie les endroits où l'on coupe la chaine
+ * @brief	Known if it's possible to split the string
+ * @param{str}	the string to split
+ * @param{splitter}	split character
+ * @return 	an index vector which means where the string is cut
 */
-std::vector<int> split_or_not(std::string str, char splitter);
+std::vector<int> splitOrNot(std::string str, char splitter);
 
 /**
- * @brief	Le corps même du projet.
- * 			Il s'agit là d'une fonction récursive qui découpe chaque chaine de 
- * 			même niveau en plusieurs parties afin d'en extraire de manière 
- * 			récursive le contenu.
+ * @brief	The project body.
+ * 			This is a recursive function which split every string of the same 
+ * 			level in many parts for extract the content.
  * 
- * @param{str} la chaine à parser
- * @return	Une balise qui contient toutes les balises qu'il est possible de 
- * 			construire dans la chaine passer paramètre.
+ * @param{str} string to parse
+ * @return  A tag which contains all tags there is possible to build in the 
+ * 			string parameter
 */
-Balise demand_in_balisev4(std::string str);
+Tag demandInTag(std::string str);
 
 #include "../src/util_wo.hpp"
 

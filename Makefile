@@ -10,7 +10,7 @@ checkexec : main
 	mkdir test 2> /dev/null ; \
 	cd build ; \
 	./htmlbuilder --sy -f ../style_lines ../test2.html ../test3.css
-#Il faut forcer un argument si on a mf ou sy sur --d et -c 
+#Force an argument if 'mf' or 'sy' on --d and -c 
 
 test : main
 	mkdir test 2> /dev/null ; \

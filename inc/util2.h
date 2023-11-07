@@ -79,29 +79,29 @@ X(Var, "var", false, "")
 //À COMPLÉTER ...// 
 
 
-#define X(num, name, is_bloc_level, attributs) num,
+#define X(num, name, is_bloc_level, attributes) num,
 enum tags : size_t
 {
     TAGS
 };
 #undef X
 
-#define X(num, name, is_bloc_level, attributs) name,
+#define X(num, name, is_bloc_level, attributes) name,
 const char *name_tags[] =
 {
     TAGS
 };
 #undef X
 
-#define X(num, name, is_bloc_level, attributs) is_bloc_level,
-bool inline_Bloc[] 
+#define X(num, name, is_bloc_level, attributes) is_bloc_level,
+bool inline_Block[] 
 {
     TAGS
 };
 #undef X
 
-#define X(num, name, is_bloc_level, attributs) attributs,
-const char *attributs[] = 
+#define X(num, name, is_bloc_level, attributes) attributes,
+const char *attributes[] = 
 {
     TAGS
 };
@@ -110,18 +110,18 @@ const char *attributs[] =
 
 std::vector<std::string> parseLine(std::string str, char splitter);
 
-std::vector<vec_attr> attributs_toVecstr() {
+std::vector<vec_attr> attributes_toVecstr() {
     std::vector<vec_attr> vec;
-    for(auto a : attributs) 
+    for(auto a : attributes) 
         vec.push_back(parseLine((std::string(a))+(str),';'));
     return vec;
 }
 
-std::vector<vec_attr> share_attr = attributs_toVecstr();
+std::vector<vec_attr> share_attr = attributes_toVecstr();
 
 inline std::string toString(enum tags value) {return name_tags[value];}
 
-inline std::string toStringAttr(enum tags value) {return ((std::string)attributs[value])+str;}
+inline std::string toStringAttr(enum tags value) {return ((std::string)attributes[value])+str;}
 
 inline vec_attr toVecAttr(enum tags value) {return share_attr.at(value);}
 
@@ -132,7 +132,7 @@ bool IsAssociateAttribute(enum tags value, std::string attribute) {
     return false;        
 }
 
-inline bool toIsBloc(enum tags value) {return inline_Bloc[value];}
+inline bool toIsBlock(enum tags value) {return inline_Block[value];}
 
 enum tags toAsValue(std::string str) {
     int i = 0;
