@@ -23,9 +23,7 @@ std::string withoutBracket(std::string str) {
 			break;
 		}
 	}
-	if((start == 0) && (end == str.length()))
-		return str;
-	return str.substr(start,end);
+	return ((start == 0) && (end == str.length())) ? str : str.substr(start,end);
 }
 
 

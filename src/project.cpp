@@ -30,7 +30,7 @@ void checkDAndC(std::string& save_option, int argc, int optind,
 		else if(argc-optind == 1) {
 			flag_mf_s = 'm';
 			out_opt = CheckExtension(argv[optind],"html");
-			if(flag_cs_mf_sy != 's') {/
+			if(flag_cs_mf_sy != 's') {
 				save_option = out_opt;
 				if(save_option.substr(save_option.find_last_of(".")+1)=="html")
 					out_opt = save_option;
@@ -209,8 +209,10 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		modification = construction;
-		if(((flag != 'd') && (flag != 's')) && ((modification == "stop") || (modification == ""))) 
+		if(((flag != 'd') && (flag != 's')) && 
+			((modification == "stop") || (modification == ""))) {
 			std::cout << "***Nothing to Modify***" << std::endl;
+		}
 		else {
 			std::cout << "***Possibility to Modify HTML***" << std::endl;
 			std::cout << "***Modify IN PROGRESS***" << std::endl;
