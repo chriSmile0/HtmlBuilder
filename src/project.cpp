@@ -2,7 +2,7 @@
 #include <getopt.h>
 
 
-int CheckOpenFile(std::string f, std::string type) { //Voir pour macro 
+int CheckOpenFile(std::string f, std::string type) {
 	std::fstream file(f, std::ios::in);
 	int retour = file.fail();
 	if(retour == -1) {
@@ -20,7 +20,7 @@ std::string CheckExtension(char *path, std::string extension) {
 			return tmp;
 }
 
-void checkDandC(std::string& save_option, int argc, int optind, 
+void checkDAndC(std::string& save_option, int argc, int optind, 
 				std::string& out_opt, char *argv[], char& flag_mf_s, char flag_cs_mf_sy) 
 {
 	if(flag_cs_mf_sy != '-') {
@@ -30,7 +30,7 @@ void checkDandC(std::string& save_option, int argc, int optind,
 		else if(argc-optind == 1) {
 			flag_mf_s = 'm';
 			out_opt = CheckExtension(argv[optind],"html");
-			if(flag_cs_mf_sy != 's') {//a mettre sous fct
+			if(flag_cs_mf_sy != 's') {/
 				save_option = out_opt;
 				if(save_option.substr(save_option.find_last_of(".")+1)=="html")
 					out_opt = save_option;
@@ -41,8 +41,8 @@ void checkDandC(std::string& save_option, int argc, int optind,
 		}
 		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
 			flag_mf_s = 's';
-			save_option = CheckExtension(argv[optind+1],"css");//verif css
-			out_opt = CheckExtension(argv[optind],"html");	//verif html 
+			save_option = CheckExtension(argv[optind+1],"css");//check css
+			out_opt = CheckExtension(argv[optind],"html");	//check html
 		}
 	}
 }
@@ -56,13 +56,13 @@ void checkL(std::string& save_option, int argc, int optind,
 		out_opt = "../test/test.html";
 		if(flag_cs_mf_sy != 'y') {
 			if(argc-optind == 1)
-				out_opt = CheckExtension(argv[optind],"html");//check du .html(!)
+				out_opt = CheckExtension(argv[optind],"html");//check of .html(!)
 			flag_mf_s = flag_cs_mf_sy;
 		}
 		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
 			flag_mf_s = 's';
-			out_opt = CheckExtension(argv[optind],"html"); //verif html
-			out_opt2 = CheckExtension(argv[optind+1],"css"); //verif css
+			out_opt = CheckExtension(argv[optind],"html"); //check html
+			out_opt2 = CheckExtension(argv[optind+1],"css"); //check css
 		}
 	}
 }
@@ -76,13 +76,13 @@ void checkF(std::string& save_option, int argc, int optind,
 		out_opt = "../test/test.html";
 		if(flag_cs_mf_sy != 'y') {
 			if(argc-optind == 1)
-				out_opt = CheckExtension(argv[optind],"html");//check du .html(!)
+				out_opt = CheckExtension(argv[optind],"html");//check .html(!)
 			flag_mf_s = flag_cs_mf_sy;
 		}
 		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
 			flag_mf_s = 's';
-			out_opt = CheckExtension(argv[optind],"html"); //verif html
-			out_opt2 = CheckExtension(argv[optind+1],"css"); //verif css
+			out_opt = CheckExtension(argv[optind],"html"); //check html
+			out_opt2 = CheckExtension(argv[optind+1],"css"); //check css
 		}
 	}
 }
@@ -117,10 +117,10 @@ int main(int argc, char *argv[]) {
 			case 'l': checkL(save_option,argc,optind,out_opt,out_opt2,argv,
 						flag_mf_s,flag_cs_mf_sy);
 				break;
-			case 'c': checkDandC(save_option,argc,optind,out_opt,argv,flag_mf_s,
+			case 'c': checkDAndC(save_option,argc,optind,out_opt,argv,flag_mf_s,
 						flag_cs_mf_sy);
 				break;
-			case 'd': checkDandC(save_option,argc,optind,out_opt,argv,flag_mf_s,
+			case 'd': checkDAndC(save_option,argc,optind,out_opt,argv,flag_mf_s,
 						flag_cs_mf_sy);
 				break;
 			case 's'://Construction
@@ -196,15 +196,15 @@ int main(int argc, char *argv[]) {
 		else {
 			std::cout << "***Possibility to Build HTML***" << std::endl;
 			std::cout << "***BUILD IN PROGRESS***" << std::endl;
-			Balise out;
+			Tag out;
 			if(flag != 'd') 
-				out = demand_in_balisev4(construction,0);
+				out = demandInTag(construction,0);
 			else 
-				out = demand_in_balisev4(test5,0);
+				out = demandInTag(test5,0);
 			
-			std::vector<Balise> vec_html = {out};
+			std::vector<Tag> vec_html = {out};
 			HTML one_html{out_opt,vec_html};
-			one_html.addinfile();
+			one_html.addInFile();
 		}
 	}
 	else {
@@ -219,10 +219,10 @@ int main(int argc, char *argv[]) {
 					save_option = out_opt2;
 			std::fstream file(out_opt,std::ios::in | std::ios::out);
 			std::string test_modif = "1span sp;1p paragpraphe";	// ok
-			std::string stylebalise_test = "1p id=ID|class=classe;1span id=IDs";// ?
+			std::string styletag_test = "1p id=ID|class=classe;1span id=IDs";// ?
 			if(flag_mf_s == 's') {
 				if(flag == 'd') 
-					fileModificationAttributeTags(file,stylebalise_test,save_option);
+					fileModificationAttributeTags(file,styletag_test,save_option);
 				else 
 					fileModificationAttributeTags(file,modification,save_option);
 			}

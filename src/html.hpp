@@ -1,27 +1,27 @@
 #include "../inc/html.h"
 
-HTML::HTML(std::string name,std::vector<Balise> vec) {
+HTML::HTML(std::string name,std::vector<Tag> vec) {
     Filename = name;
-    b_vec = vec;
+    t_vec = vec;
 }
 
 HTML& HTML::operator=(HTML const& copy) {
 	Filename = copy.Filename;
-	b_vec = copy.b_vec;
+	t_vec = copy.t_vec;
 	return *this;
 }
 
 HTML::HTML(HTML const& copy) {
 	Filename = copy.Filename;
-	b_vec = copy.b_vec;
+	t_vec = copy.t_vec;
 }
 
 
-void HTML::addinfile() {
+void HTML::addInFile() {
     sfile = std::fstream(Filename, std::ios::in | std::ios::out | std::ios::trunc);
     setFpHtml();
-    for(auto bal : b_vec)
-        sfile << bal.getBloc_balise();
+    for(auto tag : t_vec)
+        sfile << tag.getBlockTag();
     setLpHtml();
     sfile.close();
 }

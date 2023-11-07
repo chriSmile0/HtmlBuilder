@@ -4,13 +4,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(HtmlBuilder LANGUAGES CXX)
 
-add_executable(htmlbuilder src/projet.cpp)
+add_executable(htmlbuilder src/project.cpp)
 target_sources(htmlbuilder PRIVATE 
-	src/projet.cpp
+	src/project.cpp
 	inc/html.h
 	src/html.hpp
-	inc/balise.h
-	src/balise.hpp
+	inc/tag.h
+	src/tag.hpp
 	inc/util_wo.h
 	src/util_wo.hpp
 	inc/util.h

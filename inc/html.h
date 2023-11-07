@@ -1,7 +1,7 @@
 #ifndef HTML_H
 #define HTML_H
 
-#include "balise.h"
+#include "tag.h"
 #include <vector>
 
 class HTML {
@@ -9,11 +9,11 @@ class HTML {
 		std::string Filename;
     	std::string title;
 		std::fstream sfile;
-		std::vector<Balise> b_vec;
+		std::vector<Tag> t_vec;
 
 	public:
 		HTML() {Filename = "/tmp/123456";}
-		HTML(std::string name,std::vector<Balise> vec);
+		HTML(std::string name,std::vector<Tag> vec);
 		HTML(HTML const& copy);
 		HTML& operator=(HTML const& copy);
 		~HTML();
@@ -28,7 +28,7 @@ class HTML {
 		 * @param{none}
 		 * @return
 		*/
-		void addinfile();
+		void addInFile();
 };
 
 #include "../src/html.hpp"

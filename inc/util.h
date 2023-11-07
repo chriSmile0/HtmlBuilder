@@ -55,16 +55,16 @@ typedef struct {
 } option_and_value;
 
 typedef struct {
-	int debut_tagF;
-	int fin_tagF;
-	int debut_tagL;
-	int fin_tagL;
-} coordonnees_tag;
+	int begin_tagF;
+	int end_tagF;
+	int begin_tagL;
+	int end_tagL;
+} coordinates_tag;
 
 typedef struct {
 	int index;
-	std::string balise;
-	std::string contenu;
+	std::string tag;
+	std::string content;
 } modif_struct;
 
 typedef struct {
@@ -124,14 +124,14 @@ std::string getLpv2(std::string s, int jb, int ja, int nb_tab);
  * @param{str}	string to parse
  * @return 	the string in parameter or the tag if there is things to parse
 */
-std::string extract_balise(std::string str);
+std::string extractTag(std::string str);
 
 /**
  * @brief	Extract an integer of a string like "2p" -> '2'
  * @param{str} string to parse
  * @return 	the corresponding digit or "0" if not digit in the string
  */
-std::string extract_digit(std::string str);
+std::string extractDigit(std::string str);
 
 /**
  * @brief 	Return the tag in string if he corresponds to a recognize tag.
@@ -139,7 +139,7 @@ std::string extract_digit(std::string str);
  * @param{str}	The string In
  * @return	The string In or empty string
 */
-std::string check_balise(std::string str);
+std::string checkTag(std::string str);
 
 /**
  * @brief	Jump the '{''}' and the spaces if it's necessary for known the 
@@ -147,7 +147,7 @@ std::string check_balise(std::string str);
  * @param{str}	string to parse
  * @return 	The integer which represent the number of jumps to reach the following
 */
-int jump_to_next_balise(std::string str);
+int jumpToNextTag(std::string str);
 
 /**
  * @brief	Grow up target file
@@ -193,7 +193,7 @@ std::vector<modif_struct> extractLineContent(std::string str);
  * @param{balise}	The research tag
  * @return The index for the insertion content and a number of tabs
 */
-idx_tabs searchBaliseInFile(std::fstream& f, int num, std::string balise);
+idx_tabs searchTagInFile(std::fstream& f, int num, std::string tag);
 
 /**
  * @brief	Search a token in a string
@@ -223,7 +223,7 @@ void fileModification(std::fstream& f, std::string str);
  * @return 	Not need to return a number of tabs. This time we return the index
  * 			of the start of the insert -> <p> -> <p{INSERT}>
 */
-int searchBaliseInFileForStyle(std::fstream& f, int num, std::string balise);
+int searchTagInFileForStyle(std::fstream& f, int num, std::string tag);
 
 /**
  * @brief	Parse a line 'id=Id|class=Class for to adds as attributes of a tag
@@ -234,7 +234,7 @@ int searchBaliseInFileForStyle(std::fstream& f, int num, std::string balise);
  * 			option_and_value who is a struct who associate an option to one 
  * 			value
 */
-line_options lineInAttributLine(std::string balise, std::string str);
+line_options lineInAttributLine(std::string tag, std::string str);
 
 
 /**
@@ -261,7 +261,7 @@ void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
  * @return True for delete False for ignore 
 */
 
-bool m_class_u_id(option_and_value a, option_and_value b)
+bool multiClassUniqueId(option_and_value a, option_and_value b)
 {
     if(((a.option == "id") && (b.option == "id")) 
 		|| ((a.option == "class") && (b.option == "class")))
@@ -276,7 +276,7 @@ bool m_class_u_id(option_and_value a, option_and_value b)
  * @return True for sort False for ignore 
 */
 
-bool sort_ov(option_and_value a, option_and_value b)
+bool sortOv(option_and_value a, option_and_value b)
 {
 	if((a.option < b.option) && (a.value < b.option))
 		return 1;
