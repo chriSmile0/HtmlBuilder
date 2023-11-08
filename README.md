@@ -37,7 +37,7 @@ any block is create by the inline or not inline level.
 ### Modification 
 	./htmlbuilder --mf --d page.html
 	./htmlbuilder --mf -c page.html
-	./htmlbuilder --mf -l "1p paragraphe" page.html
+	./htmlbuilder --mf -l "1p paragraphe" ../page.html
 	./htmlbuilder --mf -f ../modif_lines page.html
 
 ### Modification Style 
@@ -59,10 +59,11 @@ any block is create by the inline or not inline level.
 	`make test OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html} ARG3={""/s.css}`
 
 **Examples:**
-- `make testconstruction OPT=-l ARG1="article\;p" ARG2=page.html`
-- `make testmodifcation OPT=-f ARG1=../modif_lines ARG2=../page.html`
-- `make testmodifcationstyle OPT=-f ARG1=../style_lines ARG2=../page.html ARG3=../style.css`
-- `make testmodifcationstyle OPT=-l ARG1="1p id=ID" ARG2=../page.html ARG3=../style.css`
+- `make testconstruction OPT=-l ARG1="article\;p" ARG2=../test/page.html`
+- `make testmodification OPT=-f ARG1=../modif_lines ARG2=page.html`
+- `make testmodification OPT=-f ARG1="1p paragraphe\;1span spa" ARG2=page.html`
+- `make testmodificationstyle OPT=-f ARG1=../style_lines ARG2=../page.html ARG3=../style.css`
+- `make testmodificationstyle OPT=-l ARG1="1p id=ID\|class=classe\;1span class=classe" ARG2=../page.html ARG3=../style.css` 
 
 
 ## Features 

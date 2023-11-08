@@ -15,6 +15,7 @@ std::string getFpv2(std::string s, int jump, int nb_tab) {
 		tabulations += "\t";
 	return (jump) ? ("\n"+tabulations+"<"+s+">") : ("<" + s + ">");
 }
+
 std::string getLpv2(std::string s, int jb, int ja, int nb_tab) {
 	std::string tabs = "";
 	for(int i = 0 ; i < nb_tab;i++)
