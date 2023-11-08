@@ -276,12 +276,7 @@ bool multiClassUniqueId(option_and_value a, option_and_value b)
  * @return True for sort False for ignore 
 */
 
-bool sortOv(option_and_value a, option_and_value b)
-{
-	if((a.option < b.option) && (a.value < b.option))
-		return 1;
-	return 0;
-}
+inline bool sortOv(option_and_value a, option_and_value b) {return ((a.option < b.option) && (a.value < b.option)) ? 1 : 0;}
 
 #include "../src/util.hpp"
 

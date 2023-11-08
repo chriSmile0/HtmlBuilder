@@ -1,5 +1,6 @@
 #include "../inc/util_wo.h"
 #include <getopt.h>
+#include <string.h>
 
 
 int CheckOpenFile(std::string f, std::string type) {
@@ -54,15 +55,31 @@ void checkL(std::string& save_option, int argc, int optind,
 	if(flag_cs_mf_sy != '-') {
 		save_option = argv[optind-1];
 		out_opt = "../test/test.html";
+		std::cout << argc-optind << std::endl;
+		std::cout << flag_cs_mf_sy << std::endl;
 		if(flag_cs_mf_sy != 'y') {
-			if(argc-optind == 1)
+			if(argc-optind == 1) {
 				out_opt = CheckExtension(argv[optind],"html");//check of .html(!)
+			}
+			else {
+				for(int i = optind ; i < argc-1 ;i++)
+					save_option = save_option + " "+ argv[i];
+				out_opt = CheckExtension(argv[argc-1],"html");
+			}
 			flag_mf_s = flag_cs_mf_sy;
 		}
-		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
+		else {
 			flag_mf_s = 's';
-			out_opt = CheckExtension(argv[optind],"html"); //check html
-			out_opt2 = CheckExtension(argv[optind+1],"css"); //check css
+			if(argc-optind == 2) {
+				out_opt = CheckExtension(argv[optind],"html"); //check html
+				out_opt2 = CheckExtension(argv[optind+1],"css"); //check css
+			}
+			else {
+				for(int i = optind ; i < argc-2 ;i++)
+					save_option = save_option + " "+ argv[i];
+				out_opt = CheckExtension(argv[argc-2],"html");
+				out_opt2 = CheckExtension(argv[argc-1],"css");
+			}
 		}
 	}
 }
@@ -74,6 +91,8 @@ void checkF(std::string& save_option, int argc, int optind,
 	if(flag_cs_mf_sy != '-') {
 		save_option = argv[optind-1];
 		out_opt = "../test/test.html";
+		std::cout << argc-optind << std::endl;
+		std::cout << flag_cs_mf_sy << std::endl;
 		if(flag_cs_mf_sy != 'y') {
 			if(argc-optind == 1)
 				out_opt = CheckExtension(argv[optind],"html");//check .html(!)
@@ -209,8 +228,10 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		modification = construction;
-		if(((flag != 'd') && (flag != 's')) && ((modification == "stop") || (modification == ""))) 
+		if(((flag != 'd') && (flag != 's')) && 
+			((modification == "stop") || (modification == ""))) {
 			std::cout << "***Nothing to Modify***" << std::endl;
+		}
 		else {
 			std::cout << "***Possibility to Modify HTML***" << std::endl;
 			std::cout << "***Modify IN PROGRESS***" << std::endl;
@@ -220,6 +241,8 @@ int main(int argc, char *argv[]) {
 			std::fstream file(out_opt,std::ios::in | std::ios::out);
 			std::string test_modif = "1span sp;1p paragpraphe";	// ok
 			std::string styletag_test = "1p id=ID|class=classe;1span id=IDs";// ?
+			std::cout << out_opt << std::endl;
+			std::cout << modification << std::endl;
 			if(flag_mf_s == 's') {
 				if(flag == 'd') 
 					fileModificationAttributeTags(file,styletag_test,save_option);
@@ -227,7 +250,7 @@ int main(int argc, char *argv[]) {
 					fileModificationAttributeTags(file,modification,save_option);
 			}
 			else if(flag_mf_s = 'm') {
-				if(flag == 'd')
+				if(flag == 'd') 
 					fileModification(file,test_modif);
 				else 
 					fileModification(file,modification);

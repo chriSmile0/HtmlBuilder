@@ -13,19 +13,14 @@ std::string getFpv2(std::string s, int jump, int nb_tab) {
 	std::string tabulations = "";
 	for(int i = 0 ; i < nb_tab;i++)
 		tabulations += "\t";
-	if(jump)
-		return ("\n"+tabulations+"<"+s+">");
-	return  ("<" + s + ">");
+	return (jump) ? ("\n"+tabulations+"<"+s+">") : ("<" + s + ">");
 }
+
 std::string getLpv2(std::string s, int jb, int ja, int nb_tab) {
-	std::string tabulations = "";
+	std::string tabs = "";
 	for(int i = 0 ; i < nb_tab;i++)
-		tabulations += "\t";
-	if((jb) && (!ja))
-		return ("\n"+tabulations+"</" + s + ">");
-	if((jb) && (ja))
-		return (("\n"+tabulations+"</" + s + ">\n"));
-	return ("</" + s + ">");
+		tabs += "\t";
+	return (jb) ? ((!ja) ? ("\n"+tabs+"</" + s + ">") : (("\n"+tabs+"</" + s + ">\n"))) : ("</" + s + ">");
 }
 
 
@@ -55,15 +50,11 @@ std::string extractDigit(std::string str) {
 	int i = 0;
 	while(((str[i] >= '0') && (str[i] <= '9')) && (str[i] != '\0'))
 		i++;
-	if(i == 0)
-		return "0";//tag = 1tag
-	return str.substr(0,i);
+	return (i == 0) ? "0" : str.substr(0,i);
 }
 
 
-void growUpFile(std::fstream& f, int extend_size) {//HOME
-	f.seekp(extend_size,std::ios::end);
-}
+inline void growUpFile(std::fstream& f, int extend_size) { f.seekp(extend_size,std::ios::end);}
 
 void insertLineInFile(std::fstream& f, std::string str, int index) {
 	int size_line = str.length();
@@ -117,9 +108,7 @@ std::vector<modif_struct> extractLineContent(std::string str) {
 	return content;
 }
 
-int inLine(std::string str, std::string token) {
-	return str.find(token);
-}
+inline int inLine(std::string str, std::string token) {return str.find(token);}
 
 idx_tabs searchTagInFile(std::fstream& f, int num, std::string tag) {
 	idx_tabs i_t;
@@ -138,10 +127,7 @@ idx_tabs searchTagInFile(std::fstream& f, int num, std::string tag) {
 	}
 	bool isbloc = toIsBlock(toAsValue(tag));
 	int nb_tab = countTab(recup_line);
-	if(isbloc)
-		i_t.nb_tabs = nb_tab;
-	else 
-		i_t.nb_tabs = 0;
+	i_t.nb_tabs = (isbloc) ? nb_tab : 0;
 
 	int true_index = total_block.length() + index; //+ (nb_tab-1);
 	i_t.idx = true_index;
@@ -226,9 +212,7 @@ void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs) {
 }
 
 void fileModificationAttributeTags(std::fstream& f, std::string str, std::string fileout) {
-	int flagout_css = 0;
-	if(fileout != "") 
-		flagout_css = 1;
+	int flagout_css = (fileout != "") ? 1 : 0;
 	vecOV v_o;
 	for(auto m_f : extractLineContent(str)) {
 		int index = searchTagInFileForStyle(f,m_f.index,m_f.tag);

@@ -4,8 +4,6 @@
 #include "html.h"
 
 /**
- * @brief	Il s'agit là d'effacer de la chaine les '{'/'}' de la chaine en 
- * 			entrée
  * @brief	Remove the '{' '}' of the parameter string
  * @param{str}	string to parse
  * @return	the string without '{'/'}'

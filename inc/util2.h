@@ -140,7 +140,7 @@ enum tags toAsValue(std::string str) {
     while((i < size) && (name_tags[i] != str))
        i++;
     if(i == size)
-        i = -1;//erreur pas présent
+        i = -1;
     return (enum tags)i;
 }
 
