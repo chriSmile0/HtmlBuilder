@@ -194,36 +194,69 @@ line_options lineInAttributLine(std::string tag, std::string str) {
 		lo.v.push_back(ov);
 	}
 	lo.str = out_str;
+	lo.tag = tag;
 	return lo;
 }
 
-void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs) {
-	std::ofstream f(fout);
-	std::sort(vecs.begin(),vecs.end(),sortOv);	
-	vecs.erase(std::unique(vecs.begin(),vecs.end(),multiClassUniqueId),vecs.end());
-	for(auto ov : vecs) {
+void insertLineInFileCss(std::ofstream &f, std::vector<option_and_value> vecs, std::vector<Tag_opts> tags_opts) {
+	std::vector<option_and_value> vecs_options;
+	std::vector<std::string> tags = {"*","html","body","header","section",
+								"article","div","p","footer","span"};
+	//add_body_html_*_header_footer.. if not present
+
+	for(auto t_opts : tags_opts) {
+		tags.push_back(t_opts.tag);
+		for(auto opts : t_opts.vec_ov) 
+			vecs_options.push_back(opts);
+	}
+	
+	std::sort(tags.begin(),tags.end(),sortStr);
+	std::sort(tags.begin(),tags.end(),sortCssTags);
+	tags.erase(std::unique(tags.begin(),tags.end(),uniqueTag),tags.end());
+	
+
+	std::sort(vecs_options.begin(),vecs_options.end(),sortOv);	
+	vecs_options.erase(std::unique(vecs_options.begin(),vecs_options.end(),multiClassUniqueId),vecs_options.end());
+
+	//DEFAULT_CSS_CONTENT
+	std::string dflt_css_ctt = "\tmargin: auto;\n";
+	//END DEFAULT_CSS_CONTENT
+	for(auto tag : tags) 
+		f << tag + " {\n"+dflt_css_ctt+"}\n" << std::endl;
+	
+	for(auto ov : vecs_options) {
 		if(ov.option == "id") 
-			f <<  "#"+ov.value+" {\n}\n";
+			f <<  "#"+ov.value+" {\n"+dflt_css_ctt+"}\n\n";
 		else if(ov.option == "class") 
-			f << "."+ov.value+" {\n}\n";
+			f << "."+ov.value+" {\n"+dflt_css_ctt+"}\n\n";
 		else 
 			std::cerr << "option not recognize " << std::endl;
+	}
+
+	for(auto t_opts : tags_opts) {
+		for(auto ov : t_opts.vec_ov) 
+			if(ov.option == "class") 
+				f << t_opts.tag + "."+ov.value+" {\n"+dflt_css_ctt+"}\n\n";
 	}
 }
 
 void fileModificationAttributeTags(std::fstream& f, std::string str, std::string fileout) {
 	int flagout_css = (fileout != "") ? 1 : 0;
 	vecOV v_o;
+	vecTagOpts v_t_o;
+	std::ofstream f_out(fileout);
 	for(auto m_f : extractLineContent(str)) {
 		int index = searchTagInFileForStyle(f,m_f.index,m_f.tag);
 		line_options lineAttrLine = lineInAttributLine(m_f.tag,m_f.content);
 		std::string str_line = lineAttrLine.str;
 		vecOV ov = lineAttrLine.v;
 		insertLineInFile(f," "+str_line,index);
-		if(flagout_css) 
+		if(flagout_css) {
+			v_t_o.push_back({lineAttrLine.tag,ov});
 			for(auto o_v : ov)
 				v_o.push_back(o_v);
+		}
 	}
 	if(flagout_css)
-		insertLineInFileCss(fileout,v_o);
+		insertLineInFileCss(f_out,v_o,v_t_o);
 }

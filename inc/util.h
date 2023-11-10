@@ -72,11 +72,20 @@ typedef struct {
 	int nb_tabs;
 } idx_tabs;
 
+
 using vecOV = std::vector<option_and_value>;
+
+typedef struct {
+	std::string tag;
+	std::vector<option_and_value> vec_ov;
+} Tag_opts;
+
+using vecTagOpts = std::vector<Tag_opts>;
 
 typedef struct {
 	std::string str;
 	vecOV v;
+	std::string tag;
 } line_options;
 
 /**
@@ -244,7 +253,7 @@ line_options lineInAttributLine(std::string tag, std::string str);
  * @param{vecs} All options and values what contains launcher options
  * @return
 */
-void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
+void insertLineInFileCss(std::ofstream &fout, std::vector<option_and_value> vecs);
 
 /**
  * @brief
@@ -265,7 +274,60 @@ bool multiClassUniqueId(option_and_value a, option_and_value b)
 {
     if(((a.option == "id") && (b.option == "id")) 
 		|| ((a.option == "class") && (b.option == "class")))
-		if(a.value == b.value)
+		if(a.value == b.value) 
+			return 1;
+	return 0;
+}
+
+/**
+ * @brief
+ * @param{a,b}
+ * @return 
+*/
+inline bool uniqueTag(std::string a, std::string b) {return (a == b);}
+
+/**
+ * @brief	Sort the strings a and b 
+ * @param{a,b}	Compare a and b strings
+ * @return True for sort False for ignore 
+*/
+
+inline bool sortStr(std::string a, std::string b) {return (a <= b) ? 1 : 0;}
+
+/**
+ * @brief	Sort Css tags a and b  
+ * @param{a,b}	Compare a and b csstags
+ * @return True for sort False for ignore 
+*/
+
+bool sortCssTags(std::string a, std::string b) {
+	if(a == "html") {
+		if (b == "*")
+			return 0;
+		return 1;
+	}
+	if(a == "body") {
+		if(b == "article")
+			return 1;
+		else 
+			if (a <= b)
+				return 0;
+	}
+	if(a == "header") {
+		if(b == "article")
+			return 1;
+		if(b == "aside")
+			return 1;
+		if(b == "div")
+			return 1;
+		if(b == "footer") 
+			return 1;
+		else
+			if(a <= b)
+				return 0;
+	}
+	if(b == "footer") 
+		if((a == "p") || (a == "section") || (a == "span"))
 			return 1;
 	return 0;
 }

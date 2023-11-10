@@ -30,5 +30,9 @@ testmodificationstyle : main
 	cd build ; \
 	./htmlbuilder --sy ${OPT} ${ARG1} ${ARG2} ${ARG3}
 
+teststyleinheritance : main 
+	cd build ; \
+	./htmlbuilder --sy ${OPT} ${ARG1} ${ARG2} ${ARG3}
+
 clean : 
 	-$(RM) -r build test

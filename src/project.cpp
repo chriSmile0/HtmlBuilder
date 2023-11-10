@@ -1,6 +1,5 @@
 #include "../inc/util_wo.h"
 #include <getopt.h>
-#include <string.h>
 
 
 int CheckOpenFile(std::string f, std::string type) {
@@ -55,8 +54,6 @@ void checkL(std::string& save_option, int argc, int optind,
 	if(flag_cs_mf_sy != '-') {
 		save_option = argv[optind-1];
 		out_opt = "../test/test.html";
-		std::cout << argc-optind << std::endl;
-		std::cout << flag_cs_mf_sy << std::endl;
 		if(flag_cs_mf_sy != 'y') {
 			if(argc-optind == 1) {
 				out_opt = CheckExtension(argv[optind],"html");//check of .html(!)
@@ -91,8 +88,6 @@ void checkF(std::string& save_option, int argc, int optind,
 	if(flag_cs_mf_sy != '-') {
 		save_option = argv[optind-1];
 		out_opt = "../test/test.html";
-		std::cout << argc-optind << std::endl;
-		std::cout << flag_cs_mf_sy << std::endl;
 		if(flag_cs_mf_sy != 'y') {
 			if(argc-optind == 1)
 				out_opt = CheckExtension(argv[optind],"html");//check .html(!)
@@ -208,7 +203,6 @@ int main(int argc, char *argv[]) {
 	std::string testAltREADME2 = "{p {2div {p;p}}}";		// ok V5
 	std::string testAltREADMEn = "{2section;2article}";		// ok V5
 
-	std::cout << flag_cs_mf_sy << std::endl;
 	if(flag_cs_mf_sy == 's') { 
 		if((flag != 'd') && ((construction == "stop") || (construction == ""))) 
 			std::cout << "***Nothing to Build***" << std::endl;
@@ -241,8 +235,6 @@ int main(int argc, char *argv[]) {
 			std::fstream file(out_opt,std::ios::in | std::ios::out);
 			std::string test_modif = "1span sp;1p paragpraphe";	// ok
 			std::string styletag_test = "1p id=ID|class=classe;1span id=IDs";// ?
-			std::cout << out_opt << std::endl;
-			std::cout << modification << std::endl;
 			if(flag_mf_s == 's') {
 				if(flag == 'd') 
 					fileModificationAttributeTags(file,styletag_test,save_option);
