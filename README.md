@@ -22,7 +22,16 @@ any block is create by the inline or not inline level.
 ### V1.5 
 - Inheritance for css file 
 - `make teststyleinheritance OPT=-f ARG1=../style_lines_inh ARG2=../page.html ARG3=../style_inh.css`
-
+Pour l'attribution d'attributs a une balise 2 façons de procéder : 
+- 1p>1p, le premier sous paragraphe du premier paragraphe
+- 2p, qui est toujours le premier sous paragraphe dans l'exemple suivant :
+```<p>
+   <p>
+   </p>
+   </p>
+```
+2p fonctionne avec l'héritage avec le code suivant et aussi avec des tabs différentes
+le code précédent étant faux.
 
 
 

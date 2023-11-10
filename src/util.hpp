@@ -157,17 +157,21 @@ int searchTagInFileForStyle(std::fstream& f, int num, std::string tag) {
 	int past = 0;
 	bool isempty = true;
 	while(((goon) && (past < num)) && (getline(f,result_line))) {
+		index = 0;
 		goon = ((index = inLine(result_line,true_tag)) == -1) ? 1 : 0; 
 		if(goon == 1) {
 			goon = ((index = inLine(result_line,true_TagNEmpty)) == -1) ? 1 : 0;
 			isempty = (!goon) ? false : true;
 		}
 		past = (index != -1) ? past+1 : past;
-		if(past < num) 
+		if(past < num) {
 			total_block += result_line + "\n";
+			goon = 1;
+		}
+
 	}
-	std::string *tag_ptr = (isempty) ? &true_tag : &true_TagNEmpty ;
-	int true_index = total_block.length() + index + tag_ptr->length()-1; //+ (nb_tab-1);
+	std::string *tag_ptr = (isempty) ? &true_tag : &true_TagNEmpty;
+	int true_index = total_block.length() + index + tag_ptr->length()-1 + nb_tab;
 	return true_index;
 }
 
