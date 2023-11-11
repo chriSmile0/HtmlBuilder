@@ -72,12 +72,23 @@ typedef struct {
 	int nb_tabs;
 } idx_tabs;
 
+
 using vecOV = std::vector<option_and_value>;
+
+typedef struct {
+	std::string tag;
+	std::vector<option_and_value> vec_ov;
+} Tag_opts;
+
+using vecTagOpts = std::vector<Tag_opts>;
 
 typedef struct {
 	std::string str;
 	vecOV v;
+	std::string tag;
 } line_options;
+
+
 
 /**
  * @brief	Write a line in the In file
@@ -100,6 +111,23 @@ std::vector<std::string> readLines(std::fstream f);
  * @return
 */
 inline void closeFile(std::fstream f) {f.close();}
+
+/**
+ * @brief	Homemade split with a precise character. But these string must 
+ * 			have the same parent
+ * @param{str}	the stirng to split
+ * @param{spliiter}	split character
+ * @return	the split string in diffetrents vector
+*/
+std::vector<std::string> splitStrHomemade(std::string str, char splitter);
+
+/**
+ * @brief	Known if it's possible to split the string
+ * @param{str}	the string to split
+ * @param{splitter}	split character
+ * @return 	an index vector which means where the string is cut
+*/
+std::vector<int> splitOrNot(std::string str, char splitter);
 
 /**
  * @brief	Function which allows to write the first part of a tag
@@ -244,7 +272,22 @@ line_options lineInAttributLine(std::string tag, std::string str);
  * @param{vecs} All options and values what contains launcher options
  * @return
 */
-void insertLineInFileCss(std::string fout, std::vector<option_and_value> vecs);
+void insertLineInFileCss(std::string f_in,std::ofstream &fout, std::vector<option_and_value> vecs);
+
+/**
+ * @brief	Create tree of inheritance (like demandeInTag)
+ * @param{f} The html file to analyze
+ * @return	tree of this shape -> {0body,1p,1p,0body} for this code 
+ 			<body><p></p></body>
+*/
+std::vector<std::string> treeOfHtml(std::fstream& f);
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
+std::string profondeurMaxTree(std::vector<std::string> tree, int level);
 
 /**
  * @brief
@@ -265,8 +308,74 @@ bool multiClassUniqueId(option_and_value a, option_and_value b)
 {
     if(((a.option == "id") && (b.option == "id")) 
 		|| ((a.option == "class") && (b.option == "class")))
-		if(a.value == b.value)
+		if(a.value == b.value) 
 			return 1;
+	return 0;
+}
+
+/**
+ * @brief
+ * @param{a,b}
+ * @return 
+*/
+inline bool uniqueTag(std::string a, std::string b) {return (a == b);}
+
+/**
+ * @brief	Sort the strings a and b 
+ * @param{a,b}	Compare a and b strings
+ * @return True for sort False for ignore 
+*/
+
+inline bool sortStr(std::string a, std::string b) {return (a <= b) ? 1 : 0;}
+
+/**
+ * @brief	Sort Css tags a and b  
+ * @param{a,b}	Compare a and b csstags
+ * @return True for sort False for ignore 
+*/
+
+bool sortCssTags(std::string a, std::string b) {
+	if(a == "html") {
+		if (b == "*")
+			return 0;
+		return 1;
+	}
+	if(a == "body") {
+		if(b == "article")
+			return 1;
+		else 
+			if (a <= b)
+				return 0;
+	}
+	if(a == "header") {
+		if(b == "article")
+			return 1;
+		if(b == "aside")
+			return 1;
+		if(b == "div")
+			return 1;
+		if(b == "footer") 
+			return 1;
+		else
+			if(a <= b)
+				return 0;
+	}
+	if(b == "footer") 
+		if((a == "p") || (a == "section") || (a == "span"))
+			return 1;
+	return 0;
+}
+
+/**
+ * @brief	Unique the tree
+ * @param{a,b}	Compare a and b struct
+ * @return True for sort False for ignore 
+*/
+bool uniqueHtmlTree(std::string a, std::string b) {
+	int level_a = stoi(extractDigit(a));
+	int level_b = stoi(extractDigit(b));
+	if(a == b)
+		return 1;
 	return 0;
 }
 

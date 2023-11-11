@@ -26,48 +26,6 @@ std::string withoutBracket(std::string str) {
 	return ((start == 0) && (end == str.length())) ? str : str.substr(start,end);
 }
 
-
-std::vector<int> splitOrNot(std::string str, char splitter) {
-	std::vector<int> vec_index_split;
-	char split = splitter;
-	int i = 0;
-	int found_bracko = 0;
-	int found_brackc = 0;
-	int break_index = 0;
-	while(str[i] != '\0') {
-		if(str[i] == '{') 
-			found_bracko++;
-		if(str[i] == '}')
-			found_brackc++;
-		if(str[i] == split)
-			if(found_brackc == found_bracko) {
-				break_index = i;
-				vec_index_split.push_back(break_index);
-				break_index = 0;
-			}
-		i++;
-	}
-	return vec_index_split;
-}
-
-std::vector<std::string> splitStrHomemade(std::string str, char splitter) {
-	std::vector<int> split_index = splitOrNot(str,splitter);
-	std::vector<std::string> vec_str;
-	std::string tmp = "";
-	int start = 0;
-	int end = 0;
-	for(auto i : split_index) {
-		end = i; 
-		tmp = str.substr(start,end-start);//end-start = size;
-		vec_str.push_back(tmp);
-		tmp = "";
-		start = end+1;
-	}
-	tmp = str.substr(start,str.length());
-	vec_str.push_back(tmp);
-	return vec_str;
-}	
-
 Tag demandInTag(std::string str, int tabulation) {
 	std::string without_brack = str;
 	while((without_brack[0] == '{') && (without_brack[without_brack.length()-1] == '}')) 
