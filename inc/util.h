@@ -50,6 +50,11 @@ typedef struct {
 } options_and_tags;
 
 typedef struct {
+	std::string tag;
+	int index;
+} tag_and_index;
+
+typedef struct {
 	std::string option;
 	std::string value;
 } option_and_value;
@@ -207,10 +212,11 @@ std::vector<std::string> parseLine(std::string str);
  * 			, the content or the tag index in the target page
  * 
  * @param{str}	The string to extract lines 
+ * @param{mode} The utilisation mode {html(1),css(2)} for example
  * @return 	A vector of modif_struct, a struct which contains two strings which 
  * 			was the content and the tag.
 */
-std::vector<modif_struct> extractLineContent(std::string str);
+std::vector<modif_struct> extractLineContent(std::string str, char mode);
 
 /**
  * @brief	Search the index in a file of a tag in function of this name and a 

@@ -39,7 +39,17 @@ Fix of the latest version
 	But 2p is ok with V1.5 example 
 
 ### V1.7 
-- [ ] 1p>1p for attribution of attributes
+- [x] 1p>1p for attribution of attributes (i.e example)
+Example : 
+```
+	<p>
+		<div>
+			<p></p>
+		</div>
+	</p>
+```
+On this example 1p>1p and 1p>1div>1p give the same result -> attributes 
+on the p in the div
 
 ### V2 -> Future Version
 - Combine version to create tags and add content and style in the creation 
