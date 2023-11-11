@@ -132,17 +132,51 @@ int countTab(std::string str) {
 	return cpt;
 }
 
-std::vector<modif_struct> extractLineContent(std::string str) {
+std::vector<modif_struct> extractLineContent(std::string str, char mode) {
 	std::vector<modif_struct> content;
 	std::vector<std::string> lines = parseLine(str,';');
 	for(auto l : lines) {
 		modif_struct m_s;
-		std::string digits = extractDigit(l);
-		m_s.index = stoi(digits);
-		l = l.substr(digits.length());
-		std::string tag = extractTag(l);
+		std::vector<tag_and_index> t_i;
+		int digit = 0;
+		std::string digits;
+		std::string tag;
+		std::string l_content;
+		if(mode == '2') { //CUT LINE with ">" not necessary -> 1p>1p = 2p
+			std::vector<std::string> split_l = parseLine(l,'>');
+			int size_split_l = split_l.size() - 1;
+			if (size_split_l == 0)
+				mode = '1';
+			else {
+				int i = 0;
+				for(i = 0 ; i < size_split_l  ;i++) {
+					std::string tmp_digit = extractDigit(split_l.at(i));
+					int tag_digit = stoi(tmp_digit);
+					std::string in_tag = extractTag(split_l.at(i).substr(tmp_digit.length()));
+					t_i.push_back({in_tag,tag_digit});
+					digits += split_l.at(i)+">";
+					//CHECK VALIDITY OF TAG AGAIN HERE -> NEXT
+				}
+				l = l.substr(digits.length());
+				digits = extractDigit(l);
+				int last_digit = stoi(digits); 
+				l = l.substr(digits.length());
+				tag = extractTag(l);
+				for(auto t_and_i : t_i) 
+					if(t_and_i.tag == tag) 
+						digit = t_and_i.index + last_digit;
+				l = l.substr(tag.length()); 
+			}
+		}
+		if(mode != '2') {
+			digits = extractDigit(l);
+			digit = stoi(digits); 
+			l = l.substr(digits.length());
+			tag = extractTag(l);
+			l = l.substr(tag.length());
+		}
+		m_s.index = digit;
 		m_s.tag = tag;
-		l = l.substr(tag.length());
 		l = l.substr(jumpToNextTag(l));
 		m_s.content = l;
 		content.push_back(m_s);
@@ -177,7 +211,7 @@ idx_tabs searchTagInFile(std::fstream& f, int num, std::string tag) {
 }
 
 void fileModification(std::fstream& f, std::string str) {
-	for(auto m_f : extractLineContent(str)) {
+	for(auto m_f : extractLineContent(str,'1')) {
 		idx_tabs i_t = searchTagInFile(f,m_f.index,m_f.tag);
 		if(i_t.nb_tabs != 0) {
 			m_f.content += "\n";
@@ -322,7 +356,7 @@ void fileModificationAttributeTags(std::string f_in,std::fstream& f, std::string
 	vecOV v_o;
 	vecTagOpts v_t_o;
 	std::ofstream f_out(fileout);
-	for(auto m_f : extractLineContent(str)) {
+	for(auto m_f : extractLineContent(str,'2')) {
 		int index = searchTagInFileForStyle(f,m_f.index,m_f.tag);
 		line_options lineAttrLine = lineInAttributLine(m_f.tag,m_f.content);
 		std::string str_line = lineAttrLine.str;
