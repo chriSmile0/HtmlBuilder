@@ -19,16 +19,17 @@ any block is create by the inline or not inline level.
 - A 'cut' version to create tags and add content and style separatly
 - Excellent for modify a skeleton of html page with our style and our content
 
-### V1.5 
+### V1.5 
 - Inheritance for css file 
 - `make teststyleinheritance OPT=-f ARG1=../style_lines_inh ARG2=../page.html ARG3=../style_inh.css`
 For attributes attribution we want two way : 
 - [ ] 1p>1p, the first 
 - [x] 2p, the second with this example code :
-```<p>
-   <p>
-   </p>
-   </p>
+```
+	<p>
+	<p>
+	</p>
+	</p>
 ```
 Fix of the latest version
 
@@ -37,6 +38,8 @@ Fix of the latest version
 - [ ] Inheritance with the text file for attribution
 	But 2p is ok with V1.5 example 
 
+### V1.7 
+- [ ] 1p>1p for attribution of attributes
 
 ### V2 -> Future Version
 - Combine version to create tags and add content and style in the creation 
