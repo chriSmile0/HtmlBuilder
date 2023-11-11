@@ -22,17 +22,20 @@ any block is create by the inline or not inline level.
 ### V1.5 
 - Inheritance for css file 
 - `make teststyleinheritance OPT=-f ARG1=../style_lines_inh ARG2=../page.html ARG3=../style_inh.css`
-Pour l'attribution d'attributs a une balise 2 façons de procéder : 
-- 1p>1p, le premier sous paragraphe du premier paragraphe
-- 2p, qui est toujours le premier sous paragraphe dans l'exemple suivant :
+For attributes attribution we want two way : 
+- [ ] 1p>1p, the first 
+- [x] 2p, the second with this example code :
 ```<p>
    <p>
    </p>
    </p>
 ```
-2p fonctionne avec l'héritage avec le code suivant et aussi avec des tabs différentes
-le code précédent étant faux.
+Fix of the latest version
 
+### V1.6 -> This commit and V1.5 with fix of attribution of attriutes
+- [x] Inheritance with the html file 
+- [ ] Inheritance with the text file for attribution
+	But 2p is ok with V1.5 example 
 
 
 ### V2 -> Future Version

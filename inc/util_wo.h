@@ -10,22 +10,6 @@
 */
 std::string withoutBracket(std::string str);
 
-/**
- * @brief	Homemade split with a precise character. But these string must 
- * 			have the same parent
- * @param{str}	the stirng to split
- * @param{spliiter}	split character
- * @return	the split string in diffetrents vector
-*/
-std::vector<std::string> splitStrHomemade(std::string str, char splitter);
-
-/**
- * @brief	Known if it's possible to split the string
- * @param{str}	the string to split
- * @param{splitter}	split character
- * @return 	an index vector which means where the string is cut
-*/
-std::vector<int> splitOrNot(std::string str, char splitter);
 
 /**
  * @brief	The project body.

@@ -76,7 +76,7 @@ X(Textarea, "textarea", false, "autofocus;cols;dirname;disabled;form;maxlength;n
 X(Time, "time", false, "datetime;") \
 X(Tt, "tt", false, "") \
 X(Var, "var", false, "") 
-//À COMPLÉTER ...// 
+// TO COMPLETE ...// 
 
 
 #define X(num, name, is_bloc_level, attributes) num,
@@ -142,6 +142,22 @@ enum tags toAsValue(std::string str) {
     if(i == size)
         i = -1;
     return (enum tags)i;
+}
+
+void printEnum() {
+    int nb_tags = sizeof(name_tags)/sizeof(name_tags[0]); 
+    for(int i = 0 ; i < nb_tags ; i++) 
+        std::cout << name_tags[i] << std::endl;
+}
+
+inline int sizeNameTags() {return sizeof(name_tags)/sizeof(name_tags[0]);}
+
+std::vector<std::string> storeStrEnum() {
+    std::vector<std::string> store;
+    int nb_tags = sizeof(name_tags)/sizeof(name_tags[0]); 
+    for(int i = 0 ; i < nb_tags ; i++) 
+        store.push_back(name_tags[i]);
+    return store;
 }
 
 #endif // UTIL2_H // 

@@ -88,6 +88,8 @@ typedef struct {
 	std::string tag;
 } line_options;
 
+
+
 /**
  * @brief	Write a line in the In file
  * @param{line} the line to write in file
@@ -109,6 +111,23 @@ std::vector<std::string> readLines(std::fstream f);
  * @return
 */
 inline void closeFile(std::fstream f) {f.close();}
+
+/**
+ * @brief	Homemade split with a precise character. But these string must 
+ * 			have the same parent
+ * @param{str}	the stirng to split
+ * @param{spliiter}	split character
+ * @return	the split string in diffetrents vector
+*/
+std::vector<std::string> splitStrHomemade(std::string str, char splitter);
+
+/**
+ * @brief	Known if it's possible to split the string
+ * @param{str}	the string to split
+ * @param{splitter}	split character
+ * @return 	an index vector which means where the string is cut
+*/
+std::vector<int> splitOrNot(std::string str, char splitter);
 
 /**
  * @brief	Function which allows to write the first part of a tag
@@ -253,7 +272,22 @@ line_options lineInAttributLine(std::string tag, std::string str);
  * @param{vecs} All options and values what contains launcher options
  * @return
 */
-void insertLineInFileCss(std::ofstream &fout, std::vector<option_and_value> vecs);
+void insertLineInFileCss(std::string f_in,std::ofstream &fout, std::vector<option_and_value> vecs);
+
+/**
+ * @brief	Create tree of inheritance (like demandeInTag)
+ * @param{f} The html file to analyze
+ * @return	tree of this shape -> {0body,1p,1p,0body} for this code 
+ 			<body><p></p></body>
+*/
+std::vector<std::string> treeOfHtml(std::fstream& f);
+
+/**
+ * @brief
+ * @param
+ * @return
+*/
+std::string profondeurMaxTree(std::vector<std::string> tree, int level);
 
 /**
  * @brief
@@ -329,6 +363,19 @@ bool sortCssTags(std::string a, std::string b) {
 	if(b == "footer") 
 		if((a == "p") || (a == "section") || (a == "span"))
 			return 1;
+	return 0;
+}
+
+/**
+ * @brief	Unique the tree
+ * @param{a,b}	Compare a and b struct
+ * @return True for sort False for ignore 
+*/
+bool uniqueHtmlTree(std::string a, std::string b) {
+	int level_a = stoi(extractDigit(a));
+	int level_b = stoi(extractDigit(b));
+	if(a == b)
+		return 1;
 	return 0;
 }
 

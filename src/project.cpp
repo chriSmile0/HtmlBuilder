@@ -237,9 +237,9 @@ int main(int argc, char *argv[]) {
 			std::string styletag_test = "1p id=ID|class=classe;1span id=IDs";// ?
 			if(flag_mf_s == 's') {
 				if(flag == 'd') 
-					fileModificationAttributeTags(file,styletag_test,save_option);
+					fileModificationAttributeTags(out_opt,file,styletag_test,save_option);
 				else 
-					fileModificationAttributeTags(file,modification,save_option);
+					fileModificationAttributeTags(out_opt,file,modification,save_option);
 			}
 			else if(flag_mf_s = 'm') {
 				if(flag == 'd') 
