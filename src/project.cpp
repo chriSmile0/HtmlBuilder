@@ -89,8 +89,12 @@ void checkF(std::string& save_option, int argc, int optind,
 		save_option = argv[optind-1];
 		out_opt = "../test/test.html";
 		if(flag_cs_mf_sy != 'y') {
-			if(argc-optind == 1)
-				out_opt = CheckExtension(argv[optind],"html");//check .html(!)
+			if(argc-optind == 1) {
+				if (flag_cs_mf_sy == 'u')
+					out_opt = CheckExtension(argv[optind],"css");
+				else 
+					out_opt = CheckExtension(argv[optind],"html");//check .html(!)
+			}
 			flag_mf_s = flag_cs_mf_sy;
 		}
 		else if((argc-optind == 2) && (flag_cs_mf_sy == 'y')) {
@@ -108,6 +112,7 @@ int main(int argc, char *argv[]) {
 		{"c",optional_argument,NULL,'c'},
 		{"d",optional_argument,NULL,'d'},
 		{"sy",optional_argument,NULL,'y'},
+		{"usy",optional_argument,NULL,'u'},
 		{"ts",optional_argument,NULL,'s'},
 		{"mf",optional_argument,NULL,'m'},
 		{NULL, 0, NULL,0}
@@ -121,7 +126,7 @@ int main(int argc, char *argv[]) {
 	char flag_cs_mf_sy = 'c';
 	char flag_mf_s = '-';
 	int cpt = 0;
-	while((opt = getopt_long(argc,argv,"sym:f:l:cd",options,&index)) != -1) {
+	while((opt = getopt_long(argc,argv,"usym:f:l:cd",options,&index)) != -1) {
 		cpt++;
 		flag = (char)opt;
 		switch(opt) {
@@ -146,13 +151,16 @@ int main(int argc, char *argv[]) {
 			case 'm'://Modification
 				flag_cs_mf_sy = 'm';
 				break;
+			case 'u'://Update Style
+				flag_cs_mf_sy = 'u';
+				break;
 			default: 
 				return EXIT_FAILURE;
 				break;
 		}
 	}
 
-	if((flag == 's') || (flag == 'y') || (flag == 'm')) {
+	if((flag == 's') || (flag == 'y') || (flag == 'm') || (flag == 'u')) {
 		std::cerr << "Error minimum 2 options " << std::endl;
 		return 1;
 	}
@@ -227,7 +235,12 @@ int main(int argc, char *argv[]) {
 			std::cout << "***Nothing to Modify***" << std::endl;
 		}
 		else {
-			std::cout << "***Possibility to Modify HTML***" << std::endl;
+			if(flag_cs_mf_sy == 'u') 
+				std::cout << "***Possibility to Modify CSS***" << std::endl;
+				//POSSIBILITY TO MODIF THE CSS DIRECTLY IN THE CSS 
+				//OTHER OPTION FOR OTHER COMMIT 
+			else 
+				std::cout << "***Possibility to Modify HTML***" << std::endl;
 			std::cout << "***Modify IN PROGRESS***" << std::endl;
 			if(flag_mf_s == 's')
 				if((flag == 'f') || (flag == 'l'))
@@ -241,11 +254,15 @@ int main(int argc, char *argv[]) {
 				else 
 					fileModificationAttributeTags(out_opt,file,modification,save_option);
 			}
-			else if(flag_mf_s = 'm') {
+			else if(flag_mf_s == 'm') {
 				if(flag == 'd') 
 					fileModification(file,test_modif);
 				else 
 					fileModification(file,modification);
+			}
+			else if(flag_mf_s == 'u') {
+				if(flag == 'f') 
+					fileModificationCss(out_opt,modification);
 			}
 		}
 	}
