@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
 				flag_cs_mf_sy = 'm';
 				break;
 			case 'u'://Update Style
-				flag_cs_mf_sy = 'm';
+				flag_cs_mf_sy = 'u';
 				break;
 			default: 
 				return EXIT_FAILURE;
@@ -254,12 +254,15 @@ int main(int argc, char *argv[]) {
 				else 
 					fileModificationAttributeTags(out_opt,file,modification,save_option);
 			}
-			else if((flag_mf_s = 'm') || (flag_mf_s == 'u')) {
-				std::cout << "here for update " << std::endl;
+			else if(flag_mf_s == 'm') {
 				if(flag == 'd') 
 					fileModification(file,test_modif);
 				else 
 					fileModification(file,modification);
+			}
+			else if(flag_mf_s == 'u') {
+				if(flag == 'f') 
+					fileModificationCss(out_opt,modification);
 			}
 		}
 	}

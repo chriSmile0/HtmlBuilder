@@ -175,7 +175,7 @@ std::vector<modif_struct> extractLineContent(std::string str, char mode) {
 			tag = extractTag(l);
 			l = l.substr(tag.length());
 		}
-		m_s.index = digit;
+		m_s.index = (mode != '3') ? digit : 0;
 		m_s.tag = tag;
 		l = l.substr(jumpToNextTag(l));
 		m_s.content = l;
@@ -195,6 +195,10 @@ idx_tabs searchTagInFile(std::fstream& f, int num, std::string tag) {
 	int goon = 1;
 	int index = 0;
 	int past = 0;
+	if(num == 0) {// U_CSS_MODE
+		num = 1;
+		true_tag = tag;
+	}
 	while(((goon) && (past < num)) && (getline(f,recup_line))) {
 		goon = ((index = inLine(recup_line,true_tag)) == -1) ? 1 : 0; 
 		past = (index != -1) ? past+1 : past;
@@ -219,6 +223,15 @@ void fileModification(std::fstream& f, std::string str) {
 				m_f.content += "\t";
 		}
 		insertLineInFile(f,m_f.content,i_t.idx);
+	}
+}
+
+void fileModificationCss(std::string f_inout, std::string str) {
+	std::fstream f(f_inout,std::ios::in | std::ios::out);
+	for(auto m_f : extractLineContent(str,'3')) {
+		idx_tabs i_t = searchTagInFile(f,m_f.index,m_f.tag);
+		line_options lineAttrLine = lineInAttributLine(m_f.tag,m_f.content,'3');
+		updateBlockStyle(f_inout,lineAttrLine.v,i_t.idx);
 	}
 }
 
@@ -252,7 +265,7 @@ int searchTagInFileForStyle(std::fstream& f, int num, std::string tag) {
 }
 
 
-line_options lineInAttributLine(std::string tag, std::string str) {
+line_options lineInAttributLine(std::string tag, std::string str, char mode) {
 	std::vector<std::string> vec_str = parseLine(str,'|');
 	std::string out_str = "";
 	line_options lo;
@@ -262,10 +275,11 @@ line_options lineInAttributLine(std::string tag, std::string str) {
 		option_and_value ov;
 		std::vector<std::string> sv_str = parseLine(v,'=');
 		option = sv_str.at(0);
-		if(!IsAssociateAttribute(toAsValue(tag),option)) {
-			std::cerr << "\n***Error option not recognize : ***[" << option + "]\n" << std::endl;
-			exit(1);
-		}
+		if(mode != '3') // check for make this check for util3 -> mode3
+			if(!IsAssociateAttribute(toAsValue(tag),option)) {
+				std::cerr << "\n***Error option not recognize : ***[" << option + "]\n" << std::endl;
+				exit(1);
+			}
 		value = sv_str.at(1);
 		out_str += option+"=";
 		out_str += "\""+value+"\" ";
@@ -290,7 +304,7 @@ void insertLineInFileCss(std::string f_in, std::ofstream &f,
 	std::string dflt_css_ctt = "\tmargin: auto;\n";
 	//END DEFAULT_CSS_CONTENT
 	std::vector<std::string> tree = treeOfHtml(file);
-	std::string res = profondeurMaxTree(tree,0);
+	std::string res = depthMaxTree(tree,0);
 	std::vector<std::string> all_paths;
 	std::vector<std::string> split = splitStrHomemade(res,';');
 	for(auto spl : split) {
@@ -351,6 +365,57 @@ void insertLineInFileCss(std::string f_in, std::ofstream &f,
 	f << "/** OTHERS **/\n" << std::endl;
 }
 
+void updateBlockStyle(std::string file,vecOV vo, int index) {
+	std::string recup_line;
+	std::string block;
+	std::fstream f(file, std::ios::in | std::ios::out);
+	f.seekp(index,std::ios::beg);
+	int goon = 1;
+	int open_block = -1;
+	std::string jump = "";
+	while((goon) && getline(f,recup_line)) {
+		if(open_block == -1)
+			open_block = recup_line.find('{') + 1;// BEGIN OF STYLE BLOCK
+		if(open_block != -1) {
+			if(recup_line.find('}') != -1) 
+				goon = 0;// END OF STYLE BLOCK
+			else 
+				jump = "\n\t";
+		}
+		block += recup_line;
+	}
+	std::string jump_nochange_lines = (jump == "") ? "" : "\n";
+	block = block.substr(open_block);
+	block = block.substr(0,block.size()-2);
+	std::vector<std::string> parse_block = parseLine(block,';');
+	std::vector<std::string> lines;
+	std::vector<std::string> propers;
+	for(auto v_o : vo) {
+		lines.push_back(jump + v_o.option + ':' + v_o.value + ';');
+		propers.push_back(jump+v_o.option);
+	}
+	for(auto line : parse_block) {
+		std::vector<std::string> property_and_value = parseLine(line,':');
+		std::string property = jump_nochange_lines + property_and_value.at(0);
+		bool add = true;
+		for(auto l : propers) {
+			if(l == property) {
+				add = false;
+				break;
+			}
+		}
+		if(add)
+			lines.push_back(jump_nochange_lines+line+';');
+	}
+	
+	f.clear(); // IMPORTANT
+	f.seekp(open_block,std::ios::beg); //block 
+	for(auto s : lines) 
+		f << s;
+	f << jump_nochange_lines << "}";
+}
+
+
 void fileModificationAttributeTags(std::string f_in,std::fstream& f, std::string str, std::string fileout) {
 	int flagout_css = (fileout != "") ? 1 : 0;
 	vecOV v_o;
@@ -358,7 +423,7 @@ void fileModificationAttributeTags(std::string f_in,std::fstream& f, std::string
 	std::ofstream f_out(fileout);
 	for(auto m_f : extractLineContent(str,'2')) {
 		int index = searchTagInFileForStyle(f,m_f.index,m_f.tag);
-		line_options lineAttrLine = lineInAttributLine(m_f.tag,m_f.content);
+		line_options lineAttrLine = lineInAttributLine(m_f.tag,m_f.content,'2');
 		std::string str_line = lineAttrLine.str;
 		vecOV ov = lineAttrLine.v;
 		insertLineInFile(f," "+str_line,index);
@@ -402,7 +467,7 @@ std::vector<std::string> treeOfHtml(std::fstream& f) {
 	return tree;
 }
 
-std::string profondeurMaxTree(std::vector<std::string> tree, int level) {
+std::string depthMaxTree(std::vector<std::string> tree, int level) {
 	if (tree.size() == 1) { 
 		return tree.at(0).substr(2); // We keept it for <a /> 
 	}
@@ -438,11 +503,47 @@ std::string profondeurMaxTree(std::vector<std::string> tree, int level) {
 			int cut2 = cuts_in_tree.at(j+1);
 			std::vector<std::string> sub_tree = {tree.begin()+cut1, tree.begin()+cut2+1};
 			j += 2;
-			all_childs.push_back(this_selector + ">" +profondeurMaxTree(sub_tree,level_up));
+			all_childs.push_back(this_selector + ">" +depthMaxTree(sub_tree,level_up));
 		}
 		for(auto child : all_childs)
 			res_final += child ;
 		return res_final;
 	}
 	return "";
+}
+
+template<typename T>
+bool inVector(std::vector<T> vec,T token) {
+	for(auto t : vec) {
+		if(t == token)
+			return true;
+	}
+}
+
+bool inSubVector(std::vector<std::string> vec, std::string token) {
+	for(auto t : vec)
+		if(t.find(token) != -1)
+			return true;
+}
+
+int inIndexSubVector(std::vector<std::string> vec, std::string token) {
+	int i = 0;
+	for(auto t : vec) {
+		if(t.find(token) != -1)
+			return i;
+		i++;
+	}
+	return -1;
+}
+
+
+std::vector<std::string> uniqueTokenInVector(std::vector<std::string> vec, 
+												std::string token) {
+	for(int i = 0 ; i < vec.size() ; i++) {
+		for(int j = 0; j < vec.size(); j++) {
+			if((vec.at(j).find(token) != -1) && (i != j))
+				vec.erase(vec.begin()+j);
+		}
+	}
+	return vec;
 }

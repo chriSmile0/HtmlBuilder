@@ -199,6 +199,15 @@ void growUpFile(std::fstream& f, int extend_size);
 void insertLineInFile(std::fstream& f, std::string str, int index);
 
 /**
+ * @brief		Update/Insert a line in the file
+ * @param{f}	target file
+ * @param{l_o}	the line options
+ * @param{index}	index of the start of the string (0 ?)
+ * @return
+*/
+void updateBlockStyle(std::string file,vecOV v_o, int index); // USEFUL INDEX -> ALWAYS 0 
+
+/**
  * @brief	Split a string with a splitter
  * 			
  * @param{str}	string to parse
@@ -212,7 +221,7 @@ std::vector<std::string> parseLine(std::string str);
  * 			, the content or the tag index in the target page
  * 
  * @param{str}	The string to extract lines 
- * @param{mode} The utilisation mode {html(1),css(2)} for example
+ * @param{mode} The utilisation mode {html(1),css(2),update_css(3)} for example
  * @return 	A vector of modif_struct, a struct which contains two strings which 
  * 			was the content and the tag.
 */
@@ -249,6 +258,18 @@ int inLine(std::string str, std::string token);
 void fileModification(std::fstream& f, std::string str);
 
 /**
+ * @brief	Update and insert the css file for example for seletor 'p'
+ * 			old margin is 10px, now it's 20px
+ * 			If a priority is here just replace the line by the new line
+ * 			Or insert at the of the block.
+ * 
+ * @param{f_inout}	File to modify
+ * @param{str}		The string to insert or update in file
+ * @return	
+*/
+void fileModificationCss(std::string f_inout , std::string str);
+
+/**
  * @brief	Like 'searchBaliseInFile' but this time we insert the attributes in 
  * 			the tag not in the content. 
  * @param{f}		File to research the tag
@@ -264,11 +285,12 @@ int searchTagInFileForStyle(std::fstream& f, int num, std::string tag);
  * 
  * @param{balise}	The target tag
  * @param{str}		string to analyze 
+ * @param{mode}		The utilisation mode {html(1),css(2),update_css(3)} for example
  * @return 	A struct which contains the string to insert and one vector of 
  * 			option_and_value who is a struct who associate an option to one 
  * 			value
 */
-line_options lineInAttributLine(std::string tag, std::string str);
+line_options lineInAttributLine(std::string tag, std::string str, char mode);
 
 
 /**
@@ -289,17 +311,51 @@ void insertLineInFileCss(std::string f_in,std::ofstream &fout, std::vector<optio
 std::vector<std::string> treeOfHtml(std::fstream& f);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	Determine the depth of a tag in the html page 
+ * 			The tree is initialize by the function treeOfHtml who 
+ * 			list the tag in the html file with the associate level 
+ * 			of inheritance in the file
+ * @param{tree}	The tree create with treeOfHtml function
+ * @param{level} 0 generally 
+ * @return 'body>div>p' for an example
 */
-std::string profondeurMaxTree(std::vector<std::string> tree, int level);
+std::string depthMaxTree(std::vector<std::string> tree, int level);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief	For differents type of vector it's possible to search an element
+ * 			for known if it's present or not
+ * @param{vec}	A vector of type T 
+ * @param{token}The token to search 
+ * @return True or False
 */
+
+template<typename T>
+bool inVector(std::vector<T> vec,T token);
+
+/**
+ * @brief	Search a string in the strings of vector of strings
+ * @param{vec} The vector to search the substring
+ * @param{token} The research token
+ * @return True or False
+*/
+bool inSubVector(std::vector<std::string> vec, std::string token);
+
+/**
+ * @brief	Search a string in the strings of vector of strings
+ * @param{vec} The vector to search the substring
+ * @param{token} The research token
+ * @return The index of token in vector
+*/
+int inIndexSubVector(std::vector<std::string> vec, std::string token);
+
+/**
+ * @brief	Delete duplicate item where the token is.
+ * @param{vec} The vector to search the substring
+ * @param{token} The research token
+ * @return The vector with token appears once time
+*/
+std::vector<std::string> uniqueTokenInVector(std::vector<std::string> vec, 
+												std::string token);
 
 //************************* CSS **********************//
 /**
