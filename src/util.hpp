@@ -26,19 +26,19 @@ std::vector<int> splitOrNot(std::string str, char splitter) {
 }
 
 std::vector<std::string> splitStrHomemade(std::string str, char splitter) {
-	std::vector<int> split_index = splitOrNot(str,splitter);
+	std::vector<int> split_index = splitOrNot(str, splitter);
 	std::vector<std::string> vec_str;
 	std::string tmp = "";
 	int start = 0;
 	int end = 0;
 	for(auto i : split_index) {
 		end = i; 
-		tmp = str.substr(start,end-start);//end-start = size;
+		tmp = str.substr(start, end - start);//end-start = size;
 		vec_str.push_back(tmp);
 		tmp = "";
 		start = end+1;
 	}
-	tmp = str.substr(start,str.length());
+	tmp = str.substr(start, str.length());
 	vec_str.push_back(tmp);
 	return vec_str;
 }
@@ -46,23 +46,23 @@ std::vector<std::string> splitStrHomemade(std::string str, char splitter) {
 std::vector<std::string> readLines(std::fstream f) {
 	std::string line;
 	std::vector<std::string> vec;
-	while(getline(f,line))
+	while(getline(f, line))
 		vec.push_back(line);
 	return vec;
 }
 
 std::string getFpv2(std::string s, int jump, int nb_tab) {
 	std::string tabulations = "";
-	for(int i = 0 ; i < nb_tab;i++)
+	for(int i = 0 ; i < nb_tab ; i++)
 		tabulations += "\t";
-	return (jump) ? ("\n"+tabulations+"<"+s+">") : ("<" + s + ">");
+	return (jump) ? ("\n" + tabulations + "<" + s + ">") : ("<" + s + ">");
 }
 
 std::string getLpv2(std::string s, int jb, int ja, int nb_tab) {
 	std::string tabs = "";
-	for(int i = 0 ; i < nb_tab;i++)
+	for(int i = 0 ; i < nb_tab ; i++)
 		tabs += "\t";
-	return (jb) ? ((!ja) ? ("\n"+tabs+"</" + s + ">") : (("\n"+tabs+"</" + s + ">\n"))) : ("</" + s + ">");
+	return (jb) ? ((!ja) ? ("\n" + tabs + "</" + s + ">") : (("\n" + tabs + "</" + s + ">\n"))) : ("</" + s + ">");
 }
 
 
@@ -78,7 +78,7 @@ std::string extractTag(std::string str) {
 	int i = 0;
 	while((str[i] != ' ') && (str[i] != '}') && (str[i] != '\0'))
 		i++;
-	return (i==0) ? str : str.substr(0,i);
+	return (i == 0) ? str : str.substr(0, i);
 }
 
 int jumpToNextTag(std::string str) {
@@ -92,21 +92,22 @@ std::string extractDigit(std::string str) {
 	int i = 0;
 	while(((str[i] >= '0') && (str[i] <= '9')) && (str[i] != '\0'))
 		i++;
-	return (i == 0) ? "0" : str.substr(0,i);
+	return (i == 0) ? "0" : str.substr(0, i);
 }
 
 
-inline void growUpFile(std::fstream& f, int extend_size) { f.seekp(extend_size,std::ios::end);}
+inline void growUpFile(std::fstream& f, int extend_size) { f.seekp(extend_size,
+																std::ios::end);}
 
 void insertLineInFile(std::fstream& f, std::string str, int index) {
 	int size_line = str.length();
 	std::string save_after_index = "";
 	std::string recup;
-	f.seekp(index,std::ios::beg);
-	while(getline(f,recup)) 
+	f.seekp(index, std::ios::beg);
+	while(getline(f, recup)) 
 		save_after_index += recup + "\n";
 	f.clear();
-    f.seekp(index,std::ios::beg);
+    f.seekp(index, std::ios::beg);
 	f << str << save_after_index;
 }
 
@@ -115,12 +116,12 @@ std::vector<std::string> parseLine(std::string str, char splitter) {
 	int size = str.length();
 	std::vector<std::string> lines;
 	int start = 0;
-	for(i = 0 ; i < size; i++)
+	for(i = 0 ; i < size ; i++)
 		if(str[i] == splitter) {
-			lines.push_back(str.substr(start,i-start));
+			lines.push_back(str.substr(start, i - start));
 			start = i+1;
 		}
-	lines.push_back(str.substr(start,i));
+	lines.push_back(str.substr(start, i));
 	return lines;
 }
 
@@ -134,7 +135,7 @@ int countTab(std::string str) {
 
 std::vector<modif_struct> extractLineContent(std::string str, char mode) {
 	std::vector<modif_struct> content;
-	std::vector<std::string> lines = parseLine(str,';');
+	std::vector<std::string> lines = parseLine(str, ';');
 	for(auto l : lines) {
 		modif_struct m_s;
 		std::vector<tag_and_index> t_i;
@@ -143,18 +144,18 @@ std::vector<modif_struct> extractLineContent(std::string str, char mode) {
 		std::string tag;
 		std::string l_content;
 		if(mode == '2') { //CUT LINE with ">" not necessary -> 1p>1p = 2p
-			std::vector<std::string> split_l = parseLine(l,'>');
+			std::vector<std::string> split_l = parseLine(l, '>');
 			int size_split_l = split_l.size() - 1;
 			if (size_split_l == 0)
 				mode = '1';
 			else {
 				int i = 0;
-				for(i = 0 ; i < size_split_l  ;i++) {
+				for(i = 0 ; i < size_split_l ; i++) {
 					std::string tmp_digit = extractDigit(split_l.at(i));
 					int tag_digit = stoi(tmp_digit);
 					std::string in_tag = extractTag(split_l.at(i).substr(tmp_digit.length()));
-					t_i.push_back({in_tag,tag_digit});
-					digits += split_l.at(i)+">";
+					t_i.push_back({in_tag, tag_digit});
+					digits += split_l.at(i) + ">";
 					//CHECK VALIDITY OF TAG AGAIN HERE -> NEXT
 				}
 				l = l.substr(digits.length());
@@ -188,8 +189,8 @@ inline int inLine(std::string str, std::string token) {return str.find(token);}
 
 idx_tabs searchTagInFile(std::fstream& f, int num, std::string tag) {
 	idx_tabs i_t;
-	f.seekp(0,std::ios::beg);
-	std::string true_tag = "</"+tag+">"; // OR <tag> true_index += tag.length()
+	f.seekp(0, std::ios::beg);
+	std::string true_tag = "</" + tag + ">"; // OR <tag> true_index += tag.length()
 	std::string recup_line;
 	std::string total_block;
 	int goon = 1;
@@ -199,9 +200,9 @@ idx_tabs searchTagInFile(std::fstream& f, int num, std::string tag) {
 		num = 1;
 		true_tag = tag;
 	}
-	while(((goon) && (past < num)) && (getline(f,recup_line))) {
-		goon = ((index = inLine(recup_line,true_tag)) == -1) ? 1 : 0; 
-		past = (index != -1) ? past+1 : past;
+	while(((goon) && (past < num)) && (getline(f, recup_line))) {
+		goon = ((index = inLine(recup_line, true_tag)) == -1) ? 1 : 0; 
+		past = (index != -1) ? past + 1 : past;
 		if(past < num) 
 			total_block += recup_line + "\n";
 	}
@@ -215,44 +216,45 @@ idx_tabs searchTagInFile(std::fstream& f, int num, std::string tag) {
 }
 
 void fileModification(std::fstream& f, std::string str) {
-	for(auto m_f : extractLineContent(str,'1')) {
-		idx_tabs i_t = searchTagInFile(f,m_f.index,m_f.tag);
+	for(auto m_f : extractLineContent(str, '1')) {
+		idx_tabs i_t = searchTagInFile(f, m_f.index, m_f.tag);
 		if(i_t.nb_tabs != 0) {
 			m_f.content += "\n";
-			for(int i = 0 ; i < i_t.nb_tabs; i++) 
+			for(int i = 0 ; i < i_t.nb_tabs ; i++) 
 				m_f.content += "\t";
 		}
-		insertLineInFile(f,m_f.content,i_t.idx);
+		insertLineInFile(f, m_f.content, i_t.idx);
 	}
 }
 
 void fileModificationCss(std::string f_inout, std::string str) {
-	std::fstream f(f_inout,std::ios::in | std::ios::out);
-	for(auto m_f : extractLineContent(str,'3')) {
-		idx_tabs i_t = searchTagInFile(f,m_f.index,m_f.tag);
-		line_options lineAttrLine = lineInAttributLine(m_f.tag,m_f.content,'3');
-		updateBlockStyle(f_inout,lineAttrLine.v,i_t.idx);
+	std::fstream f(f_inout, std::ios::in | std::ios::out);
+	for(auto m_f : extractLineContent(str, '3')) {
+		idx_tabs i_t = searchTagInFile(f, m_f.index,m_f.tag);
+		line_options lineAttrLine = lineInAttributLine(m_f.tag, m_f.content,
+														'3');
+		updateBlockStyle(f_inout, lineAttrLine.v, i_t.idx);
 	}
 }
 
 int searchTagInFileForStyle(std::fstream& f, int num, std::string tag) {
-	f.seekp(0,std::ios::beg);
-	std::string true_tag = "<"+tag+">"; // OR <tag> true_index += tag.length()
-	std::string true_TagNEmpty = "<"+tag+" ";
+	f.seekp(0, std::ios::beg);
+	std::string true_tag = "<" + tag + ">"; // OR <tag> true_index += tag.length()
+	std::string true_TagNEmpty = "<" + tag + " ";
 	std::string result_line;
 	std::string total_block;
 	int goon = 1;
 	int index = 0;
 	int past = 0;
 	bool isempty = true;
-	while(((goon) && (past < num)) && (getline(f,result_line))) {
+	while(((goon) && (past < num)) && (getline(f, result_line))) {
 		index = 0;
-		goon = ((index = inLine(result_line,true_tag)) == -1) ? 1 : 0; 
+		goon = ((index = inLine(result_line, true_tag)) == -1) ? 1 : 0; 
 		if(goon == 1) {
-			goon = ((index = inLine(result_line,true_TagNEmpty)) == -1) ? 1 : 0;
+			goon = ((index = inLine(result_line, true_TagNEmpty)) == -1) ? 1 : 0;
 			isempty = (!goon) ? false : true;
 		}
-		past = (index != -1) ? past+1 : past;
+		past = (index != -1) ? past + 1 : past;
 		if(past < num) {
 			total_block += result_line + "\n";
 			goon = 1;
@@ -260,34 +262,35 @@ int searchTagInFileForStyle(std::fstream& f, int num, std::string tag) {
 
 	}
 	std::string *tag_ptr = (isempty) ? &true_tag : &true_TagNEmpty;
-	int true_index = total_block.length() + index + tag_ptr->length()-1;
+	int true_index = total_block.length() + index + tag_ptr->length() - 1;
 	return true_index;
 }
 
 
 line_options lineInAttributLine(std::string tag, std::string str, char mode) {
-	std::vector<std::string> vec_str = parseLine(str,'|');
+	std::vector<std::string> vec_str = parseLine(str, '|');
 	std::string out_str = "";
 	line_options lo;
 	std::string option = "";
 	std::string value = "";
 	for(auto v : vec_str) {
 		option_and_value ov;
-		std::vector<std::string> sv_str = parseLine(v,'=');
+		std::vector<std::string> sv_str = parseLine(v, '=');
 		option = sv_str.at(0);
 		if(mode != '3') // check for make this check for util3 -> mode3
-			if(!IsAssociateAttribute(toAsValue(tag),option)) {
-				std::cerr << "\n***Error option not recognize : ***[" << option + "]\n" << std::endl;
+			if(!IsAssociateAttribute(toAsValue(tag), option)) {
+				std::cerr << "\n***Error option not recognize : ***[" << option;
+				std::cerr <<  "]\n" << std::endl;
 				exit(1);
 			}
 		value = sv_str.at(1);
-		out_str += option+"=";
-		out_str += "\""+value+"\" ";
+		out_str += option + "=";
+		out_str += "\"" + value + "\" ";
 		ov.option = option;
 		ov.value = value;
 		lo.v.push_back(ov);
 	}
-	int new_size = out_str.size()-1;
+	int new_size = out_str.size() - 1;
 	out_str.resize(new_size);
 	lo.str = out_str;
 	lo.tag = tag;
@@ -297,16 +300,16 @@ line_options lineInAttributLine(std::string tag, std::string str, char mode) {
 void insertLineInFileCss(std::string f_in, std::ofstream &f, 
 		std::vector<option_and_value> vecs, std::vector<Tag_opts> tags_opts) {
 	std::vector<option_and_value> vecs_options;
-	std::vector<std::string> tags = {"*","html","body","header","section",
-								"article","div","p","footer","span"};//TO BE CONTINUED -> TAGS in HTML2 Use storeStrEnum() ;-)
-	std::fstream file(f_in,std::ios::in | std::ios::out);
+	std::vector<std::string> tags = {"*", "html", "body", "header", "section",
+								"article", "div", "p", "footer", "span"};//TO BE CONTINUED -> TAGS in HTML2 Use storeStrEnum() ;-)
+	std::fstream file(f_in, std::ios::in | std::ios::out);
 	//DEFAULT_CSS_CONTENT
 	std::string dflt_css_ctt = "\tmargin: auto;\n";
 	//END DEFAULT_CSS_CONTENT
 	std::vector<std::string> tree = treeOfHtml(file);
-	std::string res = depthMaxTree(tree,0);
+	std::string res = depthMaxTree(tree, 0);
 	std::vector<std::string> all_paths;
-	std::vector<std::string> split = splitStrHomemade(res,';');
+	std::vector<std::string> split = splitStrHomemade(res, ';');
 	for(auto spl : split) {
 		int size_spl = spl.size();
 		std::string copy_spl = spl;
@@ -314,8 +317,8 @@ void insertLineInFileCss(std::string f_in, std::ofstream &f,
 		for(int i = 0 ; i < size_spl ; i++) {
 			if(spl[i] == '>') {
 				if(nb_inh > 0) // Because you have unique selector in other tab
-					all_paths.push_back(copy_spl.substr(0,i));
-				all_paths.push_back(copy_spl.substr(i+1));
+					all_paths.push_back(copy_spl.substr(0, i));
+				all_paths.push_back(copy_spl.substr(i + 1));
 				nb_inh++;
 			}
 			if(i + 1 == size_spl) // Because you have unique selector in other tab
@@ -328,24 +331,25 @@ void insertLineInFileCss(std::string f_in, std::ofstream &f,
 			vecs_options.push_back(opts);
 	}
 	
-	std::sort(tags.begin(),tags.end(),sortStr);
-	std::sort(tags.begin(),tags.end(),sortCssTags);
-	tags.erase(std::unique(tags.begin(),tags.end(),uniqueTag),tags.end());
+	std::sort(tags.begin(), tags.end(), sortStr);
+	std::sort(tags.begin(), tags.end(), sortCssTags);
+	tags.erase(std::unique(tags.begin(), tags.end(), uniqueTag), tags.end());
 	
 
-	std::sort(vecs_options.begin(),vecs_options.end(),sortOv);	
-	vecs_options.erase(std::unique(vecs_options.begin(),vecs_options.end(),multiClassUniqueId),vecs_options.end());
+	std::sort(vecs_options.begin(), vecs_options.end(), sortOv);	
+	vecs_options.erase(std::unique(vecs_options.begin(), vecs_options.end(),
+						multiClassUniqueId),vecs_options.end());
 
 	f << "/** UNIQUE SELECTOR **/\n" << std::endl;
 	for(auto tag : tags) 
-		f << tag + " {\n"+dflt_css_ctt+"}\n" << std::endl;
+		f << tag + " {\n" + dflt_css_ctt + "}\n" << std::endl;
 	
 	f << "/** UNIQUE ID_CLASS **/\n" << std::endl;
 	for(auto ov : vecs_options) {
 		if(ov.option == "id") 
-			f <<  "#"+ov.value+" {\n"+dflt_css_ctt+"}\n\n";
+			f <<  "#" + ov.value + " {\n" + dflt_css_ctt + "}\n\n";
 		else if(ov.option == "class") 
-			f << "."+ov.value+" {\n"+dflt_css_ctt+"}\n\n";
+			f << "." + ov.value + " {\n" + dflt_css_ctt + "}\n\n";
 		else 
 			std::cerr << "option not recognize " << std::endl;
 	}
@@ -354,26 +358,27 @@ void insertLineInFileCss(std::string f_in, std::ofstream &f,
 	for(auto t_opts : tags_opts) {
 		for(auto ov : t_opts.vec_ov) 
 			if(ov.option == "class") 
-				f << t_opts.tag + "."+ov.value+" {\n"+dflt_css_ctt+"}\n\n";
+				f << t_opts.tag + "." + ov.value + " {\n" + dflt_css_ctt + "}\n\n";
 	}
 	f << "/** SELECTOR>SELECTOR **/\n" << std::endl;
-	std::sort(all_paths.begin(),all_paths.end(),sortStr);
-	all_paths.erase(std::unique(all_paths.begin(),all_paths.end(),uniqueHtmlTree),all_paths.end());
+	std::sort(all_paths.begin(), all_paths.end(), sortStr);
+	all_paths.erase(std::unique(all_paths.begin(), all_paths.end(),
+					uniqueHtmlTree), all_paths.end());
 	for(auto path : all_paths) {
-		f << path + " {\n"+dflt_css_ctt+"}\n\n";
+		f << path + " {\n" + dflt_css_ctt + "}\n\n";
 	}
 	f << "/** OTHERS **/\n" << std::endl;
 }
 
-void updateBlockStyle(std::string file,vecOV vo, int index) {
+void updateBlockStyle(std::string file, vecOV vo, int index) {
 	std::string recup_line;
 	std::string block;
 	std::fstream f(file, std::ios::in | std::ios::out);
-	f.seekp(index,std::ios::beg);
+	f.seekp(index, std::ios::beg);
 	int goon = 1;
 	int open_block = -1;
 	std::string jump = "";
-	while((goon) && getline(f,recup_line)) {
+	while((goon) && getline(f, recup_line)) {
 		if(open_block == -1)
 			open_block = recup_line.find('{') + 1;// BEGIN OF STYLE BLOCK
 		if(open_block != -1) {
@@ -386,16 +391,16 @@ void updateBlockStyle(std::string file,vecOV vo, int index) {
 	}
 	std::string jump_nochange_lines = (jump == "") ? "" : "\n";
 	block = block.substr(open_block);
-	block = block.substr(0,block.size()-2);
-	std::vector<std::string> parse_block = parseLine(block,';');
+	block = block.substr(0, block.size() - 2);
+	std::vector<std::string> parse_block = parseLine(block, ';');
 	std::vector<std::string> lines;
 	std::vector<std::string> propers;
 	for(auto v_o : vo) {
 		lines.push_back(jump + v_o.option + ':' + v_o.value + ';');
-		propers.push_back(jump+v_o.option);
+		propers.push_back(jump + v_o.option);
 	}
 	for(auto line : parse_block) {
-		std::vector<std::string> property_and_value = parseLine(line,':');
+		std::vector<std::string> property_and_value = parseLine(line, ':');
 		std::string property = jump_nochange_lines + property_and_value.at(0);
 		bool add = true;
 		for(auto l : propers) {
@@ -405,36 +410,38 @@ void updateBlockStyle(std::string file,vecOV vo, int index) {
 			}
 		}
 		if(add)
-			lines.push_back(jump_nochange_lines+line+';');
+			lines.push_back(jump_nochange_lines + line + ';');
 	}
 	
 	f.clear(); // IMPORTANT
-	f.seekp(open_block,std::ios::beg); //block 
+	f.seekp(open_block, std::ios::beg); //block 
 	for(auto s : lines) 
 		f << s;
 	f << jump_nochange_lines << "}";
 }
 
 
-void fileModificationAttributeTags(std::string f_in,std::fstream& f, std::string str, std::string fileout) {
+void fileModificationAttributeTags(std::string f_in,std::fstream& f,
+									std::string str, std::string fileout) {
 	int flagout_css = (fileout != "") ? 1 : 0;
 	vecOV v_o;
 	vecTagOpts v_t_o;
 	std::ofstream f_out(fileout);
-	for(auto m_f : extractLineContent(str,'2')) {
-		int index = searchTagInFileForStyle(f,m_f.index,m_f.tag);
-		line_options lineAttrLine = lineInAttributLine(m_f.tag,m_f.content,'2');
+	for(auto m_f : extractLineContent(str, '2')) {
+		int index = searchTagInFileForStyle(f, m_f.index, m_f.tag);
+		line_options lineAttrLine = lineInAttributLine(m_f.tag, m_f.content,
+														'2');
 		std::string str_line = lineAttrLine.str;
 		vecOV ov = lineAttrLine.v;
-		insertLineInFile(f," "+str_line,index);
+		insertLineInFile(f, " " + str_line, index);
 		if(flagout_css) {
-			v_t_o.push_back({lineAttrLine.tag,ov});
+			v_t_o.push_back({lineAttrLine.tag, ov});
 			for(auto o_v : ov)
 				v_o.push_back(o_v);
 		}
 	}
 	if(flagout_css)
-		insertLineInFileCss(f_in,f_out,v_o,v_t_o);
+		insertLineInFileCss(f_in, f_out, v_o, v_t_o);
 }
 
 
@@ -447,17 +454,17 @@ std::vector<std::string> treeOfHtml(std::fstream& f) {
 	int i = 0;
 	int find = -1;
 	int level_in = 0; // level of inheritance
-	while(getline(f,result_line)) {
+	while(getline(f, result_line)) {
 		i = 0; // search tags in file
 		while(i < tags_size) {
-			if((find = result_line.find("<"+tags[i]+">") != -1) 
-				|| (find = result_line.find("<"+tags[i]+" ") != -1))  {
-				tree.push_back(std::to_string(level_in)+"<"+tags[i]);
+			if((find = result_line.find("<" + tags[i] + ">") != -1) 
+				|| (find = result_line.find("<" + tags[i] + " ") != -1))  {
+				tree.push_back(std::to_string(level_in) + "<" + tags[i]);
 				level_in++;
 			}
-			if(find = result_line.find("</"+tags[i]+">") != -1) {
+			if(find = result_line.find("</" + tags[i] + ">") != -1) {
 				level_in--;
-				tree.push_back(std::to_string(level_in)+">"+tags[i]);
+				tree.push_back(std::to_string(level_in) + ">" + tags[i]);
 				break;
 			}
 			i++;
@@ -468,27 +475,27 @@ std::vector<std::string> treeOfHtml(std::fstream& f) {
 }
 
 std::string depthMaxTree(std::vector<std::string> tree, int level) {
-	if (tree.size() == 1) { 
+	if(tree.size() == 1) { 
 		return tree.at(0).substr(2); // We keept it for <a /> 
 	}
 	else if(tree.size() == 2) {
 		int level_a = stoi(extractDigit(tree.at(0)));
 		int level_b = stoi(extractDigit(tree.at(1)));
-		if ((level_a == level_b) && (level_a == level))
-			return tree.at(0).substr(2)+";";
+		if((level_a == level_b) && (level_a == level))
+			return tree.at(0).substr(2) + ";";
 	}
 	else {
 		std::string this_selector = tree.at(0).substr(2);
 		int index = 0; 
 		int nb_next_level = 0;
 		std::vector<int> cuts_in_tree; 
-		for(int i = 0; i < tree.size() ;i++) {
+		for(int i = 0 ; i < tree.size() ; i++) {
 			int level_ = stoi(extractDigit(tree.at(i)));
-			if (level_ == level) {
-				tree.erase(tree.begin()+i);
+			if(level_ == level) {
+				tree.erase(tree.begin() + i);
 				i--;
 			}
-			else if (level_ == level + 1) {
+			else if(level_ == level + 1) {
 				nb_next_level++;
 				cuts_in_tree.push_back(i);
 			}
@@ -500,10 +507,12 @@ std::string depthMaxTree(std::vector<std::string> tree, int level) {
 		int j = 0;
 		for(int i = 0 ; i < nb_next_level ; i++) {
 			int cut1 = cuts_in_tree.at(j);
-			int cut2 = cuts_in_tree.at(j+1);
-			std::vector<std::string> sub_tree = {tree.begin()+cut1, tree.begin()+cut2+1};
+			int cut2 = cuts_in_tree.at(j + 1);
+			std::vector<std::string> sub_tree = {tree.begin() + cut1,
+													tree.begin() + cut2 + 1};
 			j += 2;
-			all_childs.push_back(this_selector + ">" +depthMaxTree(sub_tree,level_up));
+			all_childs.push_back(this_selector + ">" + depthMaxTree(sub_tree, 
+																	level_up));
 		}
 		for(auto child : all_childs)
 			res_final += child ;
@@ -513,7 +522,7 @@ std::string depthMaxTree(std::vector<std::string> tree, int level) {
 }
 
 template<typename T>
-bool inVector(std::vector<T> vec,T token) {
+bool inVector(std::vector<T> vec, T token) {
 	for(auto t : vec) {
 		if(t == token)
 			return true;
@@ -537,13 +546,11 @@ int inIndexSubVector(std::vector<std::string> vec, std::string token) {
 }
 
 
-std::vector<std::string> uniqueTokenInVector(std::vector<std::string> vec, 
+std::vector<std::string> uniqueTokenInVector(std::vector<std::string> vec,
 												std::string token) {
-	for(int i = 0 ; i < vec.size() ; i++) {
-		for(int j = 0; j < vec.size(); j++) {
+	for(int i = 0 ; i < vec.size() ; i++) 
+		for(int j = 0 ; j < vec.size() ; j++) 
 			if((vec.at(j).find(token) != -1) && (i != j))
 				vec.erase(vec.begin()+j);
-		}
-	}
 	return vec;
 }

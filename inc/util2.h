@@ -8,41 +8,41 @@ const char* str = "accesskey;class;contenteditable;data-*;dir;draggable;hidden;i
 
 #define TAGS \
 X(Address, "address", true, "") \
-X(Article, "article", true,"") \
-X(Aside, "aside", true,"") \
+X(Article, "article", true, "") \
+X(Aside, "aside", true, "") \
 X(Blockquote, "blockquote", true,"cite;") \
-X(Body, "body", true,"onafterprint;onbeforeprint;onbeforeunload;onerror;onhashchange;onload;onoffline;ononline;onpagehide;onpageshow;onpopstate;onresize;onstorage;onunload;") \
-X(Canvas, "canvas", true,"height;width") \
-X(Dd, "dd", true,"") \
-X(Div, "div", true,"") \
-X(Dl, "dl", true,"") \
-X(Dt, "dt", true,"") \
-X(Fieldset, "fieldset", true,"disabled;form;name;") \
-X(Figcaption, "figcaption", true,"") \
-X(Figure, "figure", true,"") \
-X(Footer, "footer", true,"") \
-X(Form, "form", true,"accept-charset;action;autocomplete;enctype;formaction;method;name;novalidate;onreset;onsubmit;rel;target;") \
-X(H1, "h1", true,"") \
-X(H2, "h2", true,"") \
-X(H3, "h3", true,"") \
-X(H4, "h4", true,"") \
-X(H5, "h5", true,"") \
-X(H6, "h6", true,"") \
-X(Head, "head", true,"") \
-X(Header, "header", true,"") \
-X(Hr, "hr", true,"") \
-X(Li, "li", true,"value") \
-X(Main, "main", true,"") \
-X(Nav, "nav", true,"") \
-X(Noscript, "noscript", true,"") \
-X(Ol, "ol", true,"reversed;start;") \
-X(P, "p", true,"") \
-X(Pre, "pre", true,"") \
+X(Body, "body", true, "onafterprint;onbeforeprint;onbeforeunload;onerror;onhashchange;onload;onoffline;ononline;onpagehide;onpageshow;onpopstate;onresize;onstorage;onunload;") \
+X(Canvas, "canvas", true, "height;width") \
+X(Dd, "dd", true, "") \
+X(Div, "div", true, "") \
+X(Dl, "dl", true, "") \
+X(Dt, "dt", true, "") \
+X(Fieldset, "fieldset", true, "disabled;form;name;") \
+X(Figcaption, "figcaption", true, "") \
+X(Figure, "figure", true, "") \
+X(Footer, "footer", true, "") \
+X(Form, "form", true, "accept-charset;action;autocomplete;enctype;formaction;method;name;novalidate;onreset;onsubmit;rel;target;") \
+X(H1, "h1", true, "") \
+X(H2, "h2", true, "") \
+X(H3, "h3", true, "") \
+X(H4, "h4", true, "") \
+X(H5, "h5", true, "") \
+X(H6, "h6", true, "") \
+X(Head, "head", true, "") \
+X(Header, "header", true, "") \
+X(Hr, "hr", true, "") \
+X(Li, "li", true, "value") \
+X(Main, "main", true, "") \
+X(Nav, "nav", true, "") \
+X(Noscript, "noscript", true, "") \
+X(Ol, "ol", true, "reversed;start;") \
+X(P, "p", true, "") \
+X(Pre, "pre", true, "") \
 X(Section, "section", true,"") \
-X(Table, "table", true,"") \
-X(Tfoot, "tfoot", true,"") \
-X(Ul, "ul", true,"") \
-X(Video, "video", true,"autoplay;controls;height;loop;muted;onabort;oncanplay;oncanplaythrough;onduractionchange;onemptied;onended;onerror;onloadeddata;onloadedmetadata;onloadstart;onpause;onplay;onplaying;onprogress;onratechange;onseeked;onseeking;onsted;onsuspend;ontimeupdate;onvolumechange;onwaiting;poster;preload;src;width;") \
+X(Table, "table", true, "") \
+X(Tfoot, "tfoot", true, "") \
+X(Ul, "ul", true, "") \
+X(Video, "video", true, "autoplay;controls;height;loop;muted;onabort;oncanplay;oncanplaythrough;onduractionchange;onemptied;onended;onerror;onloadeddata;onloadedmetadata;onloadstart;onpause;onplay;onplaying;onprogress;onratechange;onseeked;onseeking;onsted;onsuspend;ontimeupdate;onvolumechange;onwaiting;poster;preload;src;width;") \
 X(A, "a", false, "download;href;hreflang;media;rel;target;type;") \
 X(Abbr, "abbr", false, "") \
 X(Acronym, "acronym", false, "") \
@@ -136,7 +136,7 @@ inline bool toIsBlock(enum tags value) {return inline_Block[value];}
 
 enum tags toAsValue(std::string str) {
     int i = 0;
-    int size = sizeof(name_tags)/sizeof(name_tags[0]);
+    int size = sizeof(name_tags) / sizeof(name_tags[0]);
     while((i < size) && (name_tags[i] != str))
        i++;
     if(i == size)
@@ -145,16 +145,16 @@ enum tags toAsValue(std::string str) {
 }
 
 void printEnum() {
-    int nb_tags = sizeof(name_tags)/sizeof(name_tags[0]); 
+    int nb_tags = sizeof(name_tags) / sizeof(name_tags[0]); 
     for(int i = 0 ; i < nb_tags ; i++) 
         std::cout << name_tags[i] << std::endl;
 }
 
-inline int sizeNameTags() {return sizeof(name_tags)/sizeof(name_tags[0]);}
+inline int sizeNameTags() {return sizeof(name_tags) / sizeof(name_tags[0]);}
 
 std::vector<std::string> storeStrEnum() {
     std::vector<std::string> store;
-    int nb_tags = sizeof(name_tags)/sizeof(name_tags[0]); 
+    int nb_tags = sizeof(name_tags) / sizeof(name_tags[0]); 
     for(int i = 0 ; i < nb_tags ; i++) 
         store.push_back(name_tags[i]);
     return store;

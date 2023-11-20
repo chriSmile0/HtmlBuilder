@@ -1,3 +1,5 @@
+EXS="../examples/"
+
 all : clean main
 
 main :
@@ -9,7 +11,7 @@ main :
 checkexec : main
 	mkdir test 2> /dev/null ; \
 	cd build ; \
-	./htmlbuilder --sy -f ../style_lines ../test2.html ../test3.css
+	./htmlbuilder ./htmlbuilder --ts -f ${EXS}build_lines page.html
 #Force an argument if 'mf' or 'sy' on --d and -c 
 
 test : main

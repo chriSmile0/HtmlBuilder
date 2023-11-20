@@ -1,15 +1,16 @@
 #include "../inc/tag.h"
 
-Tag::Tag(std::string tag, pairvec pv_options, std::vector<Tag> tag_vec,int nb_tab ,int jFb, int jLb, int jLa) {
+Tag::Tag(std::string tag, pairvec pv_options, std::vector<Tag> tag_vec,
+			int nb_tab ,int jFb, int jLb, int jLa) {
 	named = true;
 	tag_str = tag;
 	strInTag();
 	nbtab = nb_tab;
 	cds_t.begin_tagF = tag_block.length();
-	tag_block += getFpv2(setTagOptions(pv_options,0),jFb,nb_tab);
+	tag_block += getFpv2(setTagOptions(pv_options, 0), jFb, nb_tab);
 	cds_t.end_tagF = tag_block.length();
 	cds_t.begin_tagL = cds_t.end_tagF + 1;
-	tag_block += getLpv2(tag,jLb,jLa,nb_tab);
+	tag_block += getLpv2(tag, jLb, jLa ,nb_tab);
 	cds_t.end_tagL = tag_block.length();
 }
 
@@ -33,7 +34,7 @@ void Tag::setTagWithStr(std::string str) {
 std::string Tag::setTagOptions(pairvec pv, int with_end) {
 	std::string head_tag = getTagInStr();
     for(auto p : pv) {
-        head_tag += +" "+p.first+"="+"\""+p.second+"\"";
+        head_tag += " " + p.first + "=" + "\"" + p.second + "\"";
 		pv_o.push_back(p);
 	}
 	head_tag += (with_end) ? "/" : "";
@@ -43,7 +44,7 @@ std::string Tag::setTagOptions(pairvec pv, int with_end) {
 std::string Tag::pairvecInStr() {
 	std::string tag_option = "";
     for(auto p : pv_o) 
-        tag_option += " "+p.first+"="+"\""+p.second+"\"";
+        tag_option += " " + p.first + "=" + "\"" + p.second + "\"";
     return tag_option;
 }
 
@@ -73,18 +74,20 @@ void Tag::addCoordinatesWithPreciseValue(int add_value) {
 }
 
 void Tag::printCoordinates() {
-	std::cout << "begin tagF : " << cds_t.begin_tagF << "end tagF :" << cds_t.end_tagF << std::endl;
-	std::cout << "begin tagL : " << cds_t.begin_tagL << "end tagL :" << cds_t.end_tagL << std::endl;
+	std::cout << "begin tagF : " << cds_t.begin_tagF;
+	std::cout << "end tagF :" << cds_t.end_tagF << std::endl;
+	std::cout << "begin tagL : " << cds_t.begin_tagL; 
+	std::cout << "end tagL :" << cds_t.end_tagL << std::endl;
 }
 
 void Tag::addTag(Tag new_tag) {
 	std::string blo_ntag = new_tag.getBlockTag();
-	int begin = cds_t.begin_tagL-1;
+	int begin = cds_t.begin_tagL - 1;
 	if(!named) 
 		begin = (begin < 0) ? 0 : cds_t.begin_tagL;
 	new_tag.addCoordinatesWithPreciseValue(begin);
 	vec_t.push_back(new_tag);
-	tag_block.insert(begin,blo_ntag);
+	tag_block.insert(begin, blo_ntag);
 	cds_t.begin_tagL += blo_ntag.length();
 	cds_t.end_tagL += blo_ntag.length();
 }

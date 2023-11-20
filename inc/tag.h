@@ -15,7 +15,8 @@ class Tag {
 		int nbtab;
 	public:
 		Tag();
-		Tag(std::string tag, pairvec pv_options,std::vector<Tag> tag_vec,int nb_tab, int jFb, int jLb, int jLa);
+		Tag(std::string tag, pairvec pv_options, std::vector<Tag> tag_vec,
+			int nb_tab, int jFb, int jLb, int jLa);
 		~Tag();
 
 		//Getters inline

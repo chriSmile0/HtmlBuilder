@@ -1,6 +1,6 @@
 #include "../inc/html.h"
 
-HTML::HTML(std::string name,std::vector<Tag> vec) {
+HTML::HTML(std::string name, std::vector<Tag> vec) {
     Filename = name;
     t_vec = vec;
 }
@@ -18,7 +18,8 @@ HTML::HTML(HTML const& copy) {
 
 
 void HTML::addInFile() {
-    sfile = std::fstream(Filename, std::ios::in | std::ios::out | std::ios::trunc);
+    sfile = std::fstream(Filename, std::ios::in | std::ios::out |
+                                    std::ios::trunc);
     setFpHtml();
     for(auto tag : t_vec)
         sfile << tag.getBlockTag();
