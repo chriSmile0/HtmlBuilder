@@ -59,14 +59,14 @@ Example :
 	./htmlbuilder --ts -c page.html
 	./htmlbuilder --ts -l "article;p"
 	./htmlbuilder --ts -l "article;p" page.html
-	./htmlbuilder --ts -f ../build_lines 
-	./htmlbuilder --ts -f ../build_lines page.html
+	./htmlbuilder --ts -f ../examples/build_lines 
+	./htmlbuilder --ts -f ../examples/build_lines page.html
 
 ### Modification 
 	./htmlbuilder --mf --d page.html
 	./htmlbuilder --mf -c page.html
-	./htmlbuilder --mf -l "1p paragraphe" ../page.html
-	./htmlbuilder --mf -f ../modif_lines page.html
+	./htmlbuilder --mf -l "1p paragraphe" page.html
+	./htmlbuilder --mf -f ../examples/modif_lines page.html
 
 ### Modification Style 
 	./htmlbuilder --sy --d page.html style.css
@@ -75,27 +75,29 @@ Example :
 	./htmlbuilder --sy -f ../style_lines page.html style.css
 
 ### Update Style in Css file
-	./htmlbuilder --usy -f ../update_style ../style_inh.css
+	./htmlbuilder --usy -f ../examples/update_style ../examples/style_inh.css
 
 ### MakeTarget 
 **Test: ->NB : {option1/option2}=correct options**   
-    `make test OPT0=--{ts/mf/sy} OPT1=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html} ARG3={""/s.css}`
+    `make test OPT0=--{ts/mf/sy/usy} OPT1=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html} ARG3={""/s.css}`
 
 **Others tests:**
 - **testconstruction**  
-	`make test OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html}`
+	`make test OPT0=--ts OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html}`
 - **testmodifcation**  
-	`make test OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html}`
+	`make test OPT0=--mf OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html}`
 - **testmodifcationstyle**   
-	`make test OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html} ARG3={""/s.css}`
+	`make test OPT0=--sy OPT=-{-d/c/l/f} ARG1={""/p.html/"line"/file} ARG2={""/p.html} ARG3={""/s.css}`
+- **testupdatestyle**
+	`make test OPT0=--usy OPT={-d/c/l/f} ARG1={file} ARG2={s.css}`
 
 **Examples:**
 - `make testconstruction OPT=-l ARG1="article\;p" ARG2=../test/page.html`
-- `make testmodification OPT=-f ARG1=../modif_lines ARG2=page.html`
-- `make testmodification OPT=-l ARG1="1p paragraphe\;1span spa" ARG2=page.html`
-- `make testmodificationstyle OPT=-f ARG1=../style_lines ARG2=../page.html ARG3=../style.css`
-- `make testmodificationstyle OPT=-l ARG1="1p id=ID\|class=classe\;1span class=classe" ARG2=../page.html ARG3=../style.css` 
-- `make testupdatestyle OPT=-f ARG1=../update_style ARG2=../style_inh.css`
+- `make testmodification OPT=-f ARG1=../examples/modif_lines ARG2=../examples/page.html`
+- `make testmodification OPT=-l ARG1="1p paragraphe\;1span spa" ARG2=../examples/page.html`
+- `make testmodificationstyle OPT=-f ARG1=../examples/style_lines ARG2=../examples/page.html ARG3=../examples/style.css`
+- `make testmodificationstyle OPT=-l ARG1="1p id=ID\|class=classe\;1span class=classe" ARG2=../examples/page.html ARG3=../examples/style.css` 
+- `make testupdatestyle OPT=-f ARG1=../examples/update_style ARG2=../examples/style_inh.css`
 
 ## Features 
 

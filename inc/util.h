@@ -178,7 +178,8 @@ std::string checkTag(std::string str);
  * @brief	Jump the '{''}' and the spaces if it's necessary for known the 
  * 			next part of the string
  * @param{str}	string to parse
- * @return 	The integer which represent the number of jumps to reach the following
+ * @return 	The integer which represent the number of jumps to reach the 
+ * 			following
 */
 int jumpToNextTag(std::string str);
 
@@ -205,7 +206,7 @@ void insertLineInFile(std::fstream& f, std::string str, int index);
  * @param{index}	index of the start of the string (0 ?)
  * @return
 */
-void updateBlockStyle(std::string file,vecOV v_o, int index); // USEFUL INDEX -> ALWAYS 0 
+void updateBlockStyle(std::string file, vecOV v_o, int index); // USELESS INDEX -> ALWAYS 0 
 
 /**
  * @brief	Split a string with a splitter
@@ -300,7 +301,8 @@ line_options lineInAttributLine(std::string tag, std::string str, char mode);
  * @param{vecs} All options and values what contains launcher options
  * @return
 */
-void insertLineInFileCss(std::string f_in,std::ofstream &fout, std::vector<option_and_value> vecs);
+void insertLineInFileCss(std::string f_in, std::ofstream &fout,
+							std::vector<option_and_value> vecs);
 
 /**
  * @brief	Create tree of inheritance (like demandeInTag)
@@ -330,7 +332,7 @@ std::string depthMaxTree(std::vector<std::string> tree, int level);
 */
 
 template<typename T>
-bool inVector(std::vector<T> vec,T token);
+bool inVector(std::vector<T> vec, T token);
 
 /**
  * @brief	Search a string in the strings of vector of strings
@@ -354,7 +356,7 @@ int inIndexSubVector(std::vector<std::string> vec, std::string token);
  * @param{token} The research token
  * @return The vector with token appears once time
 */
-std::vector<std::string> uniqueTokenInVector(std::vector<std::string> vec, 
+std::vector<std::string> uniqueTokenInVector(std::vector<std::string> vec,
 												std::string token);
 
 //************************* CSS **********************//

@@ -10,7 +10,7 @@ std::string withoutBracket(std::string str) {
 	int end = str.length();
 	while(str[i] != '\0') {
 		i++;
-		if(str[i-1] == '{') {
+		if(str[i - 1] == '{') {
 			start = i;
 			break;
 		}
@@ -18,20 +18,22 @@ std::string withoutBracket(std::string str) {
 	int j = end;
 	while(j > start) {
 		j--;
-		if(str[j+1] == '}') {
+		if(str[j + 1] == '}') {
 			end = j;
 			break;
 		}
 	}
-	return ((start == 0) && (end == str.length())) ? str : str.substr(start,end);
+	return ((start == 0) && (end == str.length())) ? str : str.substr(start,
+																		end);
 }
 
 Tag demandInTag(std::string str, int tabulation) {
 	std::string without_brack = str;
-	while((without_brack[0] == '{') && (without_brack[without_brack.length()-1] == '}')) 
+	while((without_brack[0] == '{') && (without_brack[without_brack.length() - 1] == '}')) 
 		without_brack = withoutBracket(without_brack);
 	
-	std::vector<std::string> split_first_level = splitStrHomemade(without_brack,';');
+	std::vector<std::string> split_first_level = splitStrHomemade(without_brack,
+																	';');
 	std::vector<Tag> vec_rtn;
 	int old_tab = tabulation;
 	tabulation++;
@@ -52,8 +54,8 @@ Tag demandInTag(std::string str, int tabulation) {
 			jFb = 1;
 			jLb = 1;
 		}
-		for(int i = 0 ; i < dt; i++) {
-			Tag rtn{corresponding_tag,{},{},old_tab,jFb,jLb,jLa};
+		for(int i = 0 ; i < dt ; i++) {
+			Tag rtn{corresponding_tag, {}, {}, old_tab, jFb, jLb, jLa};
 			if((next_parse == "") || (next_parse[0] == '}')) {
 				vec_rtn.push_back(rtn);
 				continue;
@@ -64,8 +66,8 @@ Tag demandInTag(std::string str, int tabulation) {
 			int size_digit = (digits == "0") ? 0 : digits.length();
 			int digit = (size_digit == 0) ? 1 : stoi(digits);
 			std::string next = next_parse.substr(size_digit);
-			for(int i = 0 ; i < digit; i++) 
-				rtn.addTag(demandInTag(next,tabulation));
+			for(int i = 0 ; i < digit ; i++) 
+				rtn.addTag(demandInTag(next, tabulation));
 			vec_rtn.push_back(rtn);
 		}
 	}
